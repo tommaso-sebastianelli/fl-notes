@@ -39,7 +39,7 @@ jobs:
     # - run: flutter build ios --release --no-codesign
   automerge:
     runs-on: macos-latest
-    needs: build
+    needs: test
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.12.0"
