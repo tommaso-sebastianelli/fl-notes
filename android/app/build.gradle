@@ -39,11 +39,14 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.fl_notes"
+        applicationId project.env.get("APP_ID") 
+        applicationIdSuffix project.env.get("ENV")
         minSdkVersion 16
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        resValue "string", "build_config_package", "com.example.fl_notes"
+        resValue 'string', 'app_name', "${project.env.get("ENV")} - Flutter Notes"
     }
 
     buildTypes {
