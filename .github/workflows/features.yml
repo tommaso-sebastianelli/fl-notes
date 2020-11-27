@@ -29,8 +29,7 @@ jobs:
     - run: flutter build apk
     # - run: flutter build ios --release --no-codesign
       
-  # merge into develop
-  merge into develop:
+  merge:
     name: Merge featuer into develop after a PR is merged
     runs-on: ubuntu-latest
     steps:
