@@ -29,9 +29,24 @@ jobs:
     needs: build
     steps:
       - name: automerge
-        uses: "pascalgn/automerge-action@v0.12.0"
+      - uses: "pascalgn/automerge-action@v0.12.0"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "automerge, release"
           MERGE_METHOD: "squash"
           MERGE_DELETE_BRANCH: "true"
+  tag:
+    runs-on: macos-latest
+    needs: automerge
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set output for getting branch name
+        id: vars
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+               
+      - name: Tag commit
+      - uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag: "${{ steps.vars.outputs.short_ref }}"
