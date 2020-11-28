@@ -1,4 +1,4 @@
-name: Merge any release branch to uat
+name: Merge any master updates to develop
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: master -> develop
+      - name: main -> develop
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
