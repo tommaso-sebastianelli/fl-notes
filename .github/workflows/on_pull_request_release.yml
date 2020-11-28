@@ -3,7 +3,7 @@ on:
   pull_request:
     types:
       - opened
-      - labeled # pr must be labeled with automerge and release
+      - reopened 
     branches:
       - main
   status: {}
