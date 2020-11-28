@@ -19,6 +19,6 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     // Verify the main widget renders.
-    expect(find.text('Hello World MOCK'), findsOneWidget);
+    expect(find.text('env: MOCK'), findsOneWidget);
   });
 }

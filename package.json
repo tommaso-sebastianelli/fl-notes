@@ -11,9 +11,9 @@
     "run:mock": "ENVFILE=.env.mock flutter run",
     "run:test": "ENVFILE=.env.test flutter run",
     "run:prod": "ENVFILE=.env.prod flutter run",
-    "build:mock": "ENVFILE=.env.mock flutter build",
-    "build:test": "ENVFILE=.env.test flutter build",
-    "build:prod": "ENVFILE=.env.prod flutter build"
+    "build:mock": "ENVFILE=.env.mock flutter build apk",
+    "build:test": "ENVFILE=.env.test flutter build apk",
+    "build:prod": "ENVFILE=.env.prod flutter build apk"
   },
   "repository": {
     "type": "git",
