@@ -46,7 +46,7 @@ build and test
           tag_name: ${{ steps.version.outputs.substring }}
           release_name: Release ${{ steps.version.outputs.substring }}
           draft: false
-          prerelease: false
+          prerelease: true
 
   sync-branch:
     runs-on: ubuntu-latest
