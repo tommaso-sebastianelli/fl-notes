@@ -24,7 +24,8 @@ jobs:
   #   - run: ENVFILE=.env.test flutter build apk
   #  # - run: flutter build ios --release --no-codesign
   substring:
-  - uses: bhowell2/github-substring-action
+  - name: substring-action
+    uses: bhowell2/github-substring-action@v1.0.0
     id: version
     with:
       value: ${{ github.ref }}
