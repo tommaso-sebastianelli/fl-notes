@@ -27,7 +27,6 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: substring
     steps:
       - uses: bhowell2/github-substring-action@v1.0.0
         id: version
