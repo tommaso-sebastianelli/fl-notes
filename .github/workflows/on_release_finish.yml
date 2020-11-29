@@ -25,6 +25,7 @@ jobs:
   #  # - run: flutter build ios --release --no-codesign
   substring:
     name: substring-action
+    runs-on: ubuntu-latest
     steps:
       - uses: bhowell2/github-substring-action@v1.0.0
         id: version
