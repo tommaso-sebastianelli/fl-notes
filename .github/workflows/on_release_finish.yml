@@ -1,0 +1,56 @@
+on:
+  create:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release
+
+jobs:
+# build and test
+  # build:
+  #   name: Run tests and builds
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #   - uses: actions/setup-java@v1
+  #     with:
+  #       java-version: '12.x'
+  #   - uses: subosito/flutter-action@v1
+  #     with:
+  #       flutter-version: '1.22.4'
+  #   - run: flutter pub get
+  #   - run: flutter test
+  #   - run: ENVFILE=.env.test flutter build apk
+  #  # - run: flutter build ios --release --no-codesign
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # need: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  merge-branch:
+    name: Merges back in main
+    runs-on: ubuntu-latest
+    need: release
+    steps:
+      - uses: actions/checkout@master
+
+      - name: release -> main
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          target_branch: main
+          github_token: ${{ github.token }}
