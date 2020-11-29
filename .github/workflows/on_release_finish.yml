@@ -53,7 +53,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version.outputs.substring }}
-          name: ${{ steps.version.outputs.substring }}  
+          name: ${{ steps.version.outputs.substring }}
+          prerelease:  true
           gzip: true
           files: >
             ${{steps.download.outputs.download-path}}/app-release.apk
