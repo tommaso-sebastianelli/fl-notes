@@ -27,7 +27,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    # need: build
+    # needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -45,7 +45,7 @@ jobs:
   merge-branch:
     name: Merges back in main
     runs-on: ubuntu-latest
-    need: release
+    needs: release
     steps:
       - uses: actions/checkout@master
 
