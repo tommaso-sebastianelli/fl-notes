@@ -5,7 +5,7 @@ on:
       - opened
       - reopened 
     branches:
-      - main
+      - release/**
   status: {}
   
 jobs:
