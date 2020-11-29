@@ -1,12 +1,8 @@
 on:
-<<<<<<< HEAD
-  create:
-=======
   push:
     # Sequence of patterns matched against refs/tags
->>>>>>> main
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - 'release/**'
 
 name: Create Release
 
@@ -31,7 +27,7 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    # need: build
+    # needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,16 +42,23 @@ jobs:
           draft: false
           prerelease: false
 
-  merge-branch:
-    name: Merges back in main
+  sync-branch:
     runs-on: ubuntu-latest
-    need: release
+    needs: release
     steps:
       - uses: actions/checkout@master
 
-      - name: release -> main
+      - name: Merge feature -> main
         uses: devmasx/merge-branch@v1.3.1
         with:
           type: now
           target_branch: main
+          github_token: ${{ github.token }}
+
+      - name: Merge main -> develop
+        uses: devmasx/merge-branch@v1.3.1
+        with:
+          type: now
+          from_branch: main
+          target_branch: develop
           github_token: ${{ github.token }}
