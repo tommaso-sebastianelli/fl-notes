@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      -run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      - run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
                
       - name: Tag commit
         uses: tvdias/github-tagger@v0.0.1
