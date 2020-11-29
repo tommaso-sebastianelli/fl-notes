@@ -1,0 +1,29 @@
+{
+  "name": "fl_notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "run:mock": "ENVFILE=.env.mock flutter run",
+    "run:test": "ENVFILE=.env.test flutter run",
+    "run:prod": "ENVFILE=.env.prod flutter run",
+    "build:mock": "ENVFILE=.env.mock flutter build apk",
+    "build:test": "ENVFILE=.env.test flutter build apk",
+    "build:prod": "ENVFILE=.env.prod flutter build apk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tommaso-sebastianelli/fl-notes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tommaso-sebastianelli/fl-notes/issues"
+  },
+  "homepage": "https://github.com/tommaso-sebastianelli/fl-notes#readme"
+}
