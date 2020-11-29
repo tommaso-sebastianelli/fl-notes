@@ -7,7 +7,6 @@ on:
 name: Create Release
 
 jobs:
-build and test
   build:
     name: Run tests and builds
     runs-on: ubuntu-latest
