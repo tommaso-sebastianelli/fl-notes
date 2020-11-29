@@ -1,9 +1,8 @@
 on:
   push:
     # Sequence of patterns matched against refs/tags
-    branches: 'release/**'
     tags:
-      - 'ready' # Push events to matching ready releases
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 name: Create Release
 
