@@ -22,6 +22,13 @@ jobs:
     - run: flutter test
     - run: ENVFILE=.env.test flutter build apk
    # - run: flutter build ios --release --no-codesign
+   
+    name: 'Upload Artifact'
+    steps:
+    - uses: actions/upload-artifact@v2
+      with:
+        name: apk
+        path: ./build/app/outputs/apk/release/app-release.apk
 
   release:
     name: Create Release
@@ -37,27 +44,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      - name: Download artifact
+        id: download
+        uses: actions/download-artifact@v2
         with:
-          tag_name: ${{ steps.version.outputs.substring }}
-          release_name: Release ${{ steps.version.outputs.substring }}
-          draft: false
-          prerelease: true
+          name: apk
 
-      - name: Upload Release Asset
-        id: upload-release-asset 
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: meeDamian/github-release@2.0
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./build/app/outputs/apk/release/app-release.apk
-          asset_name: app-release-${{ steps.version.outputs.substring }}
-          asset_content_type: application/zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.version.outputs.substring }}
+          name: ${{ steps.version.outputs.substring }}  
+          gzip: true
+          files: >
+            ${{steps.download.outputs.download-path}}
+            
 
   sync-branch:
     runs-on: ubuntu-latest
