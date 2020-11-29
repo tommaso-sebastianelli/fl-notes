@@ -56,7 +56,7 @@ jobs:
           name: ${{ steps.version.outputs.substring }}  
           gzip: true
           files: >
-            ${{steps.download.outputs.download-path/app-release.apk}}
+            ${{steps.download.outputs.download-path}}/app-release.apk
             
 
   sync-branch:
