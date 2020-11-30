@@ -1,6 +1,6 @@
 name: Integrate Changes into develop
 on:
-  pull_reques:
+  pull_request:
     types:
       - opened
       - reopened
