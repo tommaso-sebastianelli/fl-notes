@@ -5,7 +5,3 @@
 
 ## Build application
 [yarn|npm] build:[mock|test|prod]
-
-
-
-
