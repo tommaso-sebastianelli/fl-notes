@@ -38,10 +38,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - uses: bhowell2/github-substring-action@v1.0.0
+      - name: Get the branch name
+        uses: mdecoleman/pr-branch-name@1.0.0
+        id: vars
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: echo branch name for PR is ${{steps.vars.outputs.branch}}
+
+      - name: Get the release code
+        uses: bhowell2/github-substring-action@v1.0.0
         id: version
         with:
-          value: ${{ github.ref }}
+          value: ${{ steps.vars.outputs.branch }}
           index_of_str: release/
 
       - name: Download artifact
