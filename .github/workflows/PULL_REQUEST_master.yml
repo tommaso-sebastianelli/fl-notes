@@ -1,3 +1,5 @@
+name: Release a new version  
+
 on:
   pull_request:
     types:
@@ -5,6 +7,9 @@ on:
       - reopened
     branches: 
       - main
+  check_suite:
+    types:
+      - completed
 
 name: Create Release
 
@@ -31,7 +36,7 @@ jobs:
         path: ./build/app/outputs/apk/release/app-release.apk
 
   release:
-    name: Create Release
+    name: Creates Github Release
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -69,9 +74,9 @@ jobs:
             ${{steps.download.outputs.download-path}}/app-release.apk
 
   automerge:
-    name: Merges release into main
+    name: Merges release PR into main
     runs-on: ubuntu-latest
-    needs: build
+    needs: release
     steps:
       - name: automerge
         uses: "pascalgn/automerge-action@v0.12.0"
@@ -84,9 +89,9 @@ jobs:
             
 
   sync-branch:
-    name: Back merges release into develop
+    name: Merges release PR into develop
     runs-on: ubuntu-latest
-    needs: automerge
+    needs: release
     steps:
       - uses: actions/checkout@master
 

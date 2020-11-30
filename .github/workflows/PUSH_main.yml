@@ -1,4 +1,4 @@
-name: Merge any master updates to develop
+name: Sync any master push to develop
 on:
   push:
     branches:
