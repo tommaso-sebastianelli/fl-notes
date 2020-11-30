@@ -1,4 +1,4 @@
-name: Sync any master push to develop
+name: Sync any changes from main to develop
 on:
   push:
     branches:
