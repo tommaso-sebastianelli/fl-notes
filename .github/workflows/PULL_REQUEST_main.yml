@@ -5,13 +5,11 @@ on:
     types:
       - opened
       - reopened
-    branches: 
+    branches:
       - main
   check_suite:
     types:
       - completed
-
-name: Create Release
 
 jobs:
   build:
