@@ -11,8 +11,6 @@ on:
     types:
       - completed
 
-name: Create Release
-
 jobs:
   build:
     name: Run tests and builds
