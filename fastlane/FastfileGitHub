@@ -1,0 +1,97 @@
+desc "Push branch and creates a Pull Request"
+lane :branch_finish do |options|
+    branch_name = sh('git branch --show-current')
+    if branch_name == 'main'
+        UI.error("Can't perform this action on main!")
+    end
+    if branch_name == 'develop'
+        UI.error("Can't perform this action on develop!")
+    end
+    
+    begin
+        git_pull
+    rescue
+        UI.important("It seems there is no origin for the current branch")
+    end
+    
+    push_to_git_remote
+
+    begin
+    create_pull_request(
+        # api_token: "secret",      # optional, defaults to ENV["GITHUB_API_TOKEN"]
+        repo: "tommaso-sebastianelli/fl-notes",
+        title: "PR for #{branch_name}",
+        base: "develop",
+        body: "This is an automatic PR opened by fastlane.", 
+    )
+    rescue
+        UI.message("PR for #{branch_name} has been already created")
+    end
+end
+
+desc "Creates a release branch with the pubspec.yaml version and push it to remote branch"
+lane :release_start do |options|
+    
+    # After updating the version number in the pubspec file, run flutter pub get from the top of the project,
+    # or use the Pub get button in your IDE. This updates the versionName and versionCode in the local.properties
+    # file, which are later updated in the build.gradle file when you rebuild the Flutter app.
+    sh("flutter pub get")
+    # must start from a release branch
+    begin
+        ensure_git_branch(
+            branch: 'develop'
+        )
+    rescue
+        UI.error('release must start from develop!')
+    end
+
+    # if so pull updates in case someone added changes to release branch
+    git_pull
+
+    begin
+        sh("git checkout -b release/#{get_version}")
+    rescue
+        UI.important("branch release/#{get_version} alredy exist, performing checkout")
+        sh("git checkout release/#{get_version}")
+    end
+end
+
+desc "push the release branch to remote repo and open PR"
+lane :release_finish do |options|
+
+    # must start from a release branch
+    begin
+    ensure_git_branch(
+        branch: 'release/**'
+    )
+    rescue
+        UI.error('checkout or create a release branch first')
+    end
+
+    branch_name = sh('git branch --show-current')
+
+    # if so pull updates in case someone added changes to release branch
+    git_pull
+
+    # push changes if present
+    push_to_git_remote
+
+    begin
+        create_pull_request(
+            # api_token: "secret",      # optional, defaults to ENV["GITHUB_API_TOKEN"]
+            repo: "tommaso-sebastianelli/fl-notes",
+            title: "PR for #{branch_name}",
+            base: "main",
+            body: "This is an automatic PR opened by fastlane.", 
+        )
+    rescue
+        UI.message("PR for #{branch_name} has been already created")
+    end
+    
+end
+
+desc "Output project version"
+private_lane :get_version do |options|
+    sh('yaml get pubspec.yaml version')
+end
+
