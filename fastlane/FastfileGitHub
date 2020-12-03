@@ -70,8 +70,16 @@ lane :release_finish do |options|
 
     branch_name = sh('git branch --show-current')
 
+    # add and commit changes: this is intended for updating pubspec version
+    git_add(path: "../pubspec.yaml")
+    git_commit(path: "../pubspec.yaml", message: "Version Bump")
+
     # if so pull updates in case someone added changes to release branch
-    git_pull
+    begin
+        git_pull
+    rescue
+        UI.important("It seems there is no origin for the current branch")
+    end
 
     # push changes if present
     push_to_git_remote
@@ -92,6 +100,7 @@ end
 
 desc "Output project version"
 private_lane :get_version do |options|
-    sh('yaml get pubspec.yaml version')
+    puts sh('yaml get ../pubspec.yaml version')
+    sh('yaml get ../pubspec.yaml version')
 end
 

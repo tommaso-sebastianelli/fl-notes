@@ -25,5 +25,6 @@
   "bugs": {
     "url": "https://github.com/tommaso-sebastianelli/fl-notes/issues"
   },
-  "homepage": "https://github.com/tommaso-sebastianelli/fl-notes#readme"
+  "homepage": "https://github.com/tommaso-sebastianelli/fl-notes#readme",
+  "devDependencies": {}
 }
