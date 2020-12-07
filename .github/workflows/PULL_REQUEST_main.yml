@@ -5,7 +5,7 @@ on:
     types:
       - opened
       - reopened
-      - edited
+      - synchronized
     branches:
       - main
   check_suite:
