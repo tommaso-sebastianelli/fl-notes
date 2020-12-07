@@ -22,7 +22,8 @@ lane :branch_finish do |options|
         repo: "tommaso-sebastianelli/fl-notes",
         title: "PR for #{branch_name}",
         base: "develop",
-        body: "This is an automatic PR opened by fastlane.", 
+        body: "This is an automatic PR opened by fastlane.",
+        labels: "fastlane, feature"
     )
     rescue
         UI.message("PR for #{branch_name} has been already created")
@@ -90,7 +91,8 @@ lane :release_finish do |options|
             repo: "tommaso-sebastianelli/fl-notes",
             title: "PR for #{branch_name}",
             base: "main",
-            body: "This is an automatic PR opened by fastlane.", 
+            body: "This is an automatic PR opened by fastlane.",
+            labels: "fastlane, release"
         )
     rescue
         UI.message("PR for #{branch_name} has been already created")
