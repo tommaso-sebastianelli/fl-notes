@@ -57,6 +57,18 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "environment"
+    productFlavors {
+      dev {
+          dimension "environment"
+          buildConfigField 'boolean', 'IS_PROD', "false"
+      }
+      prod {
+          dimension "environment"
+          buildConfigField 'boolean', 'IS_PROD', "true"
+      }
+    }
 }
 
 flutter {

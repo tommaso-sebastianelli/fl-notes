@@ -8,10 +8,10 @@
     "test": "test"
   },
   "scripts": {
-    "run:dev": "ENVFILE=.env.dev flutter run",
-    "run:prod": "ENVFILE=.env.prod flutter run",
-    "build:dev": "ENVFILE=.env.dev flutter build apk",
-    "build:prod": "ENVFILE=.env.prod flutter build apk"
+    "run:dev": "ENVFILE=.env.dev flutter run --flavor=dev",
+    "run:prod": "ENVFILE=.env.prod flutter run --flavor=prod",
+    "build:dev": "ENVFILE=.env.dev flutter build apk --flavor=dev",
+    "build:prod": "ENVFILE=.env.prod flutter build apk --flavor=prod"
   },
   "repository": {
     "type": "git",
