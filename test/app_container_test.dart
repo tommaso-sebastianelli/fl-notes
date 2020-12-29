@@ -5,20 +5,19 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:fl_notes/app_container.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_config/flutter_config.dart';
 
-import 'package:fl_notes/main.dart';
-
 void main() {
-  FlutterConfig.loadValueForTesting({'ENV': 'MOCK'});
+  FlutterConfig.loadValueForTesting({'ENV': 'dev'});
 
-  testWidgets('Render main widget', (WidgetTester tester) async {
+  testWidgets('Render AppContainer', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(AppContainer());
 
     // Verify the main widget renders.
-    expect(find.text('env: MOCK'), findsOneWidget);
+    expect(find.text('env: dev'), findsOneWidget);
+    // actions edit test
   });
 }
