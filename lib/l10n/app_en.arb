@@ -1,6 +1,10 @@
 {
   "helloWorld": "Hello World!",
-  "@helloWorld": {
+   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
+  },
+  "signInWithGoogle": "Sign In With Google",
+   "@signInWithGoogle": {
+    "description": "Sign in with Google"
   }
 }
