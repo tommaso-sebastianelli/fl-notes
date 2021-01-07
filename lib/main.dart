@@ -1,5 +1,9 @@
 import 'package:fl_notes/app_container.dart';
+import 'package:fl_notes/blocs/authentication.dart';
+import 'package:fl_notes/data/mock_api.dart';
+import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -7,7 +11,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
   await FlutterConfig.loadEnvVariables(); // Load env file
 
-  runApp(MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) =>
+            AuthenticationBloc(new AuthenticationRepository(new MockApi())),
+      ),
+      // Add more providers here
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

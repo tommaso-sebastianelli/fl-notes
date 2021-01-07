@@ -1,4 +1,5 @@
 {
   "helloWorld": "Bonjour le monde!",
-  "signInWithGoogle": "connectez-vous avec Google"
+  "signInWithGoogle": "connectez-vous avec Google",
+  "loginError": "authentification échouée"
 }

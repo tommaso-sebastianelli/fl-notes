@@ -1,15 +1,20 @@
+import 'package:fl_notes/blocs/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'screens/board/board.dart';
 import 'screens/signin/signin.dart';
 
 class AppContainer extends StatelessWidget {
-  const AppContainer({Key key}) : super(key: key);
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  NavigatorState get _navigator => _navigatorKey.currentState;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       routes: {
         '/': (context) => SignIn(),
         '/board': (context) => Board(),
@@ -33,7 +38,26 @@ class AppContainer extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: SignIn(),
+      builder: (context, child) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          listenWhen: (previous, current) =>
+              previous.authenticationStatus != current.authenticationStatus,
+          listener: (context, state) {
+            switch (state.authenticationStatus) {
+              case AuthenticationStatus.logged:
+                _navigator.pushNamedAndRemoveUntil('/board', (route) => false);
+                break;
+              case AuthenticationStatus.not_logged:
+                _navigator.pushNamedAndRemoveUntil('/', (route) => false);
+                break;
+              default:
+                break;
+            }
+          },
+          child: child,
+        );
+      },
+      // onGenerateRoute: (_) => SplashPage.route(), // TODO
     );
   }
 }
