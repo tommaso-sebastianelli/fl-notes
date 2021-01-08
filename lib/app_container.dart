@@ -7,7 +7,7 @@ import 'screens/board/board.dart';
 import 'screens/signin/signin.dart';
 
 class AppContainer extends StatelessWidget {
-  final _navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   NavigatorState get _navigator => _navigatorKey.currentState;
 
@@ -16,8 +16,8 @@ class AppContainer extends StatelessWidget {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       routes: {
-        '/': (context) => SignIn(),
-        '/board': (context) => Board(),
+        '/': (BuildContext context) => const SignIn(),
+        '/board': (BuildContext context) => Board(),
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -38,17 +38,20 @@ class AppContainer extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      builder: (context, child) {
+      builder: (BuildContext context, Widget child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
-          listenWhen: (previous, current) =>
-              previous.authenticationStatus != current.authenticationStatus,
-          listener: (context, state) {
+          listenWhen:
+              (AuthenticationState previous, AuthenticationState current) =>
+                  previous.authenticationStatus != current.authenticationStatus,
+          listener: (BuildContext context, AuthenticationState state) {
             switch (state.authenticationStatus) {
               case AuthenticationStatus.logged:
-                _navigator.pushNamedAndRemoveUntil('/board', (route) => false);
+                _navigator.pushNamedAndRemoveUntil(
+                    '/board', (Route<dynamic> route) => false);
                 break;
               case AuthenticationStatus.not_logged:
-                _navigator.pushNamedAndRemoveUntil('/', (route) => false);
+                _navigator.pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
                 break;
               default:
                 break;

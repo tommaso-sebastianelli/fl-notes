@@ -14,9 +14,9 @@ enum AuthenticationStatus {
 abstract class AuthenticationState {
   @required
   final AuthenticationStatus authenticationStatus;
-  final Credentials credentials;
-  final bool loading;
   final bool error;
+  final bool loading;
+  final Credentials credentials;
   AuthenticationState(
       {this.credentials, this.authenticationStatus, this.loading, this.error});
 }
@@ -25,30 +25,31 @@ class InitialAuthenticationState extends AuthenticationState {
   InitialAuthenticationState()
       : super(
           authenticationStatus: AuthenticationStatus.not_logged,
-          loading: false,
           error: false,
+          loading: false,
         );
 }
 
 class NewAuthenticationState extends AuthenticationState {
   NewAuthenticationState(AuthenticationState oldState,
-      {Credentials credentials,
-      AuthenticationStatus authenticationStatus,
+      {AuthenticationStatus authenticationStatus,
+      bool error,
       bool loading,
-      bool error})
+      Credentials credentials})
       : super(
-            credentials: credentials ?? oldState.credentials,
             authenticationStatus:
                 authenticationStatus ?? oldState.authenticationStatus,
-            loading: loading ?? oldState.loading,
-            error: error ?? oldState.error);
+            credentials: credentials ?? oldState.credentials,
+            error: error ?? oldState.error,
+            loading: loading ?? oldState.loading);
 }
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthenticationRepository authenticationRepository;
   AuthenticationBloc(this.authenticationRepository)
       : super(InitialAuthenticationState());
+
+  AuthenticationRepository authenticationRepository;
 
   @override
   Stream<AuthenticationState> mapEventToState(

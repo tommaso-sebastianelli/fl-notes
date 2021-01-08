@@ -1,5 +1,4 @@
 import 'package:fl_notes/models/credentials.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logging/logging.dart';
 
 abstract class AuthenticationDataProvider {
@@ -8,28 +7,26 @@ abstract class AuthenticationDataProvider {
 }
 
 class AuthenticationRepository {
-  final AuthenticationDataProvider _dataProvider;
-  final Logger logger = Logger("AuthenticationRepository");
-
   AuthenticationRepository(this._dataProvider);
 
+  final AuthenticationDataProvider _dataProvider;
+  final Logger logger = Logger('AuthenticationRepository');
+
   Future<Credentials> signIn() {
-    return this
-        ._dataProvider
+    return _dataProvider
         .signIn()
-        .then((value) => value)
+        .then((Credentials value) => value)
         .catchError(onError);
   }
 
   Future<void> signOut() {
-    return this
-        ._dataProvider
+    return _dataProvider
         .signOut()
-        .then((value) => value)
+        .then((void value) => value)
         .catchError(onError);
   }
 
-  onError(Object e) {
+  void onError(Object e) {
     logger.severe(e);
     // throw (e);
   }

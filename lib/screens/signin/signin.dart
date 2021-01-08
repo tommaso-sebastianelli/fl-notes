@@ -13,18 +13,21 @@ class SignIn extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-            title: Text(FlutterConfig.get('LABEL')),
+            title: Text(FlutterConfig.get('LABEL').toString()),
           ),
           body: BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (previous, current) => previous.error != current.error,
-            listener: (context, state) => {
+            listenWhen:
+                (AuthenticationState previous, AuthenticationState current) =>
+                    previous.error != current.error,
+            listener: (BuildContext context, AuthenticationState state) => {
               if (state.error)
                 {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       backgroundColor: Colors.black,
-                      content: Text(AppLocalizations.of(_context).loginError),
-                      duration: Duration(seconds: 2),
+                      content: Text((AppLocalizations.of(_context).loginError)
+                          .toString()),
+                      duration: const Duration(seconds: 2),
                     ),
                   )
                 }
@@ -37,22 +40,22 @@ class SignIn extends StatelessWidget {
     );
   }
 
-  _child(BuildContext context) {
+  Widget _child(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, state) => state.loading
-                ? CircularProgressIndicator()
-                : GoogleSignInButton(
-                    onPressed: () {
-                      context
-                          .read<AuthenticationBloc>()
-                          .add(AuthenticationEvent.login);
-                    },
-                    darkMode: false, // default: false
-                  ),
+            builder: (BuildContext context, AuthenticationState state) =>
+                state.loading
+                    ? const CircularProgressIndicator()
+                    : GoogleSignInButton(
+                        onPressed: () {
+                          context
+                              .read<AuthenticationBloc>()
+                              .add(AuthenticationEvent.login);
+                        }, // default: false
+                      ),
           )
         ],
       ),
