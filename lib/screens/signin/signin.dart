@@ -36,7 +36,6 @@ class SignIn extends StatelessWidget {
             },
             child: _child(_context),
           )),
-      color: null,
     );
   }
 
