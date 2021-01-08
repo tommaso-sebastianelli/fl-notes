@@ -16,14 +16,21 @@ class SignIn extends StatelessWidget {
             title: Text(FlutterConfig.get('LABEL')),
           ),
           body: BlocListener<AuthenticationBloc, AuthenticationState>(
-            listenWhen: (previous, current) =>
-                previous.error == false && current.error == true,
-            listener: (context, state) => Scaffold.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: Colors.black,
-                content: Text(AppLocalizations.of(_context).loginError),
-              ),
-            ),
+            listenWhen: (previous, current) => previous.error != current.error,
+            listener: (context, state) => {
+              if (state.error)
+                {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.black,
+                      content: Text(AppLocalizations.of(_context).loginError),
+                      duration: Duration(seconds: 2),
+                    ),
+                  )
+                }
+              else
+                {Scaffold.of(context).hideCurrentSnackBar()}
+            },
             child: _child(_context),
           )),
       color: null,
