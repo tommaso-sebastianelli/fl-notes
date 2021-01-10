@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Board extends StatefulWidget {
-  Board({Key key}) : super(key: key);
+  const Board({Key key}) : super(key: key);
 
   @override
   _BoardState createState() => _BoardState();

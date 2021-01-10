@@ -6,5 +6,9 @@
   "signInWithGoogle": "Sign In With Google",
    "@signInWithGoogle": {
     "description": "Sign in with Google"
+  },
+  "loginError": "Authentication failed",
+   "@loginError": {
+    "description": "A message displayed on authentication failure"
   }
 }

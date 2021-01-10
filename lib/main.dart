@@ -1,13 +1,30 @@
+import 'dart:developer';
+
 import 'package:fl_notes/app_container.dart';
+import 'package:fl_notes/blocs/authentication.dart';
+import 'package:fl_notes/data/mock_api.dart';
+import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
   await FlutterConfig.loadEnvVariables(); // Load env file
 
-  runApp(MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) =>
+            AuthenticationBloc(AuthenticationRepository(MockApi())),
+      ),
+      // Add more providers here
+    ],
+    child: MyApp(),
+  ));
+
+  return Future<void>.value();
 }
 
 class MyApp extends StatelessWidget {
@@ -16,23 +33,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<dynamic>(
       // Initialize FlutterFire:
       future: _initialization,
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return SomethingWentWrong();
+          return const SomethingWentWrong();
         }
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print('Firebase successfully loaded');
+          log('Firebase successfully loaded');
           return AppContainer();
         }
 
-        // Otherwise, show something whilst waiting for initialization to complete
-        return Loading();
+        // Otherwise, show loading
+        return const Loading();
       },
     );
   }
@@ -44,8 +61,8 @@ class Loading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: null, // TODO
-    );
+        // TODO
+        );
   }
 }
 
@@ -55,7 +72,7 @@ class SomethingWentWrong extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: null, // TODO
-    );
+        // TODO
+        );
   }
 }
