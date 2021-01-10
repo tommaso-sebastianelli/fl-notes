@@ -49,7 +49,7 @@ class AppContainer extends StatelessWidget {
                 _navigator.pushNamedAndRemoveUntil(
                     '/board', (Route<dynamic> route) => false);
                 break;
-              case AuthenticationStatus.not_logged:
+              case AuthenticationStatus.notLogged:
                 _navigator.pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
                 break;

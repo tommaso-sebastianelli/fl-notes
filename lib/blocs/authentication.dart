@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter/material.dart';
@@ -7,24 +8,27 @@ enum AuthenticationEvent { login, logout }
 
 enum AuthenticationStatus {
   logged,
-  not_logged,
+  notLogged,
 }
 
 @immutable
-abstract class AuthenticationState {
+abstract class AuthenticationState extends Equatable {
+  const AuthenticationState(
+      {this.credentials, this.authenticationStatus, this.loading, this.error});
   @required
   final AuthenticationStatus authenticationStatus;
   final bool error;
   final bool loading;
   final Credentials credentials;
-  AuthenticationState(
-      {this.credentials, this.authenticationStatus, this.loading, this.error});
+
+  @override
+  List<Object> get props => [authenticationStatus, error, loading, credentials];
 }
 
 class InitialAuthenticationState extends AuthenticationState {
-  InitialAuthenticationState()
+  const InitialAuthenticationState()
       : super(
-          authenticationStatus: AuthenticationStatus.not_logged,
+          authenticationStatus: AuthenticationStatus.notLogged,
           error: false,
           loading: false,
         );
@@ -47,7 +51,7 @@ class NewAuthenticationState extends AuthenticationState {
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthenticationBloc(this.authenticationRepository)
-      : super(InitialAuthenticationState());
+      : super(const InitialAuthenticationState());
 
   AuthenticationRepository authenticationRepository;
 
@@ -74,7 +78,7 @@ class AuthenticationBloc
             );
           } else {
             yield NewAuthenticationState(state,
-                authenticationStatus: AuthenticationStatus.not_logged,
+                authenticationStatus: AuthenticationStatus.notLogged,
                 loading: false,
                 error: true);
           }
@@ -82,7 +86,7 @@ class AuthenticationBloc
         }
       case AuthenticationEvent.logout:
         yield NewAuthenticationState(state,
-            authenticationStatus: AuthenticationStatus.not_logged);
+            authenticationStatus: AuthenticationStatus.notLogged);
         break;
     }
   }
