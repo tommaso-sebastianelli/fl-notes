@@ -23,7 +23,9 @@ class BoardSnackBarWrapper extends StatelessWidget {
               duration: const Duration(seconds: 5),
               action: SnackBarAction(
                 label: 'TODO',
-                onPressed: () {},
+                onPressed: () {
+                  context.read<NotesBloc>().add(NotesEvent.list);
+                },
               ),
               // TODO
             ))
