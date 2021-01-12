@@ -6,10 +6,11 @@ class Note {
   Note({this.id, this.type, this.title, this.color, this.body});
 
   @required
-  final String id;
+  final int id;
   @required
   final NoteType type;
   final String title;
+  @required
   final String body;
   final String color;
 }
