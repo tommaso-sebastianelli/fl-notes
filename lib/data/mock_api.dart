@@ -24,6 +24,7 @@ class MockApi extends API with AuthenticationProvider, NotesProvider {
 
   @override
   Future<List<Note>> list() {
-    return Future<List<Note>>.value(List<Note>.empty());
+    final List<Note> data = List<Note>.empty();
+    return Future<List<Note>>.delayed(const Duration(seconds: 2), () => data);
   }
 }
