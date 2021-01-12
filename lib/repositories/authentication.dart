@@ -1,7 +1,7 @@
 import 'package:fl_notes/models/credentials.dart';
 import 'package:logging/logging.dart';
 
-abstract class AuthenticationDataProvider {
+abstract class AuthenticationProvider {
   Future<Credentials> signIn();
   Future<void> signOut();
 }
@@ -9,7 +9,7 @@ abstract class AuthenticationDataProvider {
 class AuthenticationRepository {
   AuthenticationRepository(this._dataProvider);
 
-  final AuthenticationDataProvider _dataProvider;
+  final AuthenticationProvider _dataProvider;
   final Logger logger = Logger('AuthenticationRepository');
 
   Future<Credentials> signIn() {

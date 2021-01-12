@@ -1,5 +1,6 @@
 {
   "helloWorld": "Bonjour le monde!",
   "signInWithGoogle": "connectez-vous avec Google",
-  "loginError": "authentification échouée"
+  "loginError": "authentification échouée",
+  "notesError": "La mise à jour des notes a échoué"
 }

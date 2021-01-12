@@ -10,5 +10,9 @@
   "loginError": "Authentication failed",
    "@loginError": {
     "description": "A message displayed on authentication failure"
+  },
+  "notesError": "Notes update failed",
+   "@notesError": {
+    "description": "A message displayed on notes updates fetch fail"
   }
 }
