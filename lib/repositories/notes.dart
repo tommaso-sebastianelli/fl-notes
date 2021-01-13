@@ -14,7 +14,7 @@ class NotesRepository {
   Future<List<Note>> list() {
     return _dataProvider
         .list()
-        .then((List<Note> value) => value)
+        .then((List<Note> value) => throw (''))
         .catchError(onError);
   }
 

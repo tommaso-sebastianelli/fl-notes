@@ -14,5 +14,13 @@
   "notesError": "Notes update failed",
    "@notesError": {
     "description": "A message displayed on notes updates fetch fail"
+  },
+  "retry": "retry",
+   "@retry": {
+    "description": "Retry label"
+  },
+  "notesEmpty": "No notes here",
+   "@notesEmpty": {
+    "description": "Empty notes list placeholder"
   }
 }

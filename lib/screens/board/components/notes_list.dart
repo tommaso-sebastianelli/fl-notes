@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'empty.dart';
 
 class BoardNotesList extends StatelessWidget {
-  const BoardNotesList() : super();
+  const BoardNotesList({this.localizedContext}) : super();
+
+  final BuildContext localizedContext;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,8 @@ class BoardNotesList extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (state.data.isEmpty) const Empty(),
+                if (state.data.isEmpty)
+                  Empty(localizedContext: localizedContext),
                 if (state.data.isNotEmpty)
                   const Text('notes Should go here'), // TODO
               ],
