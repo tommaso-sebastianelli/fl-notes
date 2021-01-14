@@ -19,7 +19,7 @@
    "@retry": {
     "description": "Retry label"
   },
-  "notesEmpty": "No notes here",
+  "notesEmpty": "No notes yet",
    "@notesEmpty": {
     "description": "Empty notes list placeholder"
   }

@@ -4,7 +4,6 @@ import 'package:fl_notes/data/mock_api.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
 import 'package:fl_notes/screens/board/board.dart';
-import 'package:fl_notes/screens/signin/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';

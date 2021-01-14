@@ -4,5 +4,5 @@
   "loginError": "authentification échouée",
   "notesError": "La mise à jour des notes a échoué",
   "retry": "retenter",
-  "notesEmpty": "Pas de notes ici"
+  "notesEmpty": "Pas encore de notes"
 }
