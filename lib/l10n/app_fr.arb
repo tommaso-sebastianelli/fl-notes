@@ -2,5 +2,7 @@
   "helloWorld": "Bonjour le monde!",
   "signInWithGoogle": "connectez-vous avec Google",
   "loginError": "authentification échouée",
-  "notesError": "La mise à jour des notes a échoué"
+  "notesError": "La mise à jour des notes a échoué",
+  "retry": "retenter",
+  "notesEmpty": "Pas encore de notes"
 }

@@ -1,11 +1,13 @@
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignInSnackBarWrapper extends StatelessWidget {
-  const SignInSnackBarWrapper({this.child}) : super();
+  const SignInSnackBarWrapper({this.child, this.localizedContext}) : super();
 
   final Widget child;
+  final BuildContext localizedContext;
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +18,11 @@ class SignInSnackBarWrapper extends StatelessWidget {
         if (state.error)
           {
             Scaffold.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 backgroundColor: Colors.black,
-                content: Text(
-                    // TODO
-                    'TODO'),
-                // (AppLocalizations.of(_context).loginError).toString()),
-                duration: Duration(seconds: 2),
+                content: Text((AppLocalizations.of(localizedContext).loginError)
+                    .toString()),
+                duration: const Duration(seconds: 2),
               ),
             )
           }

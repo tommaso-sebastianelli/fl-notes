@@ -1,11 +1,13 @@
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BoardSnackBarWrapper extends StatelessWidget {
-  const BoardSnackBarWrapper({this.child}) : super();
+  const BoardSnackBarWrapper({this.child, this.localizedContext}) : super();
 
   final Widget child;
+  final BuildContext localizedContext;
 
   @override
   Widget build(BuildContext _context) {
@@ -17,17 +19,18 @@ class BoardSnackBarWrapper extends StatelessWidget {
           {
             Scaffold.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.black,
-              content: Text('TODO'
-                  //(AppLocalizations.of(context).notesError).toString()
-                  ),
+              content: Text((AppLocalizations.of(localizedContext).notesError)
+                  .toString()),
               duration: const Duration(seconds: 5),
               action: SnackBarAction(
-                label: 'TODO',
+                label: AppLocalizations.of(localizedContext)
+                    .retry
+                    .toString()
+                    .toUpperCase(),
                 onPressed: () {
                   context.read<NotesBloc>().add(NotesEvent.list);
                 },
               ),
-              // TODO
             ))
           }
         else

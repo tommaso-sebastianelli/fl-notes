@@ -7,14 +7,15 @@ class SignIn extends StatelessWidget {
   const SignIn({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext _context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(
               title: Text(FlutterConfig.get('LABEL').toString()),
             ),
-            body: const SignInSnackBarWrapper(
-              child: SignInForm(),
+            body: SignInSnackBarWrapper(
+              localizedContext: context,
+              child: const SignInForm(),
             )));
   }
 }

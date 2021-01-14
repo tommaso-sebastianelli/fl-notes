@@ -21,13 +21,15 @@ class _BoardState extends State<Board> {
   }
 
   @override
-  Widget build(BuildContext _context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text(FlutterConfig.get('LABEL').toString()),
         ),
-        body: const BoardSnackBarWrapper(child: BoardNotesList()),
+        body: BoardSnackBarWrapper(
+            localizedContext: context,
+            child: BoardNotesList(localizedContext: context)),
         floatingActionButton: const BoardFAB(),
       ),
     );
