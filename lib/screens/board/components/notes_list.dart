@@ -1,8 +1,8 @@
 import 'package:fl_notes/blocs/notes.dart';
+import 'package:fl_notes/components/message.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'empty.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BoardNotesList extends StatelessWidget {
   const BoardNotesList({this.localizedContext}) : super();
@@ -24,7 +24,11 @@ class BoardNotesList extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (state.data.isEmpty)
-                  Empty(localizedContext: localizedContext),
+                  Message(
+                      icon: Icons.notes,
+                      text: AppLocalizations.of(localizedContext)
+                          .notesEmpty
+                          .toString()),
                 if (state.data.isNotEmpty)
                   const Text('notes Should go here'), // TODO
               ],

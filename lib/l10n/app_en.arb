@@ -22,5 +22,9 @@
   "notesEmpty": "No notes yet",
    "@notesEmpty": {
     "description": "Empty notes list placeholder"
+  },
+  "genericError": "Something went wrong!",
+   "@genericError": {
+    "description": "A message displayed on non specific errors"
   }
 }

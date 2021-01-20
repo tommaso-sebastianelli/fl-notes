@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:fl_notes/app_container.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/mock_api.dart';
@@ -9,7 +9,10 @@ import 'package:fl_notes/repositories/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'app_container.dart';
+import 'components/message.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
@@ -44,7 +47,7 @@ class MyApp extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return const SomethingWentWrong();
+          return const Critical();
         }
 
         // Once complete, show your application
@@ -65,19 +68,38 @@ class Loading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // TODO
-        );
+    return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(
+          body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [CircularProgressIndicator()],
+        ),
+      )),
+    );
   }
 }
 
-class SomethingWentWrong extends StatelessWidget {
-  const SomethingWentWrong({Key key}) : super(key: key);
+class Critical extends StatelessWidget {
+  const Critical() : super();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // TODO
-        );
+    return MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        builder: (BuildContext context, Widget child) => Center(
+                child: Scaffold(
+                    body: Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                  Message(
+                      icon: Icons.error_outline,
+                      text:
+                          AppLocalizations.of(context).genericError.toString())
+                ])))));
   }
 }
