@@ -1,11 +1,9 @@
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
-import 'package:fl_notes/repositories/authentication.dart';
-import 'package:fl_notes/repositories/notes.dart';
 
-class API {}
+import 'abstract_api.dart';
 
-class MockApi extends API with AuthenticationProvider, NotesProvider {
+class MockApi extends API {
   @override
   Future<Credentials> signIn() {
     final Credentials data = Credentials(
@@ -24,7 +22,9 @@ class MockApi extends API with AuthenticationProvider, NotesProvider {
 
   @override
   Future<List<Note>> list() {
-    final List<Note> data = List<Note>.empty();
+    final List<Note> data = [
+      Note(id: 0, body: 'test note 1', type: NoteType.text)
+    ];
     return Future<List<Note>>.delayed(const Duration(seconds: 2), () => data);
   }
 }
