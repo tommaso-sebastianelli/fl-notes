@@ -22,9 +22,10 @@ class MockApi extends API {
 
   @override
   Future<List<Note>> list() {
-    final List<Note> data = [
-      Note(id: 0, body: 'test note 1', type: NoteType.text)
-    ];
+    // final List<Note> data = [
+    //   Note(id: 0, body: 'test note 1', type: NoteType.text)
+    // ];
+    final List<Note> data = List<Note>.empty();
     return Future<List<Note>>.delayed(const Duration(seconds: 2), () => data);
   }
 }
