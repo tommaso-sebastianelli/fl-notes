@@ -31,7 +31,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2000));
 
-    expect(find.text('Enter a title'), findsOneWidget);
-    expect(find.text('Enter some text'), findsOneWidget);
+    expect(find.text('Title'), findsOneWidget);
+    expect(find.text('Some text'), findsOneWidget);
   });
 }
