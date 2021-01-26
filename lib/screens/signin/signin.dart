@@ -8,14 +8,13 @@ class SignIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text(FlutterConfig.get('LABEL').toString()),
-            ),
-            body: SignInSnackBarWrapper(
-              localizedContext: context,
-              child: const SignInForm(),
-            )));
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(FlutterConfig.get('LABEL').toString()),
+        ),
+        body: SignInSnackBarWrapper(
+          localizedContext: context,
+          child: const SignInForm(),
+        ));
   }
 }

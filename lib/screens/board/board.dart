@@ -9,6 +9,8 @@ import 'package:flutter_config/flutter_config.dart';
 class Board extends StatefulWidget {
   const Board({Key key}) : super(key: key);
 
+  static const String routeName = '/board';
+
   @override
   _BoardState createState() => _BoardState();
 }
@@ -22,16 +24,14 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(FlutterConfig.get('LABEL').toString()),
-        ),
-        body: BoardSnackBarWrapper(
-            localizedContext: context,
-            child: BoardNotesList(localizedContext: context)),
-        floatingActionButton: const BoardFAB(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(FlutterConfig.get('LABEL').toString()),
       ),
+      body: BoardSnackBarWrapper(
+          localizedContext: context,
+          child: BoardNotesList(localizedContext: context)),
+      floatingActionButton: const BoardFAB(),
     );
   }
 }
