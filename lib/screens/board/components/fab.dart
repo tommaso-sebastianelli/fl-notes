@@ -1,4 +1,5 @@
 import 'package:fl_notes/blocs/notes.dart';
+import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,8 +15,10 @@ class BoardFAB extends StatelessWidget {
           if (state.loading) {
             return Container();
           }
-          return const FloatingActionButton(
-              onPressed: null, child: Icon(Icons.add));
+          return GestureDetector(
+              onTap: () => Navigator.pushNamed(context, Editor.routeName),
+              child: const FloatingActionButton(
+                  onPressed: null, child: Icon(Icons.add)));
         });
   }
 }

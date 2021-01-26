@@ -26,5 +26,21 @@
   "genericError": "Something went wrong!",
    "@genericError": {
     "description": "A message displayed on non specific errors"
+  },
+  "genericSave": "Save",
+   "@genericSave": {
+    "description": "A message displayed for saving something"
+  },
+  "genericCancel": "Cancel",
+   "@genericCancel": {
+    "description": "A message displayed for undo something"
+  },
+  "editorTitleHint": "Title",
+   "@editorTitleHint": {
+    "description": "editor title hint"
+  },
+  "editorBodyHint": "Some text",
+   "@editorBodyHint": {
+    "description": "editor body hint"
   }
 }

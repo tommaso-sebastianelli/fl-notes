@@ -1,4 +1,5 @@
 import 'package:fl_notes/blocs/authentication.dart';
+import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,8 @@ class AppContainer extends StatelessWidget {
       navigatorKey: _navigatorKey,
       routes: {
         '/': (BuildContext context) => const SignIn(),
-        '/board': (BuildContext context) => const Board(),
+        Board.routeName: (BuildContext context) => const Board(),
+        Editor.routeName: (BuildContext context) => const Editor(),
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
