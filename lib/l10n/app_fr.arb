@@ -1,6 +1,7 @@
 {
   "helloWorld": "Bonjour le monde!",
   "signInWithGoogle": "connectez-vous avec Google",
+  "signInAppDesc": "Une application de notes écrite avec Flutter",
   "loginError": "authentification échouée",
   "notesError": "La mise à jour des notes a échoué",
   "retry": "retenter",

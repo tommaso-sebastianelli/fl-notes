@@ -6,19 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   FlutterConfig.loadValueForTesting({'ENV': 'dev', 'LABEL': 'test'});
 
   testWidgets('Render SignIn screen', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: MultiBlocProvider(providers: [
-      BlocProvider<AuthenticationBloc>(
-        create: (BuildContext context) =>
-            AuthenticationBloc(AuthenticationRepository(MockApi())),
-      ),
-      // Add more providers here
-    ], child: const SignIn())));
+          BlocProvider<AuthenticationBloc>(
+            create: (BuildContext context) =>
+                AuthenticationBloc(AuthenticationRepository(MockApi())),
+          ),
+          // Add more providers here
+        ], child: const SignIn())));
 
     expect(find.text('Sign in with Google'), findsOneWidget);
   });
