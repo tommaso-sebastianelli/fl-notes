@@ -4,7 +4,6 @@ import 'package:fl_notes/screens/board/components/notes_list.dart';
 import 'package:fl_notes/screens/board/components/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_config/flutter_config.dart';
 
 class Board extends StatefulWidget {
   const Board({Key key}) : super(key: key);
@@ -25,9 +24,9 @@ class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(FlutterConfig.get('LABEL').toString()),
-      ),
+      // appBar: AppBar(
+      //   title: Text(FlutterConfig.get('LABEL').toString()),
+      // ),
       body: BoardSnackBarWrapper(
           localizedContext: context,
           child: BoardNotesList(localizedContext: context)),
