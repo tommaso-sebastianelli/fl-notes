@@ -20,19 +20,19 @@ class BoardNotesList extends StatelessWidget {
             if (state.loading) {
               return const CircularProgressIndicator();
             }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (state.data.isEmpty)
-                  Message(
-                      icon: Icons.notes,
-                      text: AppLocalizations.of(localizedContext)
-                          .notesEmpty
-                          .toString()),
-                if (state.data.isNotEmpty)
-                  const Text('notes Should go here'), // TODO
+            if (state.data.isEmpty) {
+              return Message(
+                  icon: Icons.notes,
+                  text: AppLocalizations.of(localizedContext)
+                      .notesEmpty
+                      .toString());
+            }
+            return Expanded(
+                child: Column(
+              children: <Widget>[
+                const Text('notes Should go here'), // TODO
               ],
-            );
+            ));
           })
         ],
       ),
