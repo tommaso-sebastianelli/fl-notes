@@ -7,6 +7,10 @@
    "@signInWithGoogle": {
     "description": "Sign in with Google"
   },
+  "signInAppDesc": "A note app written with Flutter",
+   "@signInAppDesc": {
+    "description": "Sign in app description"
+  },
   "loginError": "Authentication failed",
    "@loginError": {
     "description": "A message displayed on authentication failure"
