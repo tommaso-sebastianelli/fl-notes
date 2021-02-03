@@ -27,6 +27,10 @@
    "@notesEmpty": {
     "description": "Empty notes list placeholder"
   },
+  "notesEmptyHint": "Once you write something, notes will be displayed here",
+   "@notesEmptyHint": {
+    "description": "Empty notes list hint"
+  },
   "genericError": "Something went wrong!",
    "@genericError": {
     "description": "A message displayed on non specific errors"

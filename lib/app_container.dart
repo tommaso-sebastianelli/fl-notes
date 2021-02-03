@@ -28,7 +28,7 @@ class AppContainer extends StatelessWidget {
           primarySwatch: Colors.grey,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           floatingActionButtonTheme: FloatingActionButtonThemeData(
-              backgroundColor: Colors.yellow[500])),
+              backgroundColor: Colors.yellow[600])),
       builder: (BuildContext context, Widget child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listenWhen:

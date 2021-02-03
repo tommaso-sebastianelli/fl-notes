@@ -6,6 +6,7 @@
   "notesError": "La mise à jour des notes a échoué",
   "retry": "retenter",
   "notesEmpty": "Pas encore de notes",
+  "notesEmptyHint": "Une fois que vous avez écrit quelque chose, les notes seront affichées ici",
   "genericError": "Un problème est survenu!",
   "genericSave": "Enregistrer",
   "genericCancel": "Annuler",

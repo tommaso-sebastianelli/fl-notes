@@ -14,11 +14,11 @@ class Message extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: Icon(icon, color: Colors.grey, size: 44.0)),
+            child: Icon(icon, color: Colors.grey, size: 64.0)),
         Text(
           text,
           style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+              fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 22),
         ),
       ],
     );
