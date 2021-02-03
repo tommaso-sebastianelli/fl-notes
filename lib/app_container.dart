@@ -17,7 +17,7 @@ class AppContainer extends StatelessWidget {
     return MaterialApp(
       navigatorKey: _navigatorKey,
       routes: {
-        '/': (BuildContext context) => const Board(),
+        '/': (BuildContext context) => const SignIn(),
         Board.routeName: (BuildContext context) => const Board(),
         Editor.routeName: (BuildContext context) => const Editor(),
       },
