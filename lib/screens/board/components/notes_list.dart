@@ -12,30 +12,13 @@ class BoardNotesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BlocBuilder<NotesBloc, NotesState>(
-              builder: (BuildContext context, NotesState state) {
-            if (state.loading) {
-              return const CircularProgressIndicator();
-            }
-            if (state.data.isEmpty) {
-              return Message(
-                  icon: Icons.notes,
-                  text: AppLocalizations.of(localizedContext)
-                      .notesEmpty
-                      .toString());
-            }
-            return Expanded(
-                child: Column(
-              children: <Widget>[
-                const Text('notes Should go here'), // TODO
-              ],
-            ));
-          })
-        ],
-      ),
+      child: Column(children: [
+        BlocBuilder<NotesBloc, NotesState>(
+            builder: (BuildContext context, NotesState state) {
+          return Padding(
+              padding: EdgeInsets.all(16), child: Text('notes should go here'));
+        })
+      ]),
     );
   }
 }
