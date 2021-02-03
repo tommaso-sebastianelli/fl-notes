@@ -55,7 +55,9 @@ class _BoardState extends State<Board> {
                               child: SizedBox(
                                 width: 200,
                                 child: Text(
-                                    'once you write something, notes will be displayed here',
+                                    AppLocalizations.of(context)
+                                        .notesEmptyHint
+                                        .toString(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 14,
