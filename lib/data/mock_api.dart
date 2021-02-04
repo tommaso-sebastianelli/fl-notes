@@ -5,14 +5,15 @@ import 'abstract_api.dart';
 
 class MockApi extends API {
   @override
-  Future<Credentials> signIn() {
-    final Credentials data = Credentials(
+  Future<CredentialsModel> signIn() {
+    final CredentialsModel data = CredentialsModel(
         name: 'john_doe',
         email: 'john.doe.00@mail.com',
         id: '0',
         photoUrl: '',
         token: 'efhd7Gs8Hbd7jVnmoL');
-    return Future<Credentials>.delayed(const Duration(seconds: 2), () => data);
+    return Future<CredentialsModel>.delayed(
+        const Duration(seconds: 2), () => data);
   }
 
   @override
@@ -21,11 +22,12 @@ class MockApi extends API {
   }
 
   @override
-  Future<List<Note>> list() {
+  Future<List<NoteModel>> list() {
     // final List<Note> data = [
     //   Note(id: 0, body: 'test note 1', type: NoteType.text)
     // ];
-    final List<Note> data = List<Note>.empty();
-    return Future<List<Note>>.delayed(const Duration(seconds: 2), () => data);
+    final List<NoteModel> data = List<NoteModel>.empty();
+    return Future<List<NoteModel>>.delayed(
+        const Duration(seconds: 2), () => data);
   }
 }

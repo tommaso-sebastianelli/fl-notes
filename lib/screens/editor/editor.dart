@@ -6,7 +6,7 @@ class Editor extends StatelessWidget {
   const Editor({this.data}) : super();
 
   static const String routeName = '/editor';
-  final Note data;
+  final NoteModel data;
 
   @override
   Widget build(BuildContext context) {

@@ -29,7 +29,7 @@ void main() {
     test('user logs in', () {
       const InitialAuthenticationState oldState = InitialAuthenticationState();
 
-      final Credentials mockCredentials = Credentials(
+      final CredentialsModel mockCredentials = CredentialsModel(
           name: 'john_doe',
           email: 'john.doe.00@mail.com',
           id: '0',
@@ -53,7 +53,7 @@ void main() {
       ];
 
       when(authenticationRepository.signIn())
-          .thenAnswer((_) => Future<Credentials>.value(mockCredentials));
+          .thenAnswer((_) => Future<CredentialsModel>.value(mockCredentials));
 
       expectLater(
         authenticationBloc,

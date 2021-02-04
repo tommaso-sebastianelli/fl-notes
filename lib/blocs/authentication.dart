@@ -19,7 +19,7 @@ abstract class AuthenticationState extends Equatable {
   final AuthenticationStatus authenticationStatus;
   final bool error;
   final bool loading;
-  final Credentials credentials;
+  final CredentialsModel credentials;
 
   @override
   List<Object> get props => [authenticationStatus, error, loading, credentials];
@@ -39,7 +39,7 @@ class NewAuthenticationState extends AuthenticationState {
       {AuthenticationStatus authenticationStatus,
       bool error,
       bool loading,
-      Credentials credentials})
+      CredentialsModel credentials})
       : super(
             authenticationStatus:
                 authenticationStatus ?? oldState.authenticationStatus,
@@ -66,7 +66,7 @@ class AuthenticationBloc
             loading: true,
             error: false,
           );
-          final Credentials credentials =
+          final CredentialsModel credentials =
               await authenticationRepository.signIn();
           if (credentials != null) {
             yield NewAuthenticationState(

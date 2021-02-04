@@ -2,7 +2,7 @@ import 'package:fl_notes/models/note.dart';
 import 'package:logging/logging.dart';
 
 abstract class NotesProvider {
-  Future<List<Note>> list();
+  Future<List<NoteModel>> list();
 }
 
 class NotesRepository {
@@ -11,10 +11,10 @@ class NotesRepository {
   final NotesProvider _dataProvider;
   final Logger logger = Logger('AuthenticationRepository');
 
-  Future<List<Note>> list() {
+  Future<List<NoteModel>> list() {
     return _dataProvider
         .list()
-        .then((List<Note> value) => value)
+        .then((List<NoteModel> value) => value)
         .catchError(onError);
   }
 

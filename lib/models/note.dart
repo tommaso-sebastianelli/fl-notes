@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 enum NoteType { text, audio, draw }
 
-class Note {
-  Note({this.id, this.type, this.title, this.color, this.body});
+class NoteModel {
+  NoteModel({this.id, this.type, this.title, this.color, this.body});
 
   @required
   final int id;

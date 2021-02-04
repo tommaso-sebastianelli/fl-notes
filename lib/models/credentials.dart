@@ -1,5 +1,5 @@
-class Credentials {
-  Credentials({this.name, this.email, this.id, this.photoUrl, this.token});
+class CredentialsModel {
+  CredentialsModel({this.name, this.email, this.id, this.photoUrl, this.token});
 
   final String name;
   final String email;
