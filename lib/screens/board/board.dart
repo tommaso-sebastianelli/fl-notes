@@ -32,7 +32,8 @@ class _BoardState extends State<Board> {
             localizedContext: context,
             child: Center(
               child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: BlocBuilder<NotesBloc, NotesState>(
                       builder: (BuildContext context, NotesState state) {
                     if (state.loading) {
@@ -67,7 +68,7 @@ class _BoardState extends State<Board> {
                             ),
                           ]);
                     }
-                    return FloatingSearchBar(children: [
+                    return FloatingSearchBar(children: <Widget>[
                       BoardNotesList(
                         localizedContext: context,
                       )

@@ -26,18 +26,18 @@ void main() {
     test('should return a list of notes', () {
       final InitialNotesState oldState = InitialNotesState();
 
-      final List<Note> mockNoteList = [
-        Note(id: 0, type: NoteType.text, body: 'note 0'),
-        Note(id: 1, type: NoteType.text, body: 'note 1')
-      ];
+      final Set<NoteModel> mockNoteSet = <NoteModel>{
+        NoteModel(id: 0, type: NoteType.text, body: 'note 0'),
+        NoteModel(id: 1, type: NoteType.text, body: 'note 1')
+      };
 
       final List<NewNotesState> expected = [
         NewNotesState(oldState, loading: true, error: false),
-        NewNotesState(oldState, loading: false, data: mockNoteList),
+        NewNotesState(oldState, loading: false, data: mockNoteSet),
       ];
 
       when(notesRepository.list())
-          .thenAnswer((_) => Future<List<Note>>.value(mockNoteList));
+          .thenAnswer((_) => Future<Set<NoteModel>>.value(mockNoteSet));
 
       expectLater(
         authenticationBloc,

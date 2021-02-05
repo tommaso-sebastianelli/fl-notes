@@ -11,7 +11,7 @@ enum NotesEvent {
 @immutable
 abstract class NotesState extends Equatable {
   const NotesState({this.error, this.loading, this.data});
-  final List<Note> data;
+  final Set<NoteModel> data;
   final bool error;
   final bool loading;
 
@@ -22,7 +22,7 @@ abstract class NotesState extends Equatable {
 class InitialNotesState extends NotesState {
   InitialNotesState()
       : super(
-          data: List<Note>.empty(),
+          data: <NoteModel>{},
           error: false,
           loading: false,
         );
@@ -31,7 +31,7 @@ class InitialNotesState extends NotesState {
 class NewNotesState extends NotesState {
   NewNotesState(
     NotesState oldState, {
-    List<Note> data,
+    Set<NoteModel> data,
     bool error,
     bool loading,
   }) : super(
@@ -51,7 +51,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       case NotesEvent.list:
         {
           yield NewNotesState(state, loading: true, error: false);
-          final List<Note> data = await notesRepository.list();
+          final Set<NoteModel> data = await notesRepository.list();
           if (data != null) {
             yield NewNotesState(state,
                 data: data, loading: false, error: false);
