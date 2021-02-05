@@ -4,6 +4,7 @@ import 'package:fl_notes/data/mock_api.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
 import 'package:fl_notes/screens/board/board.dart';
+import 'package:fl_notes/screens/board/components/note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
@@ -31,7 +32,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2000));
 
-    expect(find.text('No notes yet'), findsOneWidget);
-    expect(find.byIcon(Icons.notes).first, findsOneWidget);
+    expect(find.byType(Note).first, findsOneWidget);
+    // expect(find.byIcon(Icons.notes).first, findsOneWidget);
   });
 }
