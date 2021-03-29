@@ -1,7 +1,7 @@
 import 'package:fl_notes/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Editor extends StatefulWidget {
   const Editor(this.data) : super();
@@ -105,7 +105,12 @@ class _EditorState extends State<Editor> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const TextButton(onPressed: null, child: Text('CANCEL'))
+                    TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(AppLocalizations.of(context)
+                            .genericCancel
+                            .toString()
+                            .toUpperCase()))
                   ],
                 )),
             Flexible(
