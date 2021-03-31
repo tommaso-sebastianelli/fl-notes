@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:fl_notes/blocs/noteEditor.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,74 +20,43 @@ class _EditorState extends State<Editor> {
   NoteModel data;
   TextEditingController titleController;
   TextEditingController bodyController;
+  Timer _debounce;
+
+  static const int debounceTime = 500;
+
+  void _onTextFieldValueChange() {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(const Duration(milliseconds: debounceTime), () {
+      final NoteModel newNote = NoteModel.fromNote(data);
+      newNote.title = titleController.text;
+      newNote.body = bodyController.text;
+      //   context.read<NoteEditorBloc>().save(NoteEditorEvent(
+      //       type: NoteEditorEventType.save, modifiedNote: newNote));
+    });
+  }
+
   @override
   void initState() {
     data = widget.data;
     titleController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.title ?? ''));
+    titleController.addListener(_onTextFieldValueChange);
     bodyController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.body.toString()));
+    bodyController.addListener(_onTextFieldValueChange);
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    // return MaterialApp(
-    //     home: Scaffold(
-    //         backgroundColor: Colors.white,
-    //         extendBody: true,
-    //         appBar: AppBar(
-    //           // title: const Text('New Note'),
-    //           backgroundColor: Colors.white,
-    //           toolbarHeight: 50,
+  void dispose() {
+    _debounce?.cancel();
+    titleController.removeListener(_onTextFieldValueChange);
+    bodyController.removeListener(_onTextFieldValueChange);
+    super.dispose();
+  }
 
-    //           actions: <Widget>[
-    //             FlatButton(
-    //                 onPressed: () {
-    //                   // TODO
-    //                 },
-    //                 child: ButtonBar(
-    //                   children: [
-    //                     Text(
-    //                       AppLocalizations.of(context)
-    //                           .genericSave
-    //                           .toString()
-    //                           .toUpperCase(),
-    //                     ),
-    //                   ],
-    //                 ))
-    //           ],
-    //         ),
-    //         body: SafeArea(
-    //             child: Padding(
-    //           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-    //           child: Column(
-    //             children: [
-    //               Flexible(
-    //                 flex: 0,
-    //                 child: TextField(
-    //                   controller: titleController,
-    //                   style: TextStyle(fontSize: 28),
-    //                   maxLength: 50,
-    //                   decoration: InputDecoration.collapsed(
-    //                       hintText: AppLocalizations.of(context)
-    //                           .editorTitleHint
-    //                           .toString()),
-    //                 ),
-    //               ),
-    //               Flexible(
-    //                   child: TextField(
-    //                 controller: bodyController,
-    //                 decoration: InputDecoration.collapsed(
-    //                     hintText: AppLocalizations.of(context)
-    //                         .editorBodyHint
-    //                         .toString()),
-    //                 style: const TextStyle(fontSize: 22),
-    //                 maxLines: null,
-    //               ))
-    //             ],
-    //           ),
-    //         ))));
+  @override
+  Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: const BoxDecoration(
           boxShadow: [

@@ -4,14 +4,20 @@ import 'package:fl_notes/repositories/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum NotesEvent {
+enum NotesEventType {
   list,
+}
+
+class NotesEvent {
+  const NotesEvent({@required this.type});
+
+  final NotesEventType type;
 }
 
 @immutable
 abstract class NotesState extends Equatable {
   const NotesState({this.error, this.loading, this.data});
-  final Set<NoteModel> data;
+  final List<NoteModel> data;
   final bool error;
   final bool loading;
 
@@ -22,7 +28,7 @@ abstract class NotesState extends Equatable {
 class InitialNotesState extends NotesState {
   InitialNotesState()
       : super(
-          data: <NoteModel>{},
+          data: <NoteModel>[],
           error: false,
           loading: false,
         );
@@ -31,7 +37,7 @@ class InitialNotesState extends NotesState {
 class NewNotesState extends NotesState {
   NewNotesState(
     NotesState oldState, {
-    Set<NoteModel> data,
+    List<NoteModel> data,
     bool error,
     bool loading,
   }) : super(
@@ -47,11 +53,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   @override
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
-    switch (event) {
-      case NotesEvent.list:
+    switch (event.type) {
+      case NotesEventType.list:
         {
           yield NewNotesState(state, loading: true, error: false);
-          final Set<NoteModel> data = await notesRepository.list();
+          final List<NoteModel> data = await notesRepository.list();
           if (data != null) {
             yield NewNotesState(state,
                 data: data, loading: false, error: false);

@@ -29,4 +29,6 @@ class NoteModel {
   @required
   String body;
   String color;
+  DateTime created;
+  DateTime edited;
 }

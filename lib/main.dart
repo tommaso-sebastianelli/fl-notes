@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/blocs/authentication.dart';
+import 'package:fl_notes/blocs/noteEditor.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/data/dev_api.dart';
@@ -41,6 +42,10 @@ Future<void> main() async {
       ),
       BlocProvider<NotesBloc>(
         create: (BuildContext context) => NotesBloc(NotesRepository(getAPI())),
+      ),
+      BlocProvider<NoteEditorBloc>(
+        create: (BuildContext context) =>
+            NoteEditorBloc(NotesRepository(getAPI())),
       ),
       // Add more providers here
     ],

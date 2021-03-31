@@ -21,7 +21,7 @@ class _BoardState extends State<Board> {
   @override
   void initState() {
     super.initState();
-    context.read<NotesBloc>().add(NotesEvent.list);
+    context.read<NotesBloc>().add(const NotesEvent(type: NotesEventType.list));
   }
 
   @override

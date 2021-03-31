@@ -22,7 +22,7 @@ class BoardFAB extends StatelessWidget {
                   showMaterialModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
-                    builder: (context) => SingleChildScrollView(
+                    builder: (BuildContext context) => SingleChildScrollView(
                       controller: ModalScrollController.of(context),
                       child: Editor(NoteModel.empty()),
                     ),

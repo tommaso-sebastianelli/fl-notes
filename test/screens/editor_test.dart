@@ -1,8 +1,10 @@
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/mock_api.dart';
+import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
+import 'package:fl_notes/screens/board/components/note.dart';
 import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +29,7 @@ void main() {
                 NotesBloc(NotesRepository(MockApi())),
           ),
           // Add more providers here
-        ], child: const Editor())));
+        ], child: Editor(NoteModel(title: 'Title', body: 'Some text')))));
 
     await tester.pumpAndSettle(const Duration(seconds: 2000));
 
