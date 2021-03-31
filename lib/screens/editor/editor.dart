@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:fl_notes/blocs/noteEditor.dart';
+import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class Editor extends StatefulWidget {
   const Editor(this.data) : super();
@@ -27,11 +27,24 @@ class _EditorState extends State<Editor> {
   void _onTextFieldValueChange() {
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: debounceTime), () {
-      final NoteModel newNote = NoteModel.fromNote(data);
-      newNote.title = titleController.text;
-      newNote.body = bodyController.text;
-      //   context.read<NoteEditorBloc>().save(NoteEditorEvent(
-      //       type: NoteEditorEventType.save, modifiedNote: newNote));
+      print(titleController);
+      print(bodyController);
+      final NoteModel editingNote = NoteModel.fromNote(data);
+
+      if (titleController.text == editingNote.title &&
+          bodyController.text == editingNote.body) {
+        return;
+      }
+      editingNote.title = titleController.text;
+      editingNote.body = bodyController.text;
+      if (titleController.text.isEmpty &&
+          editingNote.body.isEmpty &&
+          data.id < 0) {
+        return;
+      }
+      context
+          .read<NotesBloc>()
+          .add(NotesEvent(type: NotesEventType.save, editingNote: editingNote));
     });
   }
 

@@ -6,23 +6,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum NotesEventType {
   list,
+  save,
 }
 
 class NotesEvent {
-  const NotesEvent({@required this.type});
+  const NotesEvent({@required this.type, this.editingNote});
 
+  final NoteModel editingNote;
   final NotesEventType type;
 }
 
 @immutable
 abstract class NotesState extends Equatable {
-  const NotesState({this.error, this.loading, this.data});
+  const NotesState(
+      {this.error,
+      this.loading,
+      this.data,
+      this.saving,
+      this.savingError,
+      this.lastSavedNote});
   final List<NoteModel> data;
   final bool error;
   final bool loading;
+  final bool saving;
+  final bool savingError;
+  final NoteModel lastSavedNote;
 
   @override
-  List<Object> get props => [error, loading, data];
+  List<Object> get props =>
+      [error, loading, data, saving, savingError, lastSavedNote];
 }
 
 class InitialNotesState extends NotesState {
@@ -31,6 +43,9 @@ class InitialNotesState extends NotesState {
           data: <NoteModel>[],
           error: false,
           loading: false,
+          saving: false,
+          savingError: false,
+          lastSavedNote: null,
         );
 }
 
@@ -40,10 +55,17 @@ class NewNotesState extends NotesState {
     List<NoteModel> data,
     bool error,
     bool loading,
+    bool saving,
+    bool savingError,
+    NoteModel lastSavedNote,
   }) : super(
-            data: data ?? oldState.data,
-            error: error ?? oldState.error,
-            loading: loading ?? oldState.loading);
+          data: data ?? oldState.data,
+          error: error ?? oldState.error,
+          loading: loading ?? oldState.loading,
+          saving: saving ?? oldState.saving,
+          savingError: savingError ?? oldState.savingError,
+          lastSavedNote: lastSavedNote ?? oldState.lastSavedNote,
+        );
 }
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
@@ -63,6 +85,25 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
                 data: data, loading: false, error: false);
           } else {
             yield NewNotesState(state, loading: false, error: true);
+          }
+          break;
+        }
+      case NotesEventType.save:
+        {
+          yield NewNotesState(state, saving: true, savingError: false);
+          final NoteModel lastSavedNote =
+              await notesRepository.save(event.editingNote);
+          if (lastSavedNote != null) {
+            yield NewNotesState(
+              state,
+              saving: false,
+              savingError: false,
+              lastSavedNote: lastSavedNote,
+            );
+
+            add(const NotesEvent(type: NotesEventType.list));
+          } else {
+            yield NewNotesState(state, saving: false, savingError: true);
           }
           break;
         }
