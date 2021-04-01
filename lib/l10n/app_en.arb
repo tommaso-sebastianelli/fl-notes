@@ -43,6 +43,10 @@
    "@genericCancel": {
     "description": "A message displayed for undo something"
   },
+  "genericDelete": "Delete",
+   "@genericDelete": {
+    "description": "A message displayed for delete something"
+  },
   "editorTitleHint": "Title",
    "@editorTitleHint": {
     "description": "editor title hint"
@@ -50,5 +54,13 @@
   "editorBodyHint": "Some text",
    "@editorBodyHint": {
     "description": "editor body hint"
+  },
+  "editorLastSaved": "Saved on",
+   "@editorLastSaved": {
+    "description": "label for showing last saved datetime"
+  },
+  "editorSaving": "Saving",
+   "@editorSaving": {
+    "description": "label for showing editor saving"
   }
 }

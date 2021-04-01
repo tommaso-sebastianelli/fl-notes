@@ -10,6 +10,9 @@
   "genericError": "Un problème est survenu!",
   "genericSave": "Enregistrer",
   "genericCancel": "Annuler",
+  "genericDelete": "Delete",
   "editorTitleHint": "Titre",
-  "editorBodyHint": "Du texte"
+  "editorBodyHint": "Du texte",
+  "editorLastSaved": "Sauvé",
+  "editorSaving": "Saving"
 }

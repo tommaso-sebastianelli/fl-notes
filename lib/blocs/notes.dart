@@ -58,14 +58,14 @@ class NewNotesState extends NotesState {
     bool loading,
     bool saving,
     bool savingError,
-    NoteModel lastSavedNote,
+    NoteModel editingNote,
   }) : super(
           data: data ?? oldState.data,
           error: error ?? oldState.error,
           loading: loading ?? oldState.loading,
           saving: saving ?? oldState.saving,
           savingError: savingError ?? oldState.savingError,
-          editingNote: lastSavedNote ?? oldState.editingNote,
+          editingNote: editingNote ?? oldState.editingNote,
         );
 }
 
@@ -94,12 +94,13 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           yield NewNotesState(state, saving: true, savingError: false);
           final NoteModel lastSavedNote =
               await notesRepository.save(event.editingNote);
+          print(lastSavedNote);
           if (lastSavedNote != null) {
             yield NewNotesState(
               state,
               saving: false,
               savingError: false,
-              lastSavedNote: lastSavedNote,
+              editingNote: lastSavedNote,
             );
 
             add(const NotesEvent(type: NotesEventType.list));
@@ -110,8 +111,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         }
       case NotesEventType.editing:
         {
-          yield NewNotesState(state, lastSavedNote: event.editingNote);
-          print('bloc state: ${state.editingNote}');
+          yield NewNotesState(state, editingNote: event.editingNote);
         }
         break;
     }

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Editor extends StatefulWidget {
@@ -22,15 +24,14 @@ class _EditorState extends State<Editor> {
   TextEditingController bodyController;
   Timer _debounce;
 
-  static const int debounceTime = 500;
+  static const int debounceTime = 700;
 
   void _onTextFieldValueChange() {
-    print(context.read<NotesBloc>().state?.editingNote?.id);
-    final int noteId = context.read<NotesBloc>().state?.editingNote?.id;
-    print(noteId);
+    final NoteModel note = context.read<NotesBloc>().state?.editingNote;
+    print('Editing note ID: ${note.id}');
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: debounceTime), () {
-      final NoteModel editingNote = NoteModel.fromNote(data);
+      final NoteModel editingNote = NoteModel.fromNote(note ?? data);
       // For some reason _onTextFieldValueChange is also triggered on focus
       if (titleController.text == editingNote.title &&
           bodyController.text == editingNote.body) {
@@ -38,7 +39,7 @@ class _EditorState extends State<Editor> {
       }
       editingNote.title = titleController.text;
       editingNote.body = bodyController.text;
-      editingNote.id = noteId;
+      editingNote.id = note.id;
       // For some reason onTextFieldValueChange is triggered on new notes open
       if (titleController.text.isEmpty &&
           editingNote.body.isEmpty &&
@@ -95,14 +96,45 @@ class _EditorState extends State<Editor> {
             Flexible(
                 flex: 0,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(AppLocalizations.of(context)
-                            .genericCancel
-                            .toString()
-                            .toUpperCase()))
+                    BlocBuilder<NotesBloc, NotesState>(
+                        builder: (BuildContext context, NotesState state) {
+                      if (state.saving) {
+                        return Text(AppLocalizations.of(context)
+                            .editorSaving
+                            .toString());
+                      } else if (state?.editingNote?.created != null) {
+                        return Text(
+                          AppLocalizations.of(context)
+                                  .editorLastSaved
+                                  .toString() +
+                              DateFormat(' dd/MM/yy, H:m:s').format(
+                                  state.editingNote?.edited ??
+                                      state.editingNote?.created),
+                          style: const TextStyle(
+                              color: Colors.black38, decorationThickness: 5.0),
+                        );
+                      } else {
+                        return const Text('');
+                      }
+                    }),
+                    BlocBuilder<NotesBloc, NotesState>(
+                        builder: (BuildContext context, NotesState state) {
+                      if (state.editingNote?.created != null) {
+                        return TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(AppLocalizations.of(context)
+                                .genericDelete
+                                .toString()));
+                      } else {
+                        return TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(AppLocalizations.of(context)
+                                .genericCancel
+                                .toString()));
+                      }
+                    }),
                   ],
                 )),
             Flexible(

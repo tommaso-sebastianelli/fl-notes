@@ -51,7 +51,6 @@ class MockApi extends API {
   Future<List<NoteModel>> list() {
     final List<NoteModel> data = notes.toList();
     data.sort((NoteModel a, NoteModel b) => b.created.compareTo(a.created));
-    print(data.map((e) => e.created));
     return Future<List<NoteModel>>.delayed(
         const Duration(seconds: 2), () => data);
   }
@@ -67,7 +66,6 @@ class MockApi extends API {
       NoteModel item = notes.firstWhere(
           (NoteModel element) => element.id == note.id,
           orElse: () => NoteModel.empty());
-
       item.title = note.title;
       item.body = note.body;
       item.edited = DateTime.now();
