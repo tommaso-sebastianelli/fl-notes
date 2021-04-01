@@ -69,7 +69,7 @@ class _BoardState extends State<Board> {
                               ),
                             ]);
                       }
-                      return FloatingSearchBar(children: <Widget>[
+                      return FloatingSearchBar(pinned: true, children: <Widget>[
                         BoardNotesList(
                           localizedContext: context,
                         )

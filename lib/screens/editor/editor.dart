@@ -25,18 +25,21 @@ class _EditorState extends State<Editor> {
   static const int debounceTime = 500;
 
   void _onTextFieldValueChange() {
+    print(context.read<NotesBloc>().state?.editingNote?.id);
+    final int noteId = context.read<NotesBloc>().state?.editingNote?.id;
+    print(noteId);
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: debounceTime), () {
-      print(titleController);
-      print(bodyController);
       final NoteModel editingNote = NoteModel.fromNote(data);
-
+      // For some reason _onTextFieldValueChange is also triggered on focus
       if (titleController.text == editingNote.title &&
           bodyController.text == editingNote.body) {
         return;
       }
       editingNote.title = titleController.text;
       editingNote.body = bodyController.text;
+      editingNote.id = noteId;
+      // For some reason onTextFieldValueChange is triggered on new notes open
       if (titleController.text.isEmpty &&
           editingNote.body.isEmpty &&
           data.id < 0) {
@@ -57,6 +60,10 @@ class _EditorState extends State<Editor> {
     bodyController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.body.toString()));
     bodyController.addListener(_onTextFieldValueChange);
+    context
+        .read<NotesBloc>()
+        .add(NotesEvent(type: NotesEventType.editing, editingNote: data));
+
     super.initState();
   }
 

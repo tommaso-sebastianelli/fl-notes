@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 enum NotesEventType {
   list,
   save,
+  editing,
 }
 
 class NotesEvent {
@@ -24,17 +25,17 @@ abstract class NotesState extends Equatable {
       this.data,
       this.saving,
       this.savingError,
-      this.lastSavedNote});
+      this.editingNote});
   final List<NoteModel> data;
   final bool error;
   final bool loading;
   final bool saving;
   final bool savingError;
-  final NoteModel lastSavedNote;
+  final NoteModel editingNote;
 
   @override
   List<Object> get props =>
-      [error, loading, data, saving, savingError, lastSavedNote];
+      [error, loading, data, saving, savingError, editingNote];
 }
 
 class InitialNotesState extends NotesState {
@@ -45,7 +46,7 @@ class InitialNotesState extends NotesState {
           loading: false,
           saving: false,
           savingError: false,
-          lastSavedNote: null,
+          editingNote: null,
         );
 }
 
@@ -64,7 +65,7 @@ class NewNotesState extends NotesState {
           loading: loading ?? oldState.loading,
           saving: saving ?? oldState.saving,
           savingError: savingError ?? oldState.savingError,
-          lastSavedNote: lastSavedNote ?? oldState.lastSavedNote,
+          editingNote: lastSavedNote ?? oldState.editingNote,
         );
 }
 
@@ -107,6 +108,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           }
           break;
         }
+      case NotesEventType.editing:
+        {
+          yield NewNotesState(state, lastSavedNote: event.editingNote);
+          print('bloc state: ${state.editingNote}');
+        }
+        break;
     }
   }
 }

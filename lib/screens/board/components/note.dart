@@ -46,13 +46,13 @@ class _NoteState extends State<Note> {
                       const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                   child: BlocBuilder<NotesBloc, NotesState>(
                       buildWhen: (NotesState previous, NotesState current) =>
-                          current.lastSavedNote?.id == widget.data.id,
+                          current.editingNote?.id == widget.data.id,
                       builder: (BuildContext context, NotesState state) {
-                        return ListView(
-                          shrinkWrap: true,
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (widget.data.title != null &&
-                                widget.data.title.length > 0)
+                                widget.data.title.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 4),
                                 child: Text(
