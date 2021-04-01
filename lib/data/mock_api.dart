@@ -6,14 +6,27 @@ import 'abstract_api.dart';
 List<NoteModel> notes = [
   NoteModel(
       id: 0,
-      title: 'title 1',
       // ignore: lines_longer_than_80_chars
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus bibendum, lorem nec convallis tincidunt, sem nulla efficitur purus, sit amet eleifend arcu neque nec nibh. Morbi quis risus posuere, sagittis sapien et, efficitur leo. Nullam dictum, orci at posuere vehicula, nisl nisi feugiat nisl, quis lobortis nulla ipsum vitae velit. Nulla quis maximus ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent id aliquam nulla. Aliquam congue auctor scelerisque. Pellentesque convallis ante ut eros aliquam elementum. Fusce faucibus sagittis lorem, vel consequat dolor mattis a. Etiam varius consectetur sem eu elementum. Aliquam gravida ex in sapien blandit, nec lobortis metus consectetur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
+      body: 'Buy groceries',
+      type: NoteType.text,
+      created: DateTime.fromMillisecondsSinceEpoch(1600134000000),
+      edited: DateTime.fromMillisecondsSinceEpoch(1600134000000)),
+  NoteModel(
+      id: 1,
+      title: 'Flutter',
+      body:
           // ignore: lines_longer_than_80_chars
-          'Donec condimentum accumsan enim, vitae semper purus. Nulla ex augue, malesuada eu fringilla in, lobortis eu metus. Nulla sed nibh dolor. Nullam commodo ut turpis sed feugiat. Nam vitae eleifend nibh. In quis bibendum turpis. Aliquam tellus lectus, sodales quis pellentesque vitae, accumsan id massa. Etiam maximus odio euismod imperdiet dapibus. Nunc lobortis ipsum ut ultricies egestas. Praesent quis elit vulputate, molestie nisl in, tristique dui. In hac habitasse platea dictumst. Nam et magna ante. Quisque gravida et tellus eget pulvinar. Phasellus tincidunt lacinia odio a suscipit. Pellentesque ultricies congue viverra. Donec sollicitudin finibus lobortis.',
-      type: NoteType.text),
-  NoteModel(id: 1, title: 'title 2', body: 'note 2', type: NoteType.text),
-  NoteModel(id: 2, body: 'note 3', type: NoteType.text),
+          'Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.',
+      type: NoteType.text,
+      created: DateTime.fromMillisecondsSinceEpoch(1609455600000),
+      edited: DateTime.fromMillisecondsSinceEpoch(1609455600000)),
+  NoteModel(
+      id: 2,
+      title: 'Welcome',
+      body: 'This is my note app project made with Flutter',
+      type: NoteType.text,
+      created: DateTime.fromMillisecondsSinceEpoch(1614553200000),
+      edited: DateTime.fromMillisecondsSinceEpoch(1614553200000)),
 ];
 
 class MockApi extends API {
@@ -36,8 +49,9 @@ class MockApi extends API {
 
   @override
   Future<List<NoteModel>> list() {
-    final List<NoteModel> data = notes;
-    // final Set<NoteModel> data = <NoteModel>{};
+    final List<NoteModel> data = notes.toList();
+    data.sort((NoteModel a, NoteModel b) => b.created.compareTo(a.created));
+    print(data.map((e) => e.created));
     return Future<List<NoteModel>>.delayed(
         const Duration(seconds: 2), () => data);
   }
