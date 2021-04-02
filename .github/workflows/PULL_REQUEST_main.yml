@@ -11,13 +11,13 @@ on:
   check_suite:
     types:
       - completed
+      
+env:
+    ANDROID_BUILD_PATH: ./build/app/outputs/flutter-apk/
+    ANDROID_APK_NAME: app.apk
+    ARTIFACT_NAME: ${{ANDROID_APK_NAME}}
 
 jobs:
-  job: 'dev release'
-    env:
-      ANDROID_BUILD_PATH: ./build/app/outputs/flutter-apk/
-      ANDROID_APK_NAME: app.apk
-      ARTIFACT_NAME: ${{ANDROID_APK_NAME}}
     build:
       name: Run tests and builds
       runs-on: ubuntu-latest
