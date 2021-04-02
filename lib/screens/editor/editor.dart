@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/note.dart';
@@ -29,24 +30,29 @@ class _EditorState extends State<Editor> {
 
   void _onTextFieldValueChange() {
     final NoteModel note = context.read<NotesBloc>().state?.editingNote;
-    print('Editing note ID: ${note.id}');
+    log('Editing note ID: ${note.id}');
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: debounceTime), () {
       final NoteModel editingNote = NoteModel.fromNote(note ?? data);
       // For some reason _onTextFieldValueChange is also triggered on focus
+      // if both controller valueas are the same as data source, do nothing.
       if (titleController.text == editingNote.title &&
           bodyController.text == editingNote.body) {
         return;
       }
-      editingNote.title = titleController.text;
-      editingNote.body = bodyController.text;
-      editingNote.id = note.id;
+
       // For some reason onTextFieldValueChange is triggered on new notes open
+      // If note isn't already created and empty, do nothing.
       if (titleController.text.isEmpty &&
-          editingNote.body.isEmpty &&
+          bodyController.text.isEmpty &&
           data.id < 0) {
         return;
       }
+
+      editingNote.title = titleController.text;
+      editingNote.body = bodyController.text;
+      editingNote.id = note.id;
+
       context
           .read<NotesBloc>()
           .add(NotesEvent(type: NotesEventType.save, editingNote: editingNote));
@@ -55,12 +61,16 @@ class _EditorState extends State<Editor> {
 
   @override
   void initState() {
+    // setup textfields controller
+    // widget.data (Props) -> Textfield controllers (UI)
     titleController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.title ?? ''));
     titleController.addListener(_onTextFieldValueChange);
     bodyController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.body.toString()));
     bodyController.addListener(_onTextFieldValueChange);
+    // sync editing note on bloc
+    // widget.data (Props) -> Bloc (AppState)
     context.read<NotesBloc>().add(
         NotesEvent(type: NotesEventType.editing, editingNote: widget.data));
 
