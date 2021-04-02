@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/note.dart';
-import 'package:fl_notes/screens/editor/editorHeader/editor_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+
+import 'components/editor_header.dart';
 
 class Editor extends StatefulWidget {
   const Editor(this.data) : super();
