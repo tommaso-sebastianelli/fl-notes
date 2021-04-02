@@ -1,10 +1,7 @@
-import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/mock_api.dart';
 import 'package:fl_notes/models/note.dart';
-import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
-import 'package:fl_notes/screens/board/components/note.dart';
 import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,21 +16,21 @@ void main() {
     await tester.pumpWidget(MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: MultiBlocProvider(providers: [
-          BlocProvider<AuthenticationBloc>(
-            create: (BuildContext context) =>
-                AuthenticationBloc(AuthenticationRepository(MockApi())),
-          ),
-          BlocProvider<NotesBloc>(
-            create: (BuildContext context) =>
-                NotesBloc(NotesRepository(MockApi())),
-          ),
-          // Add more providers here
-        ], child: Editor(NoteModel(title: 'Title', body: 'Some text')))));
+        home: MultiBlocProvider(
+            providers: [
+              BlocProvider<NotesBloc>(
+                create: (BuildContext context) =>
+                    NotesBloc(NotesRepository(MockApi())),
+              ),
+              // Add more providers here
+            ],
+            child: Scaffold(
+              body: Editor(NoteModel(title: 'Hello', body: 'world', id: 0)),
+            ))));
 
     await tester.pumpAndSettle(const Duration(seconds: 2000));
 
-    expect(find.text('Title'), findsOneWidget);
-    expect(find.text('Some text'), findsOneWidget);
+    expect(find.text('Hello'), findsOneWidget);
+    expect(find.text('world'), findsOneWidget);
   });
 }
