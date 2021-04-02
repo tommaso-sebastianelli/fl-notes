@@ -57,20 +57,21 @@ class MockApi extends API {
 
   @override
   Future<NoteModel> save(NoteModel note) {
+    NoteModel item;
     if (note.id < 0) {
-      note.id = notes.length;
-      note.created = DateTime.now();
-      note.edited = DateTime.now();
-      notes.add(note);
+      item = NoteModel.fromNote(note);
+      item.id = notes.length;
+      item.created = DateTime.now();
+      item.edited = DateTime.now();
+      notes.add(item);
     } else {
-      NoteModel item = notes.firstWhere(
-          (NoteModel element) => element.id == note.id,
+      item = notes.firstWhere((NoteModel element) => element.id == note.id,
           orElse: () => NoteModel.empty());
       item.title = note.title;
       item.body = note.body;
       item.edited = DateTime.now();
     }
 
-    return Future.delayed(Duration(seconds: 1), () => note);
+    return Future.delayed(Duration(seconds: 1), () => item);
   }
 }
