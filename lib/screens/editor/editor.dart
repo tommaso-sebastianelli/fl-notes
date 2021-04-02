@@ -54,16 +54,14 @@ class _EditorState extends State<Editor> {
 
   @override
   void initState() {
-    data = widget.data;
     titleController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.title ?? ''));
     titleController.addListener(_onTextFieldValueChange);
     bodyController = TextEditingController.fromValue(
         TextEditingValue(text: widget.data.body.toString()));
     bodyController.addListener(_onTextFieldValueChange);
-    context
-        .read<NotesBloc>()
-        .add(NotesEvent(type: NotesEventType.editing, editingNote: data));
+    context.read<NotesBloc>().add(
+        NotesEvent(type: NotesEventType.editing, editingNote: widget.data));
 
     super.initState();
   }

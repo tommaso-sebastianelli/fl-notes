@@ -53,7 +53,7 @@ class _BoardState extends State<Board> {
                                       .notesEmpty
                                       .toString()),
                               Padding(
-                                padding: EdgeInsets.all(8),
+                                padding: const EdgeInsets.all(8),
                                 child: SizedBox(
                                   width: 200,
                                   child: Text(
@@ -61,7 +61,7 @@ class _BoardState extends State<Board> {
                                           .notesEmptyHint
                                           .toString(),
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black54)),
