@@ -22,7 +22,8 @@ lane :branch_finish do |options|
         repo: "tommaso-sebastianelli/fl-notes",
         title: "PR for #{branch_name}",
         base: "develop",
-        body: "This is an automatic PR opened by fastlane.", 
+        body: "This is an automatic PR opened by fastlane.",
+        labels: "fastlane, feature"
     )
     rescue
         UI.message("PR for #{branch_name} has been already created")
@@ -70,9 +71,13 @@ lane :release_finish do |options|
 
     branch_name = sh('git branch --show-current')
 
-    # add and commit changes: this is intended for updating pubspec version
-    git_add(path: "../pubspec.yaml")
-    git_commit(path: "../pubspec.yaml", message: "Version Bump")
+    begin 
+        # add and commit changes: this is intended for updating pubspec version
+        git_add(path: "pubspec.yaml")
+        git_commit(path: "pubspec.yaml", message: "Version Bump")
+    rescue
+        UI.important("It seems there are no pubspec updates, continuing...")
+    end
 
     # if so pull updates in case someone added changes to release branch
     begin
@@ -90,7 +95,8 @@ lane :release_finish do |options|
             repo: "tommaso-sebastianelli/fl-notes",
             title: "PR for #{branch_name}",
             base: "main",
-            body: "This is an automatic PR opened by fastlane.", 
+            body: "This is an automatic PR opened by fastlane.",
+            labels: "fastlane, release"
         )
     rescue
         UI.message("PR for #{branch_name} has been already created")

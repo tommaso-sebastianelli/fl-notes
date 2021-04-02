@@ -8,12 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "run:mock": "ENVFILE=.env.mock flutter run",
-    "run:test": "ENVFILE=.env.test flutter run",
-    "run:prod": "ENVFILE=.env.prod flutter run",
-    "build:mock": "ENVFILE=.env.mock flutter build apk",
-    "build:test": "ENVFILE=.env.test flutter build apk",
-    "build:prod": "ENVFILE=.env.prod flutter build apk"
+    "run:mock": "ENVFILE=.env.mock flutter run --flavor=mock",
+    "run:dev": "ENVFILE=.env.dev flutter run --flavor=dev",
+    "run:prod": "ENVFILE=.env.prod flutter run --flavor=prod"
   },
   "repository": {
     "type": "git",

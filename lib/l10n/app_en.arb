@@ -1,6 +1,66 @@
 {
   "helloWorld": "Hello World!",
-  "@helloWorld": {
+   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
+  },
+  "signInWithGoogle": "Sign In With Google",
+   "@signInWithGoogle": {
+    "description": "Sign in with Google"
+  },
+  "signInAppDesc": "A note app written with Flutter",
+   "@signInAppDesc": {
+    "description": "Sign in app description"
+  },
+  "loginError": "Authentication failed",
+   "@loginError": {
+    "description": "A message displayed on authentication failure"
+  },
+  "notesError": "Notes update failed",
+   "@notesError": {
+    "description": "A message displayed on notes updates fetch fail"
+  },
+  "retry": "retry",
+   "@retry": {
+    "description": "Retry label"
+  },
+  "notesEmpty": "No notes yet",
+   "@notesEmpty": {
+    "description": "Empty notes list placeholder"
+  },
+  "notesEmptyHint": "Once you write something, notes will be displayed here",
+   "@notesEmptyHint": {
+    "description": "Empty notes list hint"
+  },
+  "genericError": "Something went wrong!",
+   "@genericError": {
+    "description": "A message displayed on non specific errors"
+  },
+  "genericSave": "Save",
+   "@genericSave": {
+    "description": "A message displayed for saving something"
+  },
+  "genericCancel": "Cancel",
+   "@genericCancel": {
+    "description": "A message displayed for undo something"
+  },
+  "genericDelete": "Delete",
+   "@genericDelete": {
+    "description": "A message displayed for delete something"
+  },
+  "editorTitleHint": "Title",
+   "@editorTitleHint": {
+    "description": "editor title hint"
+  },
+  "editorBodyHint": "Some text",
+   "@editorBodyHint": {
+    "description": "editor body hint"
+  },
+  "editorLastSaved": "Saved on",
+   "@editorLastSaved": {
+    "description": "label for showing last saved datetime"
+  },
+  "editorSaving": "Saving",
+   "@editorSaving": {
+    "description": "label for showing editor saving"
   }
 }
