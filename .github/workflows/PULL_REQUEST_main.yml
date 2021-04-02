@@ -15,7 +15,7 @@ on:
 env:
     ANDROID_BUILD_PATH: ./build/app/outputs/flutter-apk/
     ANDROID_APK_NAME: app.apk
-    ARTIFACT_NAME: ${{ ANDROID_APK_NAME }}
+    ARTIFACT_NAME: app.apk
 
 jobs:
     build:
