@@ -72,8 +72,8 @@ lane :release_finish do |options|
     branch_name = sh('git branch --show-current')
 
     # add and commit changes: this is intended for updating pubspec version
-    git_add(path: "../pubspec.yaml")
-    git_commit(path: "../pubspec.yaml", message: "Version Bump")
+    git_add(path: "pubspec.yaml")
+    git_commit(path: "pubspec.yaml", message: "Version Bump")
 
     # if so pull updates in case someone added changes to release branch
     begin
