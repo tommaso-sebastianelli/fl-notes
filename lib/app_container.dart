@@ -1,4 +1,5 @@
 import 'package:fl_notes/blocs/authentication.dart';
+import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,16 +20,18 @@ class AppContainer extends StatelessWidget {
       routes: {
         '/': (BuildContext context) => const SignIn(),
         Board.routeName: (BuildContext context) => const Board(),
-        Editor.routeName: (BuildContext context) => const Editor(),
+        Editor.routeName: (BuildContext context) => Editor(NoteModel.empty()),
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'Flutter Demo',
       theme: ThemeData(
+          scaffoldBackgroundColor: Colors.grey[100],
           primarySwatch: Colors.grey,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          floatingActionButtonTheme:
-              FloatingActionButtonThemeData(backgroundColor: Colors.grey[300])),
+          appBarTheme: const AppBarTheme(color: Colors.black12),
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+              backgroundColor: Colors.yellow[300])),
       builder: (BuildContext context, Widget child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listenWhen:

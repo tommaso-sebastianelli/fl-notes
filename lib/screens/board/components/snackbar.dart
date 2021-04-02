@@ -28,7 +28,9 @@ class BoardSnackBarWrapper extends StatelessWidget {
                     .toString()
                     .toUpperCase(),
                 onPressed: () {
-                  context.read<NotesBloc>().add(NotesEvent.list);
+                  context
+                      .read<NotesBloc>()
+                      .add(const NotesEvent(type: NotesEventType.list));
                 },
               ),
             ))

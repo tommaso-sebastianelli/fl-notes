@@ -19,6 +19,7 @@ class BoardNotesList extends StatelessWidget {
                   previous.data.length != current.data.length,
               builder: (BuildContext context, NotesState state) {
                 return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: state.data.length,
                     itemBuilder: (BuildContext context, int index) {

@@ -26,10 +26,10 @@ void main() {
     test('should return a list of notes', () {
       final InitialNotesState oldState = InitialNotesState();
 
-      final Set<NoteModel> mockNoteSet = <NoteModel>{
+      final List<NoteModel> mockNoteSet = <NoteModel>[
         NoteModel(id: 0, type: NoteType.text, body: 'note 0'),
         NoteModel(id: 1, type: NoteType.text, body: 'note 1')
-      };
+      ];
 
       final List<NewNotesState> expected = [
         NewNotesState(oldState, loading: true, error: false),
@@ -37,14 +37,14 @@ void main() {
       ];
 
       when(notesRepository.list())
-          .thenAnswer((_) => Future<Set<NoteModel>>.value(mockNoteSet));
+          .thenAnswer((_) => Future<List<NoteModel>>.value(mockNoteSet));
 
       expectLater(
         authenticationBloc,
         emitsInOrder(expected),
       );
 
-      authenticationBloc.add(NotesEvent.list);
+      authenticationBloc.add(const NotesEvent(type: NotesEventType.list));
     });
   });
 }
