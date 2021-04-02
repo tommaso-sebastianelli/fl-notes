@@ -13,6 +13,10 @@ on:
       - completed
 
 jobs:
+  env:
+    ANDROID_BUILD_PATH: ./build/app/outputs/flutter-apk/
+    ANDROID_APK_NAME: app.apk
+    ARTIFACT_NAME: ${{ANDROID_APK_NAME}}
   build:
     name: Run tests and builds
     runs-on: ubuntu-latest
@@ -32,7 +36,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: app.apk
-        path: ./build/app/outputs/flutter-apk/app.apk
+        path: ${{ ANDROID_BUILD_PATH }} ${{ ANDROID_APK_NAME }}
 
   release:
     name: Creates Github Release
@@ -59,7 +63,7 @@ jobs:
         id: download
         uses: actions/download-artifact@v2
         with:
-          name: app.apk
+          name: ${{ ARTIFACT_NAME }}
 
       - name: Create Release
         uses: meeDamian/github-release@2.0
@@ -70,7 +74,7 @@ jobs:
           prerelease:  true
           gzip: true
           files: >
-            ${{steps.download.outputs.download-path}}/app-release.apk
+            ${{steps.download.outputs.download-path}}/${{ ARTIFACT_NAME }}
 
   automerge:
     name: Merges release PR into main
