@@ -94,7 +94,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           yield NewNotesState(state, saving: true, savingError: false);
           final NoteModel lastSavedNote =
               await notesRepository.save(event.editingNote);
-          print(lastSavedNote);
           if (lastSavedNote != null) {
             yield NewNotesState(
               state,
