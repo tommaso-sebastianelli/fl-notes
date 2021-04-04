@@ -35,6 +35,9 @@ class _SyncStatusState extends State<SyncStatus> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget?.state?.lastDataSync == null) {
+      return Container();
+    }
     return Text(
       // ignore: lines_longer_than_80_chars
       'Updated ${timeago.format(widget.state.lastDataSync)}',
