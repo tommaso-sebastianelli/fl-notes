@@ -113,7 +113,7 @@ class Critical extends StatelessWidget {
                             children: [
                   Message(
                       icon: Icons.error_outline,
-                      text:
+                      title:
                           AppLocalizations.of(context).genericError.toString())
                 ])))));
   }

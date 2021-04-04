@@ -19,19 +19,22 @@ class NotesEvent {
 
 @immutable
 abstract class NotesState extends Equatable {
-  const NotesState(
-      {this.error,
-      this.loading,
-      this.data,
-      this.saving,
-      this.savingError,
-      this.editingNote});
+  const NotesState({
+    this.error,
+    this.loading,
+    this.data,
+    this.saving,
+    this.savingError,
+    this.editingNote,
+    this.lastDataSync,
+  });
   final List<NoteModel> data;
   final bool error;
   final bool loading;
   final bool saving;
   final bool savingError;
   final NoteModel editingNote;
+  final DateTime lastDataSync;
 
   @override
   List<Object> get props =>
@@ -47,6 +50,7 @@ class InitialNotesState extends NotesState {
           saving: false,
           savingError: false,
           editingNote: null,
+          lastDataSync: null,
         );
 }
 
@@ -59,6 +63,7 @@ class NewNotesState extends NotesState {
     bool saving,
     bool savingError,
     NoteModel editingNote,
+    DateTime lastDataSync,
   }) : super(
           data: data ?? oldState.data,
           error: error ?? oldState.error,
@@ -66,6 +71,7 @@ class NewNotesState extends NotesState {
           saving: saving ?? oldState.saving,
           savingError: savingError ?? oldState.savingError,
           editingNote: editingNote ?? oldState.editingNote,
+          lastDataSync: lastDataSync ?? oldState.lastDataSync,
         );
 }
 
@@ -83,7 +89,10 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           final List<NoteModel> data = await notesRepository.list();
           if (data != null) {
             yield NewNotesState(state,
-                data: data, loading: false, error: false);
+                data: data,
+                lastDataSync: DateTime.now(),
+                loading: false,
+                error: false);
           } else {
             yield NewNotesState(state, loading: false, error: true);
           }
