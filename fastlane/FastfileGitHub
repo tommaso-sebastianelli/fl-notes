@@ -73,8 +73,8 @@ lane :release_finish do |options|
 
     begin 
         # add and commit changes: this is intended for updating pubspec version
-        git_add(path: "pubspec.yaml")
-        git_commit(path: "pubspec.yaml", message: "Version Bump")
+        git_add(path: "./pubspec.yaml")
+        git_commit(path: "./pubspec.yaml", message: "Version Bump")
     rescue
         UI.important("It seems there are no pubspec updates, continuing...")
     end
