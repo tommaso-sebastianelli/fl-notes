@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/components/message.dart';
 import 'package:fl_notes/screens/board/components/note.dart';
+import 'package:fl_notes/screens/board/components/note_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'board_status.dart';
 
 class BoardNotesList extends StatelessWidget {
@@ -42,9 +46,11 @@ class BoardNotesList extends StatelessWidget {
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: state.data.length,
+                itemCount: state.loading ? 4 : state.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Note(state.data.elementAt(index));
+                  return state.loading
+                      ? const NoteSkeleton()
+                      : Note(state.data.elementAt(index));
                 })
           ],
         );

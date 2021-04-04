@@ -235,13 +235,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_skeleton:
-    dependency: "direct main"
-    description:
-      name: flutter_skeleton
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -469,6 +462,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
+  skeleton_text:
+    dependency: "direct main"
+    description:
+      name: skeleton_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   sky_engine:
     dependency: transitive
     description: flutter

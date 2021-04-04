@@ -35,8 +35,7 @@ dependencies:
   floating_search_bar: ^0.3.0
   modal_bottom_sheet: ^1.0.0+1
   timeago: ^2.0.30
-  flutter_skeleton: ^0.1.0+1
-  
+  skeleton_text:  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
