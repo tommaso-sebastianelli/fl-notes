@@ -12,7 +12,7 @@ void main() {
         children: [
           const Message(
             icon: Icons.info,
-            text: 'test',
+            title: 'test',
           )
         ],
       ),
