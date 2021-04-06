@@ -4,11 +4,7 @@ import 'package:fl_notes/repositories/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum NotesEventType {
-  list,
-  save,
-  editing,
-}
+enum NotesEventType { list, save, editing, delete, restore }
 
 class NotesEvent {
   const NotesEvent({@required this.type, this.editingNote});
@@ -120,6 +116,24 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       case NotesEventType.editing:
         {
           yield NewNotesState(state, editingNote: event.editingNote);
+        }
+        break;
+      case NotesEventType.delete:
+        {
+          final NoteModel deleted =
+              await notesRepository.delete(state.editingNote);
+          yield NewNotesState(state,
+              editingNote: NoteModel.fromNote(deleted), saving: false);
+          add(const NotesEvent(type: NotesEventType.list));
+        }
+        break;
+      case NotesEventType.restore:
+        {
+          final NoteModel restored =
+              await notesRepository.restore(state.editingNote);
+          yield NewNotesState(state,
+              editingNote: NoteModel.fromNote(restored), saving: false);
+          add(const NotesEvent(type: NotesEventType.list));
         }
         break;
     }
