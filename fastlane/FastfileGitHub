@@ -42,18 +42,17 @@ lane :release_start do |options|
         ensure_git_branch(
             branch: 'develop'
         )
+        # if so pull updates in case someone added changes to release branch
+        git_pull
+
+        begin
+            sh("git checkout -b release/#{get_version}")
+        rescue
+            UI.important("branch release/#{get_version} alredy exist, performing checkout")
+            sh("git checkout release/#{get_version}")
+        end
     rescue
         UI.error('release must start from develop!')
-    end
-
-    # if so pull updates in case someone added changes to release branch
-    git_pull
-
-    begin
-        sh("git checkout -b release/#{get_version}")
-    rescue
-        UI.important("branch release/#{get_version} alredy exist, performing checkout")
-        sh("git checkout release/#{get_version}")
     end
 end
 
@@ -65,43 +64,40 @@ lane :release_finish do |options|
     ensure_git_branch(
         branch: 'release/**'
     )
-    rescue
-        UI.error('checkout or create a release branch first')
-    end
-
     branch_name = sh('git branch --show-current')
 
-    begin 
-        # add and commit changes: this is intended for updating pubspec version
-        git_add(path: "./pubspec.yaml")
-        git_commit(path: "./pubspec.yaml", message: "Version Bump")
-    rescue
-        UI.important("It seems there are no pubspec updates, continuing...")
-    end
+        begin 
+            # add and commit changes: this is intended for updating pubspec version
+            git_add(path: "./pubspec.yaml")
+            git_commit(path: "./pubspec.yaml", message: "Version Bump")
+        rescue
+            UI.important("It seems there are no pubspec updates, continuing...")
+        end
 
-    # if so pull updates in case someone added changes to release branch
-    begin
-        git_pull
-    rescue
-        UI.important("It seems there is no origin for the current branch")
-    end
+        # if so pull updates in case someone added changes to release branch
+        begin
+            git_pull
+            # push changes if present
+            push_to_git_remote
 
-    # push changes if present
-    push_to_git_remote
-
-    begin
-        create_pull_request(
-            # api_token: "secret",      # optional, defaults to ENV["GITHUB_API_TOKEN"]
-            repo: "tommaso-sebastianelli/fl-notes",
-            title: "PR for #{branch_name}",
-            base: "main",
-            body: "This is an automatic PR opened by fastlane.",
-            labels: "fastlane, release"
-        )
+            begin
+                create_pull_request(
+                    # api_token: "secret",      # optional, defaults to ENV["GITHUB_API_TOKEN"]
+                    repo: "tommaso-sebastianelli/fl-notes",
+                    title: "PR for #{branch_name}",
+                    base: "main",
+                    body: "This is an automatic PR opened by fastlane.",
+                    labels: "fastlane, release"
+                )
+            rescue
+                UI.message("PR for #{branch_name} has been already created")
+            end
+        rescue
+            UI.important("It seems there is no origin for the current branch")
+        end
     rescue
-        UI.message("PR for #{branch_name} has been already created")
-    end
-    
+        UI.error('checkout or create a release branch first')
+    end    
 end
 
 desc "Output project version"
