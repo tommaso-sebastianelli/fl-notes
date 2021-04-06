@@ -49,7 +49,8 @@ class MockApi extends API {
 
   @override
   Future<List<NoteModel>> list() {
-    final List<NoteModel> data = notes.toList();
+    List<NoteModel> data =
+        notes.where((element) => element.deleted == null).toList();
     data.sort((NoteModel a, NoteModel b) => b.created.compareTo(a.created));
     return Future<List<NoteModel>>.delayed(
         const Duration(seconds: 2), () => data);
@@ -73,5 +74,25 @@ class MockApi extends API {
     }
 
     return Future.delayed(Duration(seconds: 1), () => item);
+  }
+
+  @override
+  Future<NoteModel> delete(NoteModel note) {
+    NoteModel item = notes.firstWhere(
+        (NoteModel element) => element.id == note.id,
+        orElse: () => NoteModel.empty());
+    item.deleted = DateTime.now();
+
+    return Future.delayed(const Duration(seconds: 1), () => item);
+  }
+
+  @override
+  Future<NoteModel> restore(NoteModel note) {
+    NoteModel item = notes.firstWhere(
+        (NoteModel element) => element.id == note.id,
+        orElse: () => NoteModel.empty());
+    item.deleted = null;
+
+    return Future.delayed(const Duration(seconds: 1), () => item);
   }
 }

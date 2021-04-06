@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 enum NoteType { text, audio, draw }
 
-class NoteModel {
+class NoteModel extends Equatable {
   NoteModel(
       {this.id,
       this.type,
@@ -10,7 +11,8 @@ class NoteModel {
       this.color,
       this.body,
       this.created,
-      this.edited});
+      this.edited,
+      this.deleted});
 
   NoteModel.fromNote(NoteModel model) {
     id = model.id;
@@ -20,6 +22,7 @@ class NoteModel {
     type = model.type;
     created = model.created;
     edited = model.edited;
+    deleted = model.deleted;
   }
 
   NoteModel.empty() {
@@ -40,4 +43,9 @@ class NoteModel {
   String color;
   DateTime created;
   DateTime edited;
+  DateTime deleted;
+
+  @override
+  List<Object> get props =>
+      [id, type, title, body, color, created, edited, deleted];
 }
