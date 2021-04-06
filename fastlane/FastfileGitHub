@@ -76,7 +76,11 @@ lane :release_finish do |options|
 
         # if so pull updates in case someone added changes to release branch
         begin
-            git_pull
+            begin 
+                git_pull
+            rescue
+                UI.important("Nothing to pull, continuing...")
+            end
             # push changes if present
             push_to_git_remote
 
