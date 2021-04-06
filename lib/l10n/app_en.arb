@@ -19,6 +19,10 @@
    "@notesError": {
     "description": "A message displayed on notes updates fetch fail"
   },
+  "notesDelete": "Note has been deleted",
+   "@notesDelete": {
+    "description": "A message displayed on notes delete"
+  },
   "retry": "retry",
    "@retry": {
     "description": "Retry label"
@@ -41,11 +45,15 @@
   },
   "genericCancel": "Cancel",
    "@genericCancel": {
-    "description": "A message displayed for undo something"
+    "description": "A message displayed for cancelling something"
   },
   "genericDelete": "Delete",
    "@genericDelete": {
     "description": "A message displayed for delete something"
+  },
+  "genericUndo": "Undo",
+   "@genericUndo": {
+    "description": "A message displayed for undoing something"
   },
   "editorTitleHint": "Title",
    "@editorTitleHint": {

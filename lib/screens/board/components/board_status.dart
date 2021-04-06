@@ -17,29 +17,35 @@ class BoardStatusBar extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
           child: BlocBuilder<NotesBloc, NotesState>(
+              buildWhen: (previous, current) =>
+                  previous.loading != current.loading ||
+                  previous.data.length != current.data.length ||
+                  previous.lastDataSync != current.lastDataSync,
               builder: (BuildContext context, NotesState state) {
-            if (state.loading) {
-              return Row(
-                children: [
-                  Text(
-                    'Syncing...',
-                    style: getTexStyle(),
-                  )
-                ],
-              );
-            }
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SyncStatus(state, getTexStyle()),
-                Text(
-                  // ignore: lines_longer_than_80_chars
-                  state.data.isNotEmpty ? 'Notes: ${state.data.length}' : '',
-                  style: getTexStyle(),
-                ),
-              ],
-            );
-          })),
+                if (state.loading) {
+                  return Row(
+                    children: [
+                      Text(
+                        'Syncing...',
+                        style: getTexStyle(),
+                      )
+                    ],
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SyncStatus(state, getTexStyle()),
+                    Text(
+                      // ignore: lines_longer_than_80_chars
+                      state.data.isNotEmpty
+                          ? 'Notes: ${state.data.length}'
+                          : '',
+                      style: getTexStyle(),
+                    ),
+                  ],
+                );
+              })),
     );
   }
 }
