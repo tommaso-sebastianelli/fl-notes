@@ -4,6 +4,8 @@ import 'package:logging/logging.dart';
 abstract class NotesProvider {
   Future<List<NoteModel>> list();
   Future<NoteModel> save(NoteModel note);
+  Future<NoteModel> delete(NoteModel note);
+  Future<NoteModel> restore(NoteModel note);
 }
 
 class NotesRepository {
@@ -21,6 +23,14 @@ class NotesRepository {
 
   Future<NoteModel> save(NoteModel note) {
     return _dataProvider.save(note).catchError(onError);
+  }
+
+  Future<NoteModel> delete(NoteModel note) {
+    return _dataProvider.delete(note).catchError(onError);
+  }
+
+  Future<NoteModel> restore(NoteModel note) {
+    return _dataProvider.restore(note).catchError(onError);
   }
 
   void onError(Object e) {

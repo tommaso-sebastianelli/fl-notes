@@ -43,14 +43,28 @@ class BoardNotesList extends StatelessWidget {
         return Column(
           children: [
             const BoardStatusBar(),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: state.loading ? 4 : state.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return state.loading
-                      ? const NoteSkeleton()
-                      : Note(state.data.elementAt(index));
+            BlocBuilder<NotesBloc, NotesState>(
+                buildWhen: (previous, current) =>
+                    previous.data?.length != current.data?.length,
+                builder: (BuildContext context, NotesState state) {
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.loading ? 4 : state.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return BlocBuilder<NotesBloc, NotesState>(
+                            buildWhen: (previous, current) =>
+                                previous.loading != current.loading ||
+                                previous.data.elementAt(index) !=
+                                    current.data.elementAt(index),
+                            builder: (BuildContext context, NotesState state) {
+                              return state.loading && state.lastDataSync == null
+                                  ? (const NoteSkeleton())
+                                  : state.data.elementAt(index).deleted == null
+                                      ? Note(state.data.elementAt(index))
+                                      : Container();
+                            });
+                      });
                 })
           ],
         );
