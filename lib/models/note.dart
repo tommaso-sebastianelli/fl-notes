@@ -33,6 +33,27 @@ class NoteModel extends Equatable {
     type = NoteType.text;
   }
 
+  NoteModel.fromJson(Map<String, dynamic> json)
+      : id = json['id'] as int,
+        body = json['body'] as String,
+        title = json['title'] as String,
+        color = json['color'] as String,
+        type = json['type'] as NoteType,
+        created = json['created'] as DateTime,
+        edited = json['edited'] as DateTime,
+        deleted = json['deleted'] as DateTime;
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'type': type,
+        'title': title,
+        'color': color,
+        'body': body,
+        'created': created,
+        'edited': edited,
+        'delete': deleted
+      };
+
   @required
   int id;
   @required
