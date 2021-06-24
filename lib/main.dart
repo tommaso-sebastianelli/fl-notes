@@ -4,9 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/abstract_api.dart';
-import 'package:fl_notes/data/dev_api.dart';
+import 'package:fl_notes/data/firebase_api.dart';
 import 'package:fl_notes/data/mock_api.dart';
-import 'package:fl_notes/data/prod_api.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,6 @@ import 'components/message.dart';
 
 API getAPI() {
   switch (FlutterConfig.get('ENV').toString()) {
-    case 'prod':
-      return ProdAPI();
     case 'dev':
       return DevApi();
     case 'mock':
