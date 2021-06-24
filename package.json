@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "run:mock": "ENVFILE=.env.mock flutter run --flavor=mock",
+    "server": "json-server --watch mock/db.json --snapshots mock/db-snapshots",
+    "run:mock": "npm run server & ENVFILE=.env.mock flutter run --flavor=mock",
     "run:dev": "ENVFILE=.env.dev flutter run --flavor=dev",
     "run:prod": "ENVFILE=.env.prod flutter run --flavor=prod"
   },
