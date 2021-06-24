@@ -4,8 +4,8 @@
             "-JRHTHaIs-jNPLXOQivY": {
                 "id": 1,
                 "type": 0,
-                "title": "Note 1",
-                "body": "This is my first text note",
+                "title": "Flutter",
+                "body": "Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.",
                 "color": null,
                 "created": 1600134000000,
                 "edited": 1600134000000,
@@ -14,8 +14,8 @@
             "-JRHTHaIs-jNPLXOQivZ": {
                 "id": 1,
                 "type": 0,
-                "title": "Note 2",
-                "body": "This is my second text note",
+                "title": "Welcome",
+                "body": "This is my note app project made with Flutter",
                 "color": null,
                 "created": 1609455600000,
                 "edited": 1609455600000,
