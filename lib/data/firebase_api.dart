@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
+import 'package:fl_notes/screens/board/components/note.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -19,18 +22,24 @@ class DevApi extends API {
   Future<List<NoteModel>> list() async {
     final DatabaseReference dbRef =
         FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
-    dynamic response;
+    List<NoteModel> response;
 
-    await dbRef
-        .child(notesPath)
-        .once()
-        .then((snapshot) => {
-              if (snapshot != null)
-                {response = snapshot.value}
-              else
-                {throw NullThrownError()}
-            })
-        .catchError((error) => {});
+    await dbRef.child(notesPath).once().then((snapshot) => {
+          if (snapshot != null)
+            {
+              response = (snapshot.value as List)
+                  .map((item) =>
+                      NoteModel.fromJson(item as Map<dynamic, dynamic>))
+                  .toList()
+            }
+          else
+            {throw NullThrownError()}
+        });
+    if (response == null) {
+      throw Error();
+    }
+
+    return Future.value(response);
   }
 
   @override
