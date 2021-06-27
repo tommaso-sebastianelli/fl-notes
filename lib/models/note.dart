@@ -53,9 +53,9 @@ class NoteModel extends Equatable {
         'title': title,
         'color': color,
         'body': body,
-        'created': created?.millisecond,
-        'edited': edited?.millisecond,
-        'deleted': deleted?.microsecond
+        'created': created?.millisecondsSinceEpoch,
+        'edited': edited?.millisecondsSinceEpoch,
+        'deleted': deleted?.millisecondsSinceEpoch
       };
 
   @required
