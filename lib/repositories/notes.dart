@@ -35,6 +35,7 @@ class NotesRepository {
 
   void onError(Object e) {
     logger.severe(e);
-    // throw (e);
+    // print(e);
+    throw (e);
   }
 }

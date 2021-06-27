@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "server": "adb reverse tcp:3000 tcp:3000 & json-server --watch mock/server/db.json --routes mock/server/routes.json --snapshots mock/server/db-snapshots",
     "run:mock": "ENVFILE=.env.mock flutter run --flavor=mock",
     "run:dev": "ENVFILE=.env.dev flutter run --flavor=dev",
     "run:prod": "ENVFILE=.env.prod flutter run --flavor=prod"

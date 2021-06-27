@@ -25,7 +25,8 @@ void main() {
               // Add more providers here
             ],
             child: Scaffold(
-              body: Editor(NoteModel(title: 'Hello', body: 'world', id: 0)),
+              body: Editor(
+                  NoteModel(title: 'Hello', body: 'world', id: '598717278')),
             ))));
 
     await tester.pumpAndSettle(const Duration(seconds: 2000));
