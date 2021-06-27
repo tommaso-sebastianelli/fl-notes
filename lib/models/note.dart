@@ -26,7 +26,7 @@ class NoteModel extends Equatable {
   }
 
   NoteModel.empty() {
-    id = -1;
+    id = null;
     body = '';
     title = '';
     color = '';
@@ -34,7 +34,7 @@ class NoteModel extends Equatable {
   }
 
   NoteModel.fromJson(Map json)
-      : id = json['id'] as int,
+      : id = json['id'] as String,
         body = json['body'] as String,
         title = json['title'] as String,
         color = json['color'] as String,
@@ -48,18 +48,18 @@ class NoteModel extends Equatable {
             : null;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type,
+        // 'id': id,
+        'type': type.index ?? 0,
         'title': title,
         'color': color,
         'body': body,
-        'created': created,
-        'edited': edited,
-        'delete': deleted
+        'created': created?.millisecond,
+        'edited': edited?.millisecond,
+        'deleted': deleted?.microsecond
       };
 
   @required
-  int id;
+  String id;
   @required
   NoteType type;
   String title;

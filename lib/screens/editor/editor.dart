@@ -45,7 +45,7 @@ class _EditorState extends State<Editor> {
       // If note isn't already created and empty, do nothing.
       if (titleController.text.isEmpty &&
           bodyController.text.isEmpty &&
-          data.id < 0) {
+          data.id == null) {
         return;
       }
 
