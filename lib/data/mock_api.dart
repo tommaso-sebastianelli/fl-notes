@@ -36,7 +36,8 @@ class MockApi extends API {
     if (!includeDeleted) {
       data = data.where((element) => element.deleted == null).toList();
     }
-    data.sort((NoteModel a, NoteModel b) => b.created.compareTo(a.created));
+    data.sort((NoteModel a, NoteModel b) =>
+        (b.created as DateTime).compareTo(a.created as DateTime));
 
     return Future<List<NoteModel>>.delayed(
         const Duration(seconds: 2), () => data);
