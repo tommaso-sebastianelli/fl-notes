@@ -21,7 +21,7 @@ class DevApi extends API {
 
     final TransactionResult transactionResult =
         await postRef.runTransaction((MutableData data) async {
-      data.value['deleted'] = DateTime.now().millisecondsSinceEpoch;
+      data.value['deleted'] = ServerValue.timestamp;
 
       return data;
     });
@@ -89,11 +89,8 @@ class DevApi extends API {
               color: note.color,
               title: note.title,
               type: note.type,
-              created: note.created ??
-                  DateTime.now()
-                      .millisecondsSinceEpoch, // FIXME: use server timestamp
-              edited: DateTime.now()
-                  .millisecondsSinceEpoch, // FIXME: use server timestamp
+              created: note.created ?? ServerValue.timestamp,
+              edited: ServerValue.timestamp,
               deleted: note.deleted)
           .toJson();
 
