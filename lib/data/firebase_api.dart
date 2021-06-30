@@ -56,7 +56,7 @@ class DevApi extends API {
   }
 
   @override
-  Future<NoteModel> restore(NoteModel note) {
+  Future<NoteModel> restore(NoteModel note) async {
     final DatabaseReference postRef =
         dbRef.child(notesPath).child(userId).child(note.id);
 
