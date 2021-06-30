@@ -27,8 +27,8 @@ void main() {
       final InitialNotesState oldState = InitialNotesState();
 
       final List<NoteModel> mockNoteSet = <NoteModel>[
-        NoteModel(id: 0, type: NoteType.text, body: 'note 0'),
-        NoteModel(id: 1, type: NoteType.text, body: 'note 1')
+        NoteModel(id: '598717278', type: NoteType.text, body: 'note 0'),
+        NoteModel(id: '604946528', type: NoteType.text, body: 'note 1')
       ];
 
       final List<NewNotesState> expected = [

@@ -1,6 +1,7 @@
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/screens/board/components/note.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
@@ -11,6 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
+  FlutterConfig.loadValueForTesting(
+      {'ENV': 'dev', 'LABEL': 'test', 'DB_URL': ''});
+
   testWidgets('Note Component renders correctly', (WidgetTester tester) async {
     // Create the widget by telling the tester to build it.
     await tester.pumpWidget(MaterialApp(
