@@ -4,33 +4,46 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
-import 'package:fl_notes/screens/board/components/note.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-final String dbURL = FlutterConfig.get('DB_URL').toString();
-const String notesPath = 'notes';
-
 class DevApi extends API {
+  DevApi() {
+    dbRef =
+        FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
+  }
+
+  DatabaseReference dbRef;
+
   @override
-  Future<NoteModel> delete(NoteModel note) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<NoteModel> delete(NoteModel note) async {
+    final DatabaseReference postRef =
+        dbRef.child(notesPath).child(userId).child(note.id);
+
+    final TransactionResult transactionResult =
+        await postRef.runTransaction((MutableData data) async {
+      data.value['deleted'] = ServerValue.timestamp;
+
+      return data;
+    });
+
+    final NoteModel data = NoteModel.fromJson(
+        transactionResult?.dataSnapshot?.value as Map<dynamic, dynamic>);
+
+    return Future.value(data);
   }
 
   @override
   Future<List<NoteModel>> list() async {
-    final DatabaseReference dbRef =
-        FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
-    List<NoteModel> response;
+    final List<NoteModel> response = [];
 
-    await dbRef.child(notesPath).once().then((snapshot) => {
+    await dbRef.child(notesPath).child(userId).once().then((snapshot) => {
           if (snapshot != null)
             {
-              response = (snapshot.value as List)
-                  .map((item) =>
-                      NoteModel.fromJson(item as Map<dynamic, dynamic>))
-                  .toList()
+              (snapshot.value)?.forEach((key, value) {
+                value['id'] = key;
+                response
+                    .add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
+              })
             }
           else
             {throw NullThrownError()}
@@ -43,15 +56,52 @@ class DevApi extends API {
   }
 
   @override
-  Future<NoteModel> restore(NoteModel note) {
-    // TODO: implement restore
-    throw UnimplementedError();
+  Future<NoteModel> restore(NoteModel note) async {
+    final DatabaseReference postRef =
+        dbRef.child(notesPath).child(userId).child(note.id);
+
+    final TransactionResult transactionResult =
+        await postRef.runTransaction((MutableData data) async {
+      data.value['deleted'] = null;
+
+      return data;
+    });
+
+    final NoteModel data = NoteModel.fromJson(
+        transactionResult?.dataSnapshot?.value as Map<dynamic, dynamic>);
+
+    return Future.value(data);
   }
 
   @override
-  Future<NoteModel> save(NoteModel note) {
-    // TODO: implement save
-    throw UnimplementedError();
+  Future<NoteModel> save(NoteModel note) async {
+    DatabaseReference postRef;
+    if (note?.id == null) {
+      postRef = dbRef.child(notesPath).child(userId).push();
+    } else {
+      postRef = dbRef.child(notesPath).child(userId).child(note.id);
+    }
+
+    final TransactionResult transactionResult =
+        await postRef.runTransaction((MutableData data) async {
+      data.value = NoteModel(
+              body: note.body,
+              color: note.color,
+              title: note.title,
+              type: note.type,
+              created: note.created ?? ServerValue.timestamp,
+              edited: ServerValue.timestamp,
+              deleted: note.deleted)
+          .toJson();
+
+      return data;
+    });
+
+    final NoteModel data = NoteModel.fromJson(
+        transactionResult?.dataSnapshot?.value as Map<dynamic, dynamic>);
+    data.id = postRef.key.toString();
+
+    return Future.value(data);
   }
 
   @override

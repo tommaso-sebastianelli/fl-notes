@@ -49,13 +49,15 @@ class NoteModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
         // 'id': id,
-        'type': type.index ?? 0,
+        'type': type?.index ?? 0,
         'title': title,
         'color': color,
         'body': body,
-        'created': created?.millisecondsSinceEpoch,
-        'edited': edited?.millisecondsSinceEpoch,
-        'deleted': deleted?.millisecondsSinceEpoch
+        'created':
+            created is DateTime ? created?.millisecondsSinceEpoch : created,
+        'edited': edited is DateTime ? edited?.millisecondsSinceEpoch : edited,
+        'deleted':
+            deleted is DateTime ? deleted?.millisecondsSinceEpoch : deleted
       };
 
   @required
@@ -66,9 +68,9 @@ class NoteModel extends Equatable {
   @required
   String body;
   String color;
-  DateTime created;
-  DateTime edited;
-  DateTime deleted;
+  dynamic created;
+  dynamic edited;
+  dynamic deleted;
 
   @override
   List<Object> get props =>
