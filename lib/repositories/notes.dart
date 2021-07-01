@@ -6,6 +6,7 @@ abstract class NotesProvider {
   Future<NoteModel> save(NoteModel note);
   Future<NoteModel> delete(NoteModel note);
   Future<NoteModel> restore(NoteModel note);
+  String getId();
 }
 
 class NotesRepository {
@@ -33,9 +34,12 @@ class NotesRepository {
     return _dataProvider.restore(note).catchError(onError);
   }
 
+  String getId() {
+    return _dataProvider.getId();
+  }
+
   void onError(Object e) {
     logger.severe(e);
-    // print(e);
     throw (e);
   }
 }

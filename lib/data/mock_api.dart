@@ -47,18 +47,19 @@ class MockApi extends API {
   Future<NoteModel> save(NoteModel note) async {
     final List<NoteModel> data = await list();
     NoteModel item;
-    if (note.id == null) {
-      item = NoteModel.fromNote(note);
-      item.id = item.hashCode.toString();
-      item.created = DateTime.now();
-      item.edited = DateTime.now();
+
+    item = data.firstWhere((NoteModel element) => element.id == note.id,
+        orElse: () => NoteModel.empty());
+    item.id = note.id;
+    item.title = note.title;
+    item.body = note.body;
+    item.created = item.created ?? DateTime.now();
+    item.edited = DateTime.now();
+
+    print(jsonEncode(item));
+
+    if (!data.any((element) => element.id == item.id)) {
       data.add(item);
-    } else {
-      item = data.firstWhere((NoteModel element) => element.id == note.id,
-          orElse: () => NoteModel.empty());
-      item.title = note.title;
-      item.body = note.body;
-      item.edited = DateTime.now();
     }
 
     await updateSnapshot(data);
@@ -110,5 +111,10 @@ class MockApi extends API {
             print('UPDATE SNAPSHOT RESPONSE---> ${jsonDecode(value.body)}\n'))
         // item = NoteModel.fromJson(value as Map<dynamic, dynamic>))
         .catchError((e) => {throw Error()});
+  }
+
+  @override
+  String getId() {
+    return DateTime.now().toString();
   }
 }
