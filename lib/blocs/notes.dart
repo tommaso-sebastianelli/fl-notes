@@ -115,6 +115,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         }
       case NotesEventType.editing:
         {
+          event.editingNote.id ??= notesRepository.getId();
           yield NewNotesState(state, editingNote: event.editingNote);
         }
         break;
@@ -129,6 +130,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         break;
       case NotesEventType.restore:
         {
+          print(state.editingNote.toJson());
           final NoteModel restored =
               await notesRepository.restore(state.editingNote);
           yield NewNotesState(state,

@@ -10,6 +10,7 @@ class DevApi extends API {
   DevApi() {
     dbRef =
         FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
+    dbRef.keepSynced(true);
   }
 
   DatabaseReference dbRef;
@@ -28,6 +29,7 @@ class DevApi extends API {
 
     final NoteModel data = NoteModel.fromJson(
         transactionResult?.dataSnapshot?.value as Map<dynamic, dynamic>);
+    data.id = note.id;
 
     return Future.value(data);
   }
@@ -69,18 +71,15 @@ class DevApi extends API {
 
     final NoteModel data = NoteModel.fromJson(
         transactionResult?.dataSnapshot?.value as Map<dynamic, dynamic>);
+    data.id = note.id;
 
     return Future.value(data);
   }
 
   @override
   Future<NoteModel> save(NoteModel note) async {
-    DatabaseReference postRef;
-    if (note?.id == null) {
-      postRef = dbRef.child(notesPath).child(userId).push();
-    } else {
-      postRef = dbRef.child(notesPath).child(userId).child(note.id);
-    }
+    final DatabaseReference postRef =
+        dbRef.child(notesPath).child(userId).child(note.id);
 
     final TransactionResult transactionResult =
         await postRef.runTransaction((MutableData data) async {
@@ -121,5 +120,10 @@ class DevApi extends API {
     // TODO: implement signOut
     throw UnimplementedError();
   }
-  // TODO
+
+  @override
+  String getId() {
+    DatabaseReference postRef = dbRef.child(notesPath).child(userId).push();
+    return postRef.key.toString();
+  }
 }
