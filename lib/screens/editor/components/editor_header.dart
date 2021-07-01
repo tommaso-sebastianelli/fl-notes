@@ -28,7 +28,8 @@ class EditorHeader extends StatelessWidget {
             return Text(
               AppLocalizations.of(context).editorLastSaved.toString() +
                   DateFormat(' dd/MM/yy, H:m:s').format(
-                      state.editingNote?.edited ?? state.editingNote?.created),
+                      (state.editingNote?.edited as DateTime) ??
+                          (state.editingNote?.created as DateTime)),
               style: const TextStyle(
                   color: Colors.black38, decorationThickness: 5.0),
             );
