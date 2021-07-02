@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
@@ -36,28 +37,51 @@ class DevApi extends API {
   }
 
   @override
-  Future<List<NoteModel>> list() async {
-    final List<NoteModel> response = [];
+  Future<List<NoteModel>> list(
+      {NotesFilter filter = const NotesFilter(''),
+      bool includeDeleted = false}) async {
+    List<NoteModel> response = [];
 
-    await dbRef.child(notesPath).child(userId).once().then((snapshot) => {
-          if (snapshot != null)
-            {
-              (snapshot.value)?.forEach((key, value) {
-                value['id'] = key;
-                try {
-                  response
-                      .add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
-                } on Exception catch (e) {
-                  // in case of bad saved data we oonly skip the faulty note
-                  logger.severe(e);
+    await dbRef
+        .child(notesPath)
+        .child(userId)
+        .orderByChild('created')
+        .once()
+        .then((snapshot) => {
+              if (snapshot != null)
+                {
+                  (snapshot.value)?.forEach((key, value) {
+                    value['id'] = key;
+                    try {
+                      NoteModel note =
+                          NoteModel.fromJson(value as Map<dynamic, dynamic>);
+                      if (!includeDeleted && note.deleted != null) {
+                        return;
+                      }
+                      response.add(note);
+                    } on Exception catch (e) {
+                      // in case of bad saved data we oonly skip the faulty note
+                      logger.severe(e);
+                    }
+                  })
                 }
-              })
-            }
-          else
-            {throw NullThrownError()}
-        });
+              else
+                {throw NullThrownError()}
+            });
     if (response == null) {
       throw Error();
+    }
+
+    if (filter.contains.isNotEmpty) {
+      response = response
+          .where((element) =>
+              element.title
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()) ||
+              element.body
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()))
+          .toList();
     }
 
     return Future.value(response);
