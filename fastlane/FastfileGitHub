@@ -47,6 +47,7 @@ lane :release_start do |options|
 
         begin
             version = get_version
+            UI.important("Release Version is: #{version}")
             sh("git checkout -b release/#{version}")
         rescue
             UI.important("branch release/#{version} alredy exist, performing checkout")
@@ -107,9 +108,7 @@ end
 
 desc "Output project version"
 private_lane :get_version do |options|
-    puts('getting version with yaml-cli...')
-    puts sh('yaml get ../pubspec.yaml version')
-    sh("yaml get ../pubspec.yaml version")
+    sh("npx yaml get ../pubspec.yaml version")
 end
 
 
