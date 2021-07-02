@@ -24,5 +24,7 @@
     "url": "https://github.com/tommaso-sebastianelli/fl-notes/issues"
   },
   "homepage": "https://github.com/tommaso-sebastianelli/fl-notes#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "yaml-cli": "^1.1.8"
+  }
 }
