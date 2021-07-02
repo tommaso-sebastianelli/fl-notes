@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
@@ -36,7 +37,7 @@ class DevApi extends API {
   }
 
   @override
-  Future<List<NoteModel>> list() async {
+  Future<List<NoteModel>> list({NotesFilter filter}) async {
     final List<NoteModel> response = [];
 
     await dbRef.child(notesPath).child(userId).once().then((snapshot) => {

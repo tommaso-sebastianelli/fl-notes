@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/repositories/notes.dart';
@@ -7,12 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 
-enum NotesEventType { list, save, editing, delete, restore }
+enum NotesEventType { list, save, editing, delete, restore, filter }
+
+class NotesFilter {
+  const NotesFilter(this.contains);
+
+  final String contains;
+}
 
 class NotesEvent {
-  const NotesEvent({@required this.type, this.editingNote});
+  const NotesEvent({@required this.type, this.editingNote, this.filter});
 
   final NoteModel editingNote;
+  final NotesFilter filter;
   final NotesEventType type;
 }
 
@@ -26,6 +31,7 @@ abstract class NotesState extends Equatable {
     this.savingError,
     this.editingNote,
     this.lastDataSync,
+    this.filter,
   });
   final List<NoteModel> data;
   final bool error;
@@ -34,10 +40,11 @@ abstract class NotesState extends Equatable {
   final bool savingError;
   final NoteModel editingNote;
   final DateTime lastDataSync;
+  final NotesFilter filter;
 
   @override
   List<Object> get props =>
-      [error, loading, data, saving, savingError, editingNote];
+      [error, loading, data, saving, savingError, editingNote, filter];
 }
 
 class InitialNotesState extends NotesState {
@@ -50,6 +57,7 @@ class InitialNotesState extends NotesState {
           savingError: false,
           editingNote: null,
           lastDataSync: null,
+          filter: null,
         );
 }
 
@@ -63,6 +71,7 @@ class NewNotesState extends NotesState {
     bool savingError,
     NoteModel editingNote,
     DateTime lastDataSync,
+    NotesFilter filter,
   }) : super(
           data: data ?? oldState.data,
           error: error ?? oldState.error,
@@ -71,6 +80,7 @@ class NewNotesState extends NotesState {
           savingError: savingError ?? oldState.savingError,
           editingNote: editingNote ?? oldState.editingNote,
           lastDataSync: lastDataSync ?? oldState.lastDataSync,
+          filter: filter ?? oldState.filter,
         );
 }
 
@@ -87,7 +97,8 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       case NotesEventType.list:
         {
           yield NewNotesState(state, loading: true, error: false);
-          final List<NoteModel> data = await notesRepository.list();
+          final List<NoteModel> data =
+              await notesRepository.list(filter: state.filter);
           if (data != null) {
             yield NewNotesState(state,
                 data: data,
@@ -139,6 +150,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
               await notesRepository.restore(state.editingNote);
           yield NewNotesState(state,
               editingNote: NoteModel.fromNote(restored), saving: false);
+          add(const NotesEvent(type: NotesEventType.list));
+        }
+        break;
+      case NotesEventType.filter:
+        {
+          yield NewNotesState(state, filter: event.filter);
           add(const NotesEvent(type: NotesEventType.list));
         }
         break;
