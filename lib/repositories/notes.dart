@@ -1,8 +1,9 @@
 import 'package:fl_notes/models/note.dart';
 import 'package:logging/logging.dart';
+import 'package:fl_notes/blocs/notes.dart';
 
 abstract class NotesProvider {
-  Future<List<NoteModel>> list();
+  Future<List<NoteModel>> list({NotesFilter filter});
   Future<NoteModel> save(NoteModel note);
   Future<NoteModel> delete(NoteModel note);
   Future<NoteModel> restore(NoteModel note);
@@ -15,10 +16,10 @@ class NotesRepository {
   Logger logger = Logger('NotesRepository');
   final NotesProvider _dataProvider;
 
-  Future<List<NoteModel>> list() {
+  Future<List<NoteModel>> list({NotesFilter filter}) {
     logger.fine('list::start');
     return _dataProvider
-        .list()
+        .list(filter: filter)
         .then((List<NoteModel> value) => value)
         .catchError(onError)
         .whenComplete(() => logger.fine('list::success'));

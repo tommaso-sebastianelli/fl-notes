@@ -9,18 +9,18 @@ class MockNotesRepository extends Mock implements NotesRepository {}
 void main() {
   group('NotesBloc', () {
     final NotesRepository notesRepository = MockNotesRepository();
-    NotesBloc authenticationBloc;
+    NotesBloc notesBloc;
 
     setUp(() {
-      authenticationBloc = NotesBloc(notesRepository);
+      notesBloc = NotesBloc(notesRepository);
     });
 
     tearDown(() {
-      authenticationBloc?.close();
+      notesBloc?.close();
     });
 
     test('initial state check', () {
-      expect(authenticationBloc.state, InitialNotesState());
+      expect(notesBloc.state, InitialNotesState());
     });
 
     test('should return a list of notes', () {
@@ -36,15 +36,15 @@ void main() {
         NewNotesState(oldState, loading: false, data: mockNoteSet),
       ];
 
-      when(notesRepository.list())
+      when(notesRepository.list(filter: const NotesFilter('')))
           .thenAnswer((_) => Future<List<NoteModel>>.value(mockNoteSet));
 
       expectLater(
-        authenticationBloc,
+        notesBloc,
         emitsInOrder(expected),
       );
 
-      authenticationBloc.add(const NotesEvent(type: NotesEventType.list));
+      notesBloc.add(const NotesEvent(type: NotesEventType.list));
     });
   });
 }
