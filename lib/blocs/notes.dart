@@ -57,7 +57,7 @@ class InitialNotesState extends NotesState {
           savingError: false,
           editingNote: null,
           lastDataSync: null,
-          filter: null,
+          filter: const NotesFilter(''),
         );
 }
 

@@ -31,7 +31,8 @@ class MockApi extends API {
 
   @override
   Future<List<NoteModel>> list(
-      {NotesFilter filter, bool includeDeleted = false}) async {
+      {NotesFilter filter = const NotesFilter(''),
+      bool includeDeleted = false}) async {
     List<NoteModel> data = [];
     await http.get(Uri.parse('$dbURL$notesPath')).then(
         (value) => (jsonDecode(value.body)[userId])?.forEach((key, value) {
@@ -42,16 +43,15 @@ class MockApi extends API {
     if (!includeDeleted) {
       data = data.where((element) => element.deleted == null).toList();
     }
-    if (filter?.contains != null) {
+    if (filter.contains.isNotEmpty) {
       data = data
           .where((element) =>
-              filter?.contains == null ||
-              (element.title
-                      .toLowerCase()
-                      .contains(filter.contains.toLowerCase()) ||
-                  element.body
-                      .toLowerCase()
-                      .contains(filter?.contains.toLowerCase())))
+              element.title
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()) ||
+              element.body
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()))
           .toList();
     }
 
