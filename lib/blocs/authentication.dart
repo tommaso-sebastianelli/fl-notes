@@ -3,6 +3,7 @@ import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 enum AuthenticationEvent { login, logout }
 
@@ -54,10 +55,12 @@ class AuthenticationBloc
       : super(const InitialAuthenticationState());
 
   AuthenticationRepository authenticationRepository;
+  Logger logger = Logger('AuthenticationBloc');
 
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
+    logger.fine('new event: $event');
     switch (event) {
       case AuthenticationEvent.login:
         {
@@ -89,5 +92,11 @@ class AuthenticationBloc
             authenticationStatus: AuthenticationStatus.notLogged);
         break;
     }
+  }
+
+  @override
+  void onChange(Change<AuthenticationState> change) {
+    logger.fine('state change: $change');
+    super.onChange(change);
   }
 }
