@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/repositories/notes.dart';
@@ -80,7 +82,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
 
   @override
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
-    logger.fine('new event: $event');
+    logger.fine('new event: ${event.type}');
     switch (event.type) {
       case NotesEventType.list:
         {
@@ -133,7 +135,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         break;
       case NotesEventType.restore:
         {
-          print(state.editingNote.toJson());
           final NoteModel restored =
               await notesRepository.restore(state.editingNote);
           yield NewNotesState(state,
