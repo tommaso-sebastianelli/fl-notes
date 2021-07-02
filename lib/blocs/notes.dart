@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/repositories/notes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 enum NotesEventType { list, save, editing, delete, restore }
 
@@ -75,9 +78,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   NotesBloc(this.notesRepository) : super(InitialNotesState());
 
   NotesRepository notesRepository;
+  Logger logger = Logger('NotesBloc');
 
   @override
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
+    logger.fine('new event: ${event.type}');
     switch (event.type) {
       case NotesEventType.list:
         {
@@ -130,7 +135,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         break;
       case NotesEventType.restore:
         {
-          print(state.editingNote.toJson());
           final NoteModel restored =
               await notesRepository.restore(state.editingNote);
           yield NewNotesState(state,
@@ -139,5 +143,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         }
         break;
     }
+  }
+
+  @override
+  void onChange(Change<NotesState> change) {
+    logger.fine('state change: $change');
+    super.onChange(change);
   }
 }

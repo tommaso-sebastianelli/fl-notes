@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:logging/logging.dart';
 import 'abstract_api.dart';
 
 class MockApi extends API {
+  MockApi() {
+    logger = Logger('MockAPI');
+  }
+
   @override
   Future<CredentialsModel> signIn() {
     final CredentialsModel data = CredentialsModel(
@@ -56,7 +60,7 @@ class MockApi extends API {
     item.created = item.created ?? DateTime.now();
     item.edited = DateTime.now();
 
-    print(jsonEncode(item));
+    logger.fine(jsonEncode(item));
 
     if (!data.any((element) => element.id == item.id)) {
       data.add(item);
@@ -98,7 +102,7 @@ class MockApi extends API {
   Future<NoteModel> updateSnapshot(List<NoteModel> data) async {
     final buffer = {for (var e in data) e.id: e.toJson()};
 
-    print('NEW DB SNAPSHOT---> ${jsonEncode({userId: buffer})}\n');
+    logger.fine('NEW DB SNAPSHOT---> ${jsonEncode({userId: buffer})}\n');
 
     await http
         .post(Uri.parse('$dbURL$notesPath'),
@@ -107,8 +111,8 @@ class MockApi extends API {
               'Content-Type': 'application/json'
             },
             body: jsonEncode({userId: buffer}))
-        .then((value) =>
-            print('UPDATE SNAPSHOT RESPONSE---> ${jsonDecode(value.body)}\n'))
+        .then((value) => logger
+            .fine('UPDATE SNAPSHOT RESPONSE---> ${jsonDecode(value.body)}\n'))
         // item = NoteModel.fromJson(value as Map<dynamic, dynamic>))
         .catchError((e) => {throw Error()});
   }

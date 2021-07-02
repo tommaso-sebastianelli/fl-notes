@@ -1,16 +1,17 @@
-import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:logging/logging.dart';
 
 class DevApi extends API {
   DevApi() {
     dbRef =
         FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
     dbRef.keepSynced(true);
+
+    logger = Logger('FirebaseAPI');
   }
 
   DatabaseReference dbRef;
@@ -43,8 +44,13 @@ class DevApi extends API {
             {
               (snapshot.value)?.forEach((key, value) {
                 value['id'] = key;
-                response
-                    .add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
+                try {
+                  response
+                      .add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
+                } on Exception catch (e) {
+                  // in case of bad saved data we oonly skip the faulty note
+                  logger.severe(e);
+                }
               })
             }
           else
