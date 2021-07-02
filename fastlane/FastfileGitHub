@@ -46,10 +46,11 @@ lane :release_start do |options|
         git_pull
 
         begin
-            sh("git checkout -b release/#{get_version}")
+            version = get_version
+            sh("git checkout -b release/#{version}")
         rescue
-            UI.important("branch release/#{get_version} alredy exist, performing checkout")
-            sh("git checkout release/#{get_version}")
+            UI.important("branch release/#{version} alredy exist, performing checkout")
+            sh("git checkout release/#{version}")
         end
     rescue
         UI.error('release must start from develop!')
@@ -106,7 +107,9 @@ end
 
 desc "Output project version"
 private_lane :get_version do |options|
+    puts('getting version with yaml-cli...')
     puts sh('yaml get ../pubspec.yaml version')
-    sh('yaml get ../pubspec.yaml version')
+    sh("yaml get ../pubspec.yaml version")
 end
+
 
