@@ -1,0 +1,30 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "run Mock",
+            "request": "launch",
+            "type": "dart",
+            "env": {
+                "ENVFILE": ".env.mock"
+            },
+            "args": [
+                "--flavor", "mock"
+            ],
+        },
+        {
+            "name": "run Dev",
+            "request": "launch",
+            "type": "dart",
+            "env": {
+                "ENVFILE": ".env.dev"
+            },
+            "args": [
+                "--flavor", "dev"
+            ],
+        }
+    ]
+}

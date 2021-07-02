@@ -26,24 +26,51 @@ class NoteModel extends Equatable {
   }
 
   NoteModel.empty() {
-    id = -1;
+    id = null;
     body = '';
     title = '';
     color = '';
     type = NoteType.text;
   }
 
+  NoteModel.fromJson(Map json)
+      : id = json['id'] as String,
+        body = json['body'] as String,
+        title = json['title'] as String,
+        color = json['color'] as String,
+        type = NoteType.values[json['type'] as int],
+        created = DateTime.fromMillisecondsSinceEpoch(json['created'] as int),
+        edited = json['edited'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['edited'] as int)
+            : null,
+        deleted = json['deleted'] != null
+            ? DateTime.fromMillisecondsSinceEpoch(json['deleted'] as int)
+            : null;
+
+  Map<String, dynamic> toJson() => {
+        // 'id': id,
+        'type': type?.index ?? 0,
+        'title': title,
+        'color': color,
+        'body': body,
+        'created':
+            created is DateTime ? created?.millisecondsSinceEpoch : created,
+        'edited': edited is DateTime ? edited?.millisecondsSinceEpoch : edited,
+        'deleted':
+            deleted is DateTime ? deleted?.millisecondsSinceEpoch : deleted
+      };
+
   @required
-  int id;
+  String id;
   @required
   NoteType type;
   String title;
   @required
   String body;
   String color;
-  DateTime created;
-  DateTime edited;
-  DateTime deleted;
+  dynamic created;
+  dynamic edited;
+  dynamic deleted;
 
   @override
   List<Object> get props =>

@@ -1,35 +1,17 @@
+import 'dart:convert';
+
+import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 import 'abstract_api.dart';
 
-List<NoteModel> notes = [
-  NoteModel(
-      id: 0,
-      // ignore: lines_longer_than_80_chars
-      body: 'Buy groceries',
-      type: NoteType.text,
-      created: DateTime.fromMillisecondsSinceEpoch(1600134000000),
-      edited: DateTime.fromMillisecondsSinceEpoch(1600134000000)),
-  NoteModel(
-      id: 1,
-      title: 'Flutter',
-      body:
-          // ignore: lines_longer_than_80_chars
-          'Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.',
-      type: NoteType.text,
-      created: DateTime.fromMillisecondsSinceEpoch(1609455600000),
-      edited: DateTime.fromMillisecondsSinceEpoch(1609455600000)),
-  NoteModel(
-      id: 2,
-      title: 'Welcome',
-      body: 'This is my note app project made with Flutter',
-      type: NoteType.text,
-      created: DateTime.fromMillisecondsSinceEpoch(1614553200000),
-      edited: DateTime.fromMillisecondsSinceEpoch(1614553200000)),
-];
-
 class MockApi extends API {
+  MockApi() {
+    logger = Logger('MockAPI');
+  }
+
   @override
   Future<CredentialsModel> signIn() {
     final CredentialsModel data = CredentialsModel(
@@ -48,51 +30,110 @@ class MockApi extends API {
   }
 
   @override
-  Future<List<NoteModel>> list() {
-    List<NoteModel> data =
-        notes.where((element) => element.deleted == null).toList();
-    data.sort((NoteModel a, NoteModel b) => b.created.compareTo(a.created));
+  Future<List<NoteModel>> list(
+      {NotesFilter filter = const NotesFilter(''),
+      bool includeDeleted = false}) async {
+    List<NoteModel> data = [];
+    await http.get(Uri.parse('$dbURL$notesPath')).then(
+        (value) => (jsonDecode(value.body)[userId])?.forEach((key, value) {
+              value['id'] = key;
+              data.add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
+            }));
+
+    if (!includeDeleted) {
+      data = data.where((element) => element.deleted == null).toList();
+    }
+    if (filter.contains.isNotEmpty) {
+      data = data
+          .where((element) =>
+              element.title
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()) ||
+              element.body
+                  .toLowerCase()
+                  .contains(filter.contains.toLowerCase()))
+          .toList();
+    }
+
+    data.sort((NoteModel a, NoteModel b) =>
+        (b.created as DateTime).compareTo(a.created as DateTime));
+
     return Future<List<NoteModel>>.delayed(
-        const Duration(seconds: 2), () => data);
+        const Duration(seconds: 1), () => data);
   }
 
   @override
-  Future<NoteModel> save(NoteModel note) {
+  Future<NoteModel> save(NoteModel note) async {
+    final List<NoteModel> data = await list();
     NoteModel item;
-    if (note.id < 0) {
-      item = NoteModel.fromNote(note);
-      item.id = notes.length;
-      item.created = DateTime.now();
-      item.edited = DateTime.now();
-      notes.add(item);
-    } else {
-      item = notes.firstWhere((NoteModel element) => element.id == note.id,
-          orElse: () => NoteModel.empty());
-      item.title = note.title;
-      item.body = note.body;
-      item.edited = DateTime.now();
+
+    item = data.firstWhere((NoteModel element) => element.id == note.id,
+        orElse: () => NoteModel.empty());
+    item.id = note.id;
+    item.title = note.title;
+    item.body = note.body;
+    item.created = item.created ?? DateTime.now();
+    item.edited = DateTime.now();
+
+    logger.fine(jsonEncode(item));
+
+    if (!data.any((element) => element.id == item.id)) {
+      data.add(item);
     }
+
+    await updateSnapshot(data);
 
     return Future.delayed(Duration(seconds: 1), () => item);
   }
 
   @override
-  Future<NoteModel> delete(NoteModel note) {
-    NoteModel item = notes.firstWhere(
+  Future<NoteModel> delete(NoteModel note) async {
+    final List<NoteModel> data = await list();
+
+    NoteModel item = data.firstWhere(
         (NoteModel element) => element.id == note.id,
         orElse: () => NoteModel.empty());
     item.deleted = DateTime.now();
+
+    await updateSnapshot(data);
 
     return Future.delayed(const Duration(seconds: 1), () => item);
   }
 
   @override
-  Future<NoteModel> restore(NoteModel note) {
-    NoteModel item = notes.firstWhere(
+  Future<NoteModel> restore(NoteModel note) async {
+    final List<NoteModel> data = await list(includeDeleted: true);
+
+    NoteModel item = data.firstWhere(
         (NoteModel element) => element.id == note.id,
         orElse: () => NoteModel.empty());
     item.deleted = null;
 
+    await updateSnapshot(data);
+
     return Future.delayed(const Duration(seconds: 1), () => item);
+  }
+
+  Future<NoteModel> updateSnapshot(List<NoteModel> data) async {
+    final buffer = {for (var e in data) e.id: e.toJson()};
+
+    logger.fine('NEW DB SNAPSHOT---> ${jsonEncode({userId: buffer})}\n');
+
+    await http
+        .post(Uri.parse('$dbURL$notesPath'),
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: jsonEncode({userId: buffer}))
+        .then((value) => logger
+            .fine('UPDATE SNAPSHOT RESPONSE---> ${jsonDecode(value.body)}\n'))
+        // item = NoteModel.fromJson(value as Map<dynamic, dynamic>))
+        .catchError((e) => {throw Error()});
+  }
+
+  @override
+  String getId() {
+    return DateTime.now().toString();
   }
 }

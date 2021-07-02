@@ -1,0 +1,24 @@
+{
+  "notes": {
+    "dev_user": {
+      "2021-01-01 00:00:00.000000": {
+        "type": 0,
+        "title": "Welcome",
+        "color": null,
+        "body": "This is my note app project made with Flutter",
+        "created": 1624797908635,
+        "edited": 1624797908635,
+        "deleted": null
+      },
+      "2021-01-02 00:00:00.000000": {
+        "type": 0,
+        "title": "Flutter",
+        "color": null,
+        "body": "Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.",
+        "created": 1624797908635,
+        "edited": 1624797908635,
+        "deleted": null
+      }
+    }
+  }
+}

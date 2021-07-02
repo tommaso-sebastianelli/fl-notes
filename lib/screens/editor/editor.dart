@@ -30,7 +30,6 @@ class _EditorState extends State<Editor> {
 
   void _onTextFieldValueChange() {
     final NoteModel note = context.read<NotesBloc>().state?.editingNote;
-    log('Editing note ID: ${note.id}');
     if (_debounce?.isActive ?? false) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: debounceTime), () {
       final NoteModel editingNote = NoteModel.fromNote(note ?? data);
@@ -45,7 +44,7 @@ class _EditorState extends State<Editor> {
       // If note isn't already created and empty, do nothing.
       if (titleController.text.isEmpty &&
           bodyController.text.isEmpty &&
-          data.id < 0) {
+          data.id == null) {
         return;
       }
 
