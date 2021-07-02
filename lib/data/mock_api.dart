@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,8 @@ class MockApi extends API {
   }
 
   @override
-  Future<List<NoteModel>> list({bool includeDeleted = false}) async {
+  Future<List<NoteModel>> list(
+      {NotesFilter filter, bool includeDeleted = false}) async {
     List<NoteModel> data = [];
     await http.get(Uri.parse('$dbURL$notesPath')).then(
         (value) => (jsonDecode(value.body)[userId])?.forEach((key, value) {
@@ -40,11 +42,24 @@ class MockApi extends API {
     if (!includeDeleted) {
       data = data.where((element) => element.deleted == null).toList();
     }
+    if (filter?.contains != null) {
+      data = data
+          .where((element) =>
+              filter?.contains == null ||
+              (element.title
+                      .toLowerCase()
+                      .contains(filter.contains.toLowerCase()) ||
+                  element.body
+                      .toLowerCase()
+                      .contains(filter?.contains.toLowerCase())))
+          .toList();
+    }
+
     data.sort((NoteModel a, NoteModel b) =>
         (b.created as DateTime).compareTo(a.created as DateTime));
 
     return Future<List<NoteModel>>.delayed(
-        const Duration(seconds: 2), () => data);
+        const Duration(seconds: 1), () => data);
   }
 
   @override
