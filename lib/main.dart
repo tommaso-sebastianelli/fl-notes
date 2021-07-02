@@ -53,6 +53,7 @@ Future<void> main() async {
       print('''
       $prefix${record.loggerName}$suffix
       $prefix${record.message}$suffix
+      $prefix${record.time}$suffix
       $prefix------------------------------------------$suffix''');
     });
   }
