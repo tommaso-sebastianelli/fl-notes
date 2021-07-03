@@ -5,9 +5,11 @@ import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:logging/logging.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class DevApi extends API {
-  DevApi() {
+class FirebaseApi extends API {
+  FirebaseApi() {
     dbRef =
         FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
     dbRef.keepSynced(true);
@@ -134,15 +136,32 @@ class DevApi extends API {
   }
 
   @override
-  Future<CredentialsModel> signIn() {
-    final CredentialsModel data = CredentialsModel(
-        name: 'john_doe',
-        email: 'john.doe.00@mail.com',
-        id: '0',
-        photoUrl: '',
-        token: 'efhd7Gs8Hbd7jVnmoL');
+  Future<CredentialsModel> signIn() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    final UserCredential cred =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
     return Future<CredentialsModel>.delayed(
-        const Duration(seconds: 2), () => data);
+        const Duration(seconds: 2),
+        () => CredentialsModel(
+            id: cred.user.uid,
+            name: cred.user.displayName,
+            email: cred.user.email,
+            photoUrl: cred.user.photoURL,
+            token: cred.credential.token));
   }
 
   @override
