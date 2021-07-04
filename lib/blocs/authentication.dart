@@ -81,6 +81,7 @@ class AuthenticationBloc
               error: false,
             );
           } on Exception catch (e) {
+            logger.severe(e);
             yield NewAuthenticationState(state,
                 authenticationStatus: AuthenticationStatus.notLogged,
                 loading: false,
@@ -90,8 +91,13 @@ class AuthenticationBloc
           break;
         }
       case AuthenticationEvent.logout:
-        yield NewAuthenticationState(state,
-            authenticationStatus: AuthenticationStatus.notLogged);
+        try {
+          yield NewAuthenticationState(state,
+              authenticationStatus: AuthenticationStatus.notLogged);
+        } on Exception catch (e) {
+          logger.severe(e);
+          yield NewAuthenticationState(state, loading: false, error: true);
+        }
         break;
     }
   }
