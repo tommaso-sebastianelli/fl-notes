@@ -29,7 +29,7 @@ class BoardNotesList extends StatelessWidget {
               const BoardStatusBar(),
               Padding(
                 padding: const EdgeInsets.only(top: 128), // FIXME
-                child: state.filter?.contains == null
+                child: state.filter.contains.isEmpty
                     ? Message(
                         icon: Icons.notes,
                         title:
