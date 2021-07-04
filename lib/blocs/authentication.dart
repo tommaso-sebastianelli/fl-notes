@@ -69,9 +69,10 @@ class AuthenticationBloc
             loading: true,
             error: false,
           );
-          final CredentialsModel credentials =
-              await authenticationRepository.signIn();
-          if (credentials != null) {
+          CredentialsModel credentials;
+          try {
+            credentials = await authenticationRepository.signIn();
+
             yield NewAuthenticationState(
               state,
               credentials: credentials,
@@ -79,12 +80,13 @@ class AuthenticationBloc
               loading: false,
               error: false,
             );
-          } else {
+          } on Exception catch (e) {
             yield NewAuthenticationState(state,
                 authenticationStatus: AuthenticationStatus.notLogged,
                 loading: false,
                 error: true);
           }
+
           break;
         }
       case AuthenticationEvent.logout:

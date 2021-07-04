@@ -1,5 +1,4 @@
 import 'package:fl_notes/blocs/authentication.dart';
-import 'package:fl_notes/data/mock_api.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
