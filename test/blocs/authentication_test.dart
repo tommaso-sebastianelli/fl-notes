@@ -33,7 +33,7 @@ void main() {
           email: 'john.doe.00@mail.com',
           id: '0',
           photoUrl: '',
-          token: 'efhd7Gs8Hbd7jVnmoL');
+          token: 8719346124610418764);
 
       final List<NewAuthenticationState> expected = [
         NewAuthenticationState(
