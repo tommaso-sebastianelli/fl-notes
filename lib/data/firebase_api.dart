@@ -9,20 +9,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseApi extends API {
-  FirebaseApi() {
+  factory FirebaseApi() {
+    return _instance;
+  }
+
+  FirebaseApi._privateConstructor() {
     dbRef =
         FirebaseDatabase(app: Firebase.app(), databaseURL: dbURL).reference();
     dbRef.keepSynced(true);
-
-    logger = Logger('FirebaseAPI');
   }
 
+  static final FirebaseApi _instance = FirebaseApi._privateConstructor();
+
+  Logger logger = Logger('FirebaseAPI');
   DatabaseReference dbRef;
 
   @override
   Future<NoteModel> delete(NoteModel note) async {
     final DatabaseReference postRef =
-        dbRef.child(notesPath).child(userId).child(note.id);
+        dbRef.child(notesPath).child(getUserId()).child(note.id);
 
     final TransactionResult transactionResult =
         await postRef.runTransaction((MutableData data) async {
@@ -46,7 +51,7 @@ class FirebaseApi extends API {
 
     await dbRef
         .child(notesPath)
-        .child(userId)
+        .child(getUserId())
         .orderByChild('created')
         .once()
         .then((snapshot) => {
@@ -92,7 +97,7 @@ class FirebaseApi extends API {
   @override
   Future<NoteModel> restore(NoteModel note) async {
     final DatabaseReference postRef =
-        dbRef.child(notesPath).child(userId).child(note.id);
+        dbRef.child(notesPath).child(getUserId()).child(note.id);
 
     final TransactionResult transactionResult =
         await postRef.runTransaction((MutableData data) async {
@@ -111,7 +116,7 @@ class FirebaseApi extends API {
   @override
   Future<NoteModel> save(NoteModel note) async {
     final DatabaseReference postRef =
-        dbRef.child(notesPath).child(userId).child(note.id);
+        dbRef.child(notesPath).child(getUserId()).child(note.id);
 
     final TransactionResult transactionResult =
         await postRef.runTransaction((MutableData data) async {
@@ -154,25 +159,32 @@ class FirebaseApi extends API {
     final UserCredential cred =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    return Future<CredentialsModel>.delayed(
-        const Duration(seconds: 2),
-        () => CredentialsModel(
-            id: cred.user.uid,
-            name: cred.user.displayName,
-            email: cred.user.email,
-            photoUrl: cred.user.photoURL,
-            token: cred.credential.token));
+    return Future<CredentialsModel>.value(CredentialsModel(
+        id: cred.user.uid,
+        name: cred.user.displayName,
+        email: cred.user.email,
+        photoUrl: cred.user.photoURL,
+        token: cred.credential.token));
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void> signOut() async {
+    final bool isSignedIn = await GoogleSignIn().isSignedIn();
+    if (isSignedIn) {
+      return GoogleSignIn().signOut();
+    }
+    return Future.value();
   }
 
   @override
-  String getId() {
-    DatabaseReference postRef = dbRef.child(notesPath).child(userId).push();
+  String getNoteKey() {
+    final DatabaseReference postRef =
+        dbRef.child(notesPath).child(getUserId()).push();
     return postRef.key.toString();
+  }
+
+  @override
+  String getUserId() {
+    return FirebaseAuth.instance.currentUser.uid;
   }
 }

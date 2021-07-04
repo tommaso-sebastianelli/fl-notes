@@ -131,7 +131,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         }
       case NotesEventType.editing:
         {
-          event.editingNote.id ??= notesRepository.getId();
+          event.editingNote.id ??= notesRepository.getNoteKey();
           yield NewNotesState(state, editingNote: event.editingNote);
         }
         break;
