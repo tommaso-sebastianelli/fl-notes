@@ -28,6 +28,14 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('../../../android-keystore/debug.keystore')
+            storePassword 'android'
+            keyAlias = 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     compileSdkVersion 29
 
     sourceSets {
