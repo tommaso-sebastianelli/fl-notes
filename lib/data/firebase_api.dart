@@ -4,6 +4,7 @@ import 'package:fl_notes/data/abstract_api.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fl_notes/repositories/authentication.dart';
 import 'package:logging/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -141,30 +142,38 @@ class FirebaseApi extends API {
   }
 
   @override
-  Future<CredentialsModel> signIn() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+  Future<CredentialsModel> signIn(AuthenticationSignInType type) async {
+    UserCredential cred;
+    switch (type) {
+      case AuthenticationSignInType.google:
+        // Trigger the authentication flow
+        final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+        // Obtain the auth details from the request
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+        // Create a new credential
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-    // Once signed in, return the UserCredential
-    final UserCredential cred =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        // Once signed in, return the UserCredential
+        cred = await FirebaseAuth.instance.signInWithCredential(credential);
+        break;
+      case AuthenticationSignInType.anonymous:
+      default:
+        cred = await FirebaseAuth.instance.signInAnonymously();
+        break;
+    }
 
     return Future<CredentialsModel>.value(CredentialsModel(
         id: cred.user.uid,
         name: cred.user.displayName,
         email: cred.user.email,
         photoUrl: cred.user.photoURL,
-        token: cred.credential.token));
+        token: cred?.credential?.token));
   }
 
   @override
