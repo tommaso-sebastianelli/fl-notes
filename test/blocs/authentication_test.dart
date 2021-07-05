@@ -51,7 +51,7 @@ void main() {
         )
       ];
 
-      when(authenticationRepository.signIn())
+      when(authenticationRepository.signIn(AuthenticationSignInType.anonymous))
           .thenAnswer((_) => Future<CredentialsModel>.value(mockCredentials));
 
       expectLater(
@@ -59,7 +59,9 @@ void main() {
         emitsInOrder(expected),
       );
 
-      authenticationBloc.add(AuthenticationEvent.login);
+      authenticationBloc.add(const AuthenticationEvent(
+          type: AuthenticationEventType.login,
+          signInType: AuthenticationSignInType.anonymous));
     });
 
     test('user logs out', () {
@@ -75,7 +77,8 @@ void main() {
         emitsInOrder(expected),
       );
 
-      authenticationBloc.add(AuthenticationEvent.logout);
+      authenticationBloc
+          .add(const AuthenticationEvent(type: AuthenticationEventType.logout));
     });
   });
 }

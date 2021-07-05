@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
+import 'package:fl_notes/repositories/authentication.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'abstract_api.dart';
@@ -19,7 +20,7 @@ class MockApi extends API {
   String _userId;
 
   @override
-  Future<CredentialsModel> signIn() {
+  Future<CredentialsModel> signIn(AuthenticationSignInType type) {
     final CredentialsModel data = CredentialsModel(
         name: 'john_doe',
         email: 'john.doe.00@mail.com',

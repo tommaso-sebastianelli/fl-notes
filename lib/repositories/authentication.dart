@@ -2,10 +2,12 @@ import 'package:fl_notes/models/credentials.dart';
 import 'package:logging/logging.dart';
 
 abstract class AuthenticationProvider {
-  Future<CredentialsModel> signIn();
+  Future<CredentialsModel> signIn(AuthenticationSignInType type);
   Future<void> signOut();
   String getUserId();
 }
+
+enum AuthenticationSignInType { google, anonymous }
 
 class AuthenticationRepository {
   AuthenticationRepository(this._dataProvider);
@@ -13,10 +15,10 @@ class AuthenticationRepository {
   final AuthenticationProvider _dataProvider;
   final Logger logger = Logger('AuthenticationRepository');
 
-  Future<CredentialsModel> signIn() {
+  Future<CredentialsModel> signIn(AuthenticationSignInType type) {
     logger.fine('signIn::start');
     return _dataProvider
-        .signIn()
+        .signIn(type)
         .then((CredentialsModel value) => value)
         .catchError(onError)
         .whenComplete(() => logger.fine('signIn::success'));

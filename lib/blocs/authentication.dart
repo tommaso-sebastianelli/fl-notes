@@ -5,11 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 
-enum AuthenticationEvent { login, logout }
+enum AuthenticationEventType { login, logout }
 
 enum AuthenticationStatus {
   logged,
   notLogged,
+}
+
+class AuthenticationEvent {
+  const AuthenticationEvent({@required this.type, this.signInType});
+
+  final AuthenticationSignInType signInType;
+  final AuthenticationEventType type;
 }
 
 @immutable
@@ -61,8 +68,8 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     logger.fine('new event: $event');
-    switch (event) {
-      case AuthenticationEvent.login:
+    switch (event.type) {
+      case AuthenticationEventType.login:
         {
           yield NewAuthenticationState(
             state,
@@ -71,7 +78,8 @@ class AuthenticationBloc
           );
           CredentialsModel credentials;
           try {
-            credentials = await authenticationRepository.signIn();
+            credentials =
+                await authenticationRepository.signIn(event.signInType);
 
             yield NewAuthenticationState(
               state,
@@ -90,7 +98,7 @@ class AuthenticationBloc
 
           break;
         }
-      case AuthenticationEvent.logout:
+      case AuthenticationEventType.logout:
         try {
           yield NewAuthenticationState(state,
               authenticationStatus: AuthenticationStatus.notLogged);

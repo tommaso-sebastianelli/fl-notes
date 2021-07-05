@@ -7,6 +7,10 @@
    "@signInWithGoogle": {
     "description": "Sign in with Google"
   },
+  "signInAnonymously": "Sign in anonymously",
+   "@signInAnonymously": {
+    "description": "Sign in anonymously"
+  },
   "signInAppDesc": "A note app written with Flutter",
    "@signInAppDesc": {
     "description": "Sign in app description"
