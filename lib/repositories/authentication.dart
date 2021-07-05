@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 abstract class AuthenticationProvider {
   Future<CredentialsModel> signIn();
   Future<void> signOut();
+  String getUserId();
 }
 
 class AuthenticationRepository {

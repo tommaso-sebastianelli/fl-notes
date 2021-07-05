@@ -1,5 +1,4 @@
 import 'package:fl_notes/blocs/authentication.dart';
-import 'package:fl_notes/data/mock_api.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,7 +33,7 @@ void main() {
           email: 'john.doe.00@mail.com',
           id: '0',
           photoUrl: '',
-          token: 'efhd7Gs8Hbd7jVnmoL');
+          token: 8719346124610418764);
 
       final List<NewAuthenticationState> expected = [
         NewAuthenticationState(

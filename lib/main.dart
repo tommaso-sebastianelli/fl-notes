@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
@@ -21,7 +19,7 @@ import 'components/message.dart';
 API getAPI() {
   switch (FlutterConfig.get('ENV').toString()) {
     case 'dev':
-      return DevApi();
+      return FirebaseApi();
     case 'mock':
     default:
       return MockApi();

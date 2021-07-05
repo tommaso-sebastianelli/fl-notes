@@ -5,5 +5,5 @@ class CredentialsModel {
   final String email;
   final String id;
   final String photoUrl;
-  final String token;
+  final int token;
 }

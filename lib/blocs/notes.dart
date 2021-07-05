@@ -99,13 +99,14 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
           yield NewNotesState(state, loading: true, error: false);
           final List<NoteModel> data =
               await notesRepository.list(filter: state.filter);
-          if (data != null) {
+          try {
             yield NewNotesState(state,
                 data: data,
                 lastDataSync: DateTime.now(),
                 loading: false,
                 error: false);
-          } else {
+          } on Exception catch (e) {
+            logger.severe(e);
             yield NewNotesState(state, loading: false, error: true);
           }
           break;
@@ -113,43 +114,53 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       case NotesEventType.save:
         {
           yield NewNotesState(state, saving: true, savingError: false);
-          final NoteModel lastSavedNote =
-              await notesRepository.save(event.editingNote);
-          if (lastSavedNote != null) {
-            yield NewNotesState(
-              state,
-              saving: false,
-              savingError: false,
-              editingNote: lastSavedNote,
-            );
 
-            add(const NotesEvent(type: NotesEventType.list));
-          } else {
+          try {
+            final NoteModel lastSavedNote =
+                await notesRepository.save(event.editingNote);
+            yield NewNotesState(state,
+                saving: false, savingError: false, editingNote: lastSavedNote);
+          } on Exception catch (e) {
+            logger.severe(e);
             yield NewNotesState(state, saving: false, savingError: true);
           }
+          add(const NotesEvent(type: NotesEventType.list));
+
           break;
         }
       case NotesEventType.editing:
         {
-          event.editingNote.id ??= notesRepository.getId();
+          event.editingNote.id ??= notesRepository.getNoteKey();
           yield NewNotesState(state, editingNote: event.editingNote);
         }
         break;
       case NotesEventType.delete:
         {
-          final NoteModel deleted =
-              await notesRepository.delete(state.editingNote);
-          yield NewNotesState(state,
-              editingNote: NoteModel.fromNote(deleted), saving: false);
+          try {
+            final NoteModel deleted =
+                await notesRepository.delete(state.editingNote);
+            yield NewNotesState(state,
+                editingNote: NoteModel.fromNote(deleted), saving: false);
+          } on Exception catch (e) {
+            logger.severe(e);
+            yield NewNotesState(state, error: true, saving: false);
+          }
+
           add(const NotesEvent(type: NotesEventType.list));
         }
         break;
       case NotesEventType.restore:
         {
-          final NoteModel restored =
-              await notesRepository.restore(state.editingNote);
-          yield NewNotesState(state,
-              editingNote: NoteModel.fromNote(restored), saving: false);
+          try {
+            final NoteModel restored =
+                await notesRepository.restore(state.editingNote);
+            yield NewNotesState(state,
+                editingNote: NoteModel.fromNote(restored));
+          } on Exception catch (e) {
+            logger.severe(e);
+            yield NewNotesState(state, error: true);
+          }
+
           add(const NotesEvent(type: NotesEventType.list));
         }
         break;
