@@ -19,5 +19,7 @@
   "editorTitleHint": "Titre",
   "editorBodyHint": "Du texte",
   "editorLastSaved": "Sauvé",
-  "editorSaving": "Saving"
+  "editorSaving": "Saving",
+  "notes": "Notes",
+  "profile": "Profil"
 }

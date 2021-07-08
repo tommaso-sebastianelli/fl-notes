@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/components/message.dart';
 import 'package:fl_notes/screens/board/components/note.dart';

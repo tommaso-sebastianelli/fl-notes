@@ -37,30 +37,22 @@ class _BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Scaffold(
-        body: SafeArea(
-          child: BoardSnackBarWrapper(
-              localizedContext: context,
-              child: Center(
-                child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                    child: BlocBuilder<NotesBloc, NotesState>(
-                        builder: (BuildContext context, NotesState state) {
-                      return FloatingSearchBar(
-                          pinned: true,
-                          onChanged: _onSearchBarChange,
-                          children: <Widget>[
-                            BoardNotesList(
-                              localizedContext: context,
-                            )
-                          ]);
-                    })),
-              )),
-        ),
-        floatingActionButton: const BoardFAB(),
-      ),
-    );
+    return BoardSnackBarWrapper(
+        localizedContext: context,
+        child: Center(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              child: BlocBuilder<NotesBloc, NotesState>(
+                  builder: (BuildContext context, NotesState state) {
+                return FloatingSearchBar(
+                    pinned: true,
+                    onChanged: _onSearchBarChange,
+                    children: <Widget>[
+                      BoardNotesList(
+                        localizedContext: context,
+                      )
+                    ]);
+              })),
+        ));
   }
 }

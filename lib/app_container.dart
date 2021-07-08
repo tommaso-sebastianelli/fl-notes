@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'nav_bar.dart';
 import 'screens/board/board.dart';
+import 'screens/profile/profile.dart';
 import 'screens/signin/signin.dart';
 
 class AppContainer extends StatelessWidget {
@@ -21,6 +23,7 @@ class AppContainer extends StatelessWidget {
         '/': (BuildContext context) => const SignIn(),
         Board.routeName: (BuildContext context) => const Board(),
         Editor.routeName: (BuildContext context) => Editor(NoteModel.empty()),
+        Profile.routeName: (BuildContext context) => Profile(),
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -34,25 +37,39 @@ class AppContainer extends StatelessWidget {
               backgroundColor: Colors.yellow[300])),
       builder: (BuildContext context, Widget child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
-          listenWhen:
-              (AuthenticationState previous, AuthenticationState current) =>
-                  previous.authenticationStatus != current.authenticationStatus,
-          listener: (BuildContext context, AuthenticationState state) {
-            switch (state.authenticationStatus) {
-              case AuthenticationStatus.logged:
-                _navigator.pushNamedAndRemoveUntil(
-                    '/board', (Route<dynamic> route) => false);
-                break;
-              case AuthenticationStatus.notLogged:
-                _navigator.pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
-                break;
-              default:
-                break;
-            }
-          },
-          child: child,
-        );
+            listenWhen: (AuthenticationState previous,
+                    AuthenticationState current) =>
+                previous.authenticationStatus != current.authenticationStatus,
+            listener: (BuildContext context, AuthenticationState state) {
+              switch (state.authenticationStatus) {
+                case AuthenticationStatus.logged:
+                  _navigator.pushNamedAndRemoveUntil(
+                      '/board', (Route<dynamic> route) => false);
+                  break;
+                case AuthenticationStatus.notLogged:
+                  _navigator.pushNamedAndRemoveUntil(
+                      '/', (Route<dynamic> route) => false);
+                  break;
+                default:
+                  break;
+              }
+            },
+            child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (BuildContext context, AuthenticationState state) =>
+                    state.authenticationStatus == AuthenticationStatus.logged
+                        ? Overlay(
+                            initialEntries: [
+                              OverlayEntry(
+                                  builder: (context) => Material(
+                                          child: Scaffold(
+                                        body: SafeArea(child: child),
+                                        bottomNavigationBar: NavBar(
+                                          navigator: _navigator,
+                                        ),
+                                      ))),
+                            ],
+                          )
+                        : child));
       },
       // onGenerateRoute: (_) => SplashPage.route(), // TODO
     );

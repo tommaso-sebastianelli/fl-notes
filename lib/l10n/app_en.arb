@@ -82,5 +82,13 @@
   "editorSaving": "Saving",
    "@editorSaving": {
     "description": "label for showing editor saving"
+  },
+  "notes": "Notes",
+   "@notes": {
+    "description": "label for notes screen"
+  },
+  "profile": "Profile",
+   "@profile": {
+    "description": "label for profile screen"
   }
 }
