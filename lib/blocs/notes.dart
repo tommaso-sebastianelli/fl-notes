@@ -97,9 +97,11 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
       case NotesEventType.list:
         {
           yield NewNotesState(state, loading: true, error: false);
-          final List<NoteModel> data =
-              await notesRepository.list(filter: state.filter);
+
           try {
+            final List<NoteModel> data =
+                await notesRepository.list(filter: state.filter);
+
             yield NewNotesState(state,
                 data: data,
                 lastDataSync: DateTime.now(),
