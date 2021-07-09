@@ -37,7 +37,7 @@ class _AvatarState extends State<Avatar> {
                 backgroundColor: Colors.black26,
                 foregroundColor: Colors.white,
                 backgroundImage: NetworkImage(
-                  state.credentials.photoUrl,
+                  state?.credentials?.photoUrl ?? '',
                 ),
                 onBackgroundImageError: (_, __) {
                   setState(() {
