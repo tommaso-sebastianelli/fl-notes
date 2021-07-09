@@ -25,7 +25,7 @@ class MockApi extends API {
         name: 'john_doe',
         email: 'john.doe.00@mail.com',
         id: 'dev_user',
-        photoUrl: '',
+        photoUrl: 'https://avatars.githubusercontent.com/u/25106571?v=4',
         token: 7246824910843085630);
     _userId = data.id;
     return Future<CredentialsModel>.delayed(

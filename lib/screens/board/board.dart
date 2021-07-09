@@ -60,7 +60,7 @@ class _BoardState extends State<Board> {
                       return FloatingSearchBar(
                           controller: searchFieldController,
                           trailing: state.filter.contains.isEmpty
-                              ? const Avatar()
+                              ? Avatar()
                               : IconButton(
                                   icon: const Icon(Icons.cancel_outlined),
                                   onPressed: _onSearchBarClear),
