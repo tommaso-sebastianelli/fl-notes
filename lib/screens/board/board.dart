@@ -4,6 +4,7 @@ import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/screens/board/components/fab.dart';
 import 'package:fl_notes/screens/board/components/notes_list.dart';
 import 'package:fl_notes/screens/board/components/snackbar.dart';
+import 'package:fl_notes/components/avatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,14 +59,11 @@ class _BoardState extends State<Board> {
                         builder: (BuildContext context, NotesState state) {
                       return FloatingSearchBar(
                           controller: searchFieldController,
-                          leading: state.filter.contains.isEmpty
-                              ? null
+                          trailing: state.filter.contains.isEmpty
+                              ? Avatar()
                               : IconButton(
                                   icon: const Icon(Icons.cancel_outlined),
                                   onPressed: _onSearchBarClear),
-                          // trailing: CircleAvatar(
-                          //   child: Text("RD"),
-                          // ),
                           pinned: true,
                           onChanged: _onSearchBarChange,
                           children: <Widget>[
