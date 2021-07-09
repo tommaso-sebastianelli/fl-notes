@@ -21,6 +21,9 @@ class _BoardState extends State<Board> {
   Timer _debounce;
   static const int debounceTime = 700;
 
+  TextEditingController searchFieldController =
+      TextEditingController.fromValue(const TextEditingValue());
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +36,11 @@ class _BoardState extends State<Board> {
       context.read<NotesBloc>().add(
           NotesEvent(type: NotesEventType.filter, filter: NotesFilter(value)));
     });
+  }
+
+  void _onSearchBarClear() {
+    searchFieldController.clear();
+    _onSearchBarChange('');
   }
 
   @override
@@ -49,6 +57,15 @@ class _BoardState extends State<Board> {
                     child: BlocBuilder<NotesBloc, NotesState>(
                         builder: (BuildContext context, NotesState state) {
                       return FloatingSearchBar(
+                          controller: searchFieldController,
+                          leading: state.filter.contains.isEmpty
+                              ? null
+                              : IconButton(
+                                  icon: const Icon(Icons.cancel_outlined),
+                                  onPressed: _onSearchBarClear),
+                          // trailing: CircleAvatar(
+                          //   child: Text("RD"),
+                          // ),
                           pinned: true,
                           onChanged: _onSearchBarChange,
                           children: <Widget>[
