@@ -144,10 +144,15 @@ class FirebaseApi extends API {
   @override
   Future<CredentialsModel> signIn(AuthenticationSignInType type) async {
     UserCredential cred;
+    CredentialsModel result;
     switch (type) {
       case AuthenticationSignInType.google:
         // Trigger the authentication flow
         final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+        if (googleUser == null) {
+          break;
+        }
 
         // Obtain the auth details from the request
         final GoogleSignInAuthentication googleAuth =
@@ -161,28 +166,37 @@ class FirebaseApi extends API {
 
         // Once signed in, return the UserCredential
         cred = await FirebaseAuth.instance.signInWithCredential(credential);
+        result = CredentialsModel(
+            id: cred?.user?.uid,
+            name: cred?.user?.displayName,
+            email: cred?.user?.email,
+            photoUrl: cred?.user?.photoURL,
+            token: cred?.credential?.token);
+
         break;
       case AuthenticationSignInType.anonymous:
       default:
         cred = await FirebaseAuth.instance.signInAnonymously();
+        result = CredentialsModel(
+            id: cred?.user?.uid,
+            name: cred?.user?.displayName,
+            email: cred?.user?.email,
+            photoUrl: cred?.user?.photoURL,
+            token: cred?.credential?.token);
         break;
     }
 
-    return Future<CredentialsModel>.value(CredentialsModel(
-        id: cred.user.uid,
-        name: cred.user.displayName,
-        email: cred.user.email,
-        photoUrl: cred.user.photoURL,
-        token: cred?.credential?.token));
+    return Future<CredentialsModel>.value(result);
   }
 
   @override
   Future<void> signOut() async {
     final bool isSignedIn = await GoogleSignIn().isSignedIn();
     if (isSignedIn) {
-      return GoogleSignIn().signOut();
+      await GoogleSignIn().signOut();
+      await GoogleSignIn().disconnect();
     }
-    return Future.value();
+    return FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -195,5 +209,19 @@ class FirebaseApi extends API {
   @override
   String getUserId() {
     return FirebaseAuth.instance.currentUser.uid;
+  }
+
+  @override
+  CredentialsModel isUserAuthenticated() {
+    final User user = FirebaseAuth?.instance?.currentUser;
+    if (user != null) {
+      return CredentialsModel(
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photoUrl: user.photoURL); // FIXME: token
+    } else {
+      return null;
+    }
   }
 }
