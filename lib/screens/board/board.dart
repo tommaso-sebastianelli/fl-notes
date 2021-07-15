@@ -53,7 +53,7 @@ class _BoardState extends State<Board> {
       barrierLabel: 'profile-modal',
       pageBuilder: (_, __, ___) => FractionallySizedBox(
         alignment: Alignment.center,
-        widthFactor: 0.75,
+        widthFactor: 0.85,
         heightFactor: 0.35,
         child: Container(
             decoration: const BoxDecoration(

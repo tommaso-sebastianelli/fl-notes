@@ -100,8 +100,10 @@ class AuthenticationBloc
         }
       case AuthenticationEventType.logout:
         try {
+          await authenticationRepository.signOut();
           yield NewAuthenticationState(state,
-              authenticationStatus: AuthenticationStatus.notLogged);
+              authenticationStatus: AuthenticationStatus.notLogged,
+              credentials: CredentialsModel());
         } on Exception catch (e) {
           logger.severe(e);
           yield NewAuthenticationState(state, loading: false, error: true);
