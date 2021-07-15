@@ -2,6 +2,7 @@
   "helloWorld": "Bonjour le monde!",
   "signInWithGoogle": "connectez-vous avec Google",
   "signInAnonymously": "Connectez-vous anonymementy",
+  "signOut": "Déconnecter",
   "signInAppDesc": "Une application de notes écrite avec Flutter",
   "loginError": "authentification échouée",
   "notesError": "La mise à jour des notes a échoué",
@@ -19,5 +20,6 @@
   "editorTitleHint": "Titre",
   "editorBodyHint": "Du texte",
   "editorLastSaved": "Sauvé",
-  "editorSaving": "Saving"
+  "editorSaving": "Saving",
+  "anonymousUser": "Utilisateur anonyme"
 }

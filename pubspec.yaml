@@ -39,6 +39,7 @@ dependencies:
   timeago: ^2.0.30
   skeleton_text:  
   google_sign_in:
+  package_info: ^0.4.0+16
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
