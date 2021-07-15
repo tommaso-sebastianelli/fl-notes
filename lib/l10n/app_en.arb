@@ -11,6 +11,10 @@
    "@signInAnonymously": {
     "description": "Sign in anonymously"
   },
+  "signOut": "Disconnect",
+   "@signOut": {
+    "description": "Sign out"
+  },
   "signInAppDesc": "A note app written with Flutter",
    "@signInAppDesc": {
     "description": "Sign in app description"
@@ -82,5 +86,9 @@
   "editorSaving": "Saving",
    "@editorSaving": {
     "description": "label for showing editor saving"
+  },
+  "anonymousUser": "Anonymous User",
+   "@anonymousUser": {
+    "description": "label for anonymous user"
   }
 }

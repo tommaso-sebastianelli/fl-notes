@@ -51,7 +51,7 @@ class AppContainer extends StatelessWidget {
                 break;
             }
           },
-          child: child,
+          child: Material(child: child),
         );
       },
       // onGenerateRoute: (_) => SplashPage.route(), // TODO
