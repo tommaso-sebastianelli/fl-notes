@@ -193,7 +193,7 @@ class FirebaseApi extends API {
   Future<void> signOut() async {
     final bool isSignedIn = await GoogleSignIn().isSignedIn();
     if (isSignedIn) {
-      await GoogleSignIn().signOut();
+      // await GoogleSignIn().signOut();
       await GoogleSignIn().disconnect();
     }
     return FirebaseAuth.instance.signOut();
