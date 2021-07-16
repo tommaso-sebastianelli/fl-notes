@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/components/avatar.dart';
 import 'package:flutter/material.dart';
