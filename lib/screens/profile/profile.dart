@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/components/avatar.dart';
 import 'package:flutter/material.dart';
@@ -79,11 +78,13 @@ class Profile extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                     )
+
                                   else
                                     Container(),
                                 ],
                               ),
                             ))
+
                           ],
                         ),
                       ),
@@ -100,6 +101,7 @@ class Profile extends StatelessWidget {
                                   const AuthenticationEvent(
                                       type: AuthenticationEventType.logout));
                             },
+
                             child: Text(
                               AppLocalizations.of(context).signOut.toString(),
                               style: TextStyle(color: Colors.red[700]),
