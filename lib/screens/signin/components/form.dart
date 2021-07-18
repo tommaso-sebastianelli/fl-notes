@@ -5,6 +5,8 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'logo.dart';
+
 class SignInForm extends StatelessWidget {
   const SignInForm({Key key}) : super(key: key);
 
@@ -28,26 +30,7 @@ class SignInForm extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            const BoxShadow(
-                              color: Colors.black38,
-                              blurRadius: 0.1,
-                            )
-                          ],
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(25)),
-                          color: Colors.amber[200],
-                        ),
-                        child: const Padding(
-                            padding: EdgeInsets.all(22),
-                            child: Icon(
-                              Icons.edit,
-                              size: 75,
-                              color: Colors.black54,
-                            )),
-                      ),
+                      const Logo(),
                       // Icon(Icons.login),
                       Padding(
                         padding: const EdgeInsets.symmetric(
