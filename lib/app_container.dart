@@ -26,12 +26,16 @@ class AppContainer extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'Flutter Demo',
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey[100],
-          primarySwatch: Colors.grey,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          appBarTheme: const AppBarTheme(color: Colors.black12),
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-              backgroundColor: Colors.yellow[300])),
+        scaffoldBackgroundColor: Colors.grey[200],
+        primarySwatch: Colors.grey,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: const AppBarTheme(color: Colors.black12),
+        floatingActionButtonTheme:
+            FloatingActionButtonThemeData(backgroundColor: Colors.amber[300]),
+        // textTheme: GoogleFonts.barlowTextTheme(
+        //   Theme.of(context,).textTheme,
+        // ),
+      ),
       builder: (BuildContext context, Widget child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listenWhen:

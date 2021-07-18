@@ -5,6 +5,8 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'logo.dart';
+
 class SignInForm extends StatelessWidget {
   const SignInForm({Key key}) : super(key: key);
 
@@ -19,30 +21,16 @@ class SignInForm extends StatelessWidget {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey[300],
+                    color: Colors.white,
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.elliptical(50, 0),
-                        bottomRight: Radius.elliptical(500, 250))),
+                        bottomRight: Radius.elliptical(300, 250))),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 100),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(100)),
-                          color: Colors.yellow[300],
-                        ),
-                        child: const Padding(
-                            padding: EdgeInsets.all(22),
-                            child: Icon(
-                              Icons.edit,
-                              size: 96,
-                              color: Colors.black54,
-                            )),
-                      ),
-
+                      const Logo(),
                       // Icon(Icons.login),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -94,9 +82,13 @@ class SignInForm extends StatelessWidget {
                                                   AuthenticationSignInType
                                                       .anonymous));
                                     },
-                                    child: Text(AppLocalizations.of(context)
-                                        .signInAnonymously
-                                        .toString()))
+                                    child: Text(
+                                      AppLocalizations.of(context)
+                                          .signInAnonymously
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black45),
+                                    ))
                               ],
                             )),
             )
