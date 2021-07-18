@@ -21,7 +21,7 @@ class Logo extends StatelessWidget {
           child: Icon(
             Icons.edit,
             size: 75,
-            color: Colors.black54,
+            color: Colors.black87,
           )),
     );
   }
