@@ -20,7 +20,7 @@ class Profile extends StatelessWidget {
             previous.authenticationStatus != current.authenticationStatus,
         builder: (BuildContext context, AuthenticationState state) {
           return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Flex(
                 direction: Axis.vertical,
                 children: [
@@ -33,17 +33,22 @@ class Profile extends StatelessWidget {
                         color: Colors.black12,
                       ))),
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Column(
-                              children: [
-                                Avatar(),
-                              ],
+                            Flexible(
+                              flex: 0,
+                              child: Column(
+                                children: [
+                                  Avatar(),
+                                ],
+                              ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
+                            Expanded(
+                                child: Padding(
+                              padding: EdgeInsets.only(left: 8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -56,16 +61,27 @@ class Profile extends StatelessWidget {
                                             .toString(),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.black54),
+                                        color: Colors.black87,
+                                        fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   ),
                                   if (state.credentials?.name != null &&
                                       state.credentials.name.isNotEmpty)
-                                    Text(state.credentials.email)
+                                    Text(
+                                      state.credentials.email,
+                                      style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 13,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    )
                                   else
                                     Container(),
                                 ],
                               ),
-                            )
+                            ))
                           ],
                         ),
                       ),
@@ -77,7 +93,11 @@ class Profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                            onPressed: () => {},
+                            onPressed: () {
+                              context.read<AuthenticationBloc>().add(
+                                  const AuthenticationEvent(
+                                      type: AuthenticationEventType.logout));
+                            },
                             child: Text(
                               AppLocalizations.of(context).signOut.toString(),
                               style: TextStyle(color: Colors.red[700]),
