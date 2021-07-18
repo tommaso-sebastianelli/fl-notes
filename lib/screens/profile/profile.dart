@@ -77,7 +77,11 @@ class Profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
-                            onPressed: () => {},
+                            onPressed: () {
+                              context.read<AuthenticationBloc>().add(
+                                  const AuthenticationEvent(
+                                      type: AuthenticationEventType.logout));
+                            },
                             child: Text(
                               AppLocalizations.of(context).signOut.toString(),
                               style: TextStyle(color: Colors.red[700]),
