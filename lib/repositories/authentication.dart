@@ -5,6 +5,7 @@ abstract class AuthenticationProvider {
   Future<CredentialsModel> signIn(AuthenticationSignInType type);
   Future<void> signOut();
   String getUserId();
+  CredentialsModel isUserAuthenticated();
 }
 
 enum AuthenticationSignInType { google, anonymous }
@@ -33,8 +34,14 @@ class AuthenticationRepository {
         .whenComplete(() => logger.fine('signOut::success'));
   }
 
+  CredentialsModel isUserAuthenticated() {
+    logger.fine(
+        'isUserAuthenticated::${_dataProvider.isUserAuthenticated() != null}');
+    return _dataProvider.isUserAuthenticated();
+  }
+
   void onError(Object e) {
     logger.severe(e);
-    throw (e);
+    throw e;
   }
 }

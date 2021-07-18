@@ -18,15 +18,16 @@ class MockApi extends API {
   static final MockApi _instance = MockApi._privateConstructor();
   Logger logger = Logger('MockAPI');
   String _userId;
+  CredentialsModel _mockCredentials = CredentialsModel(
+      name: 'john_doe',
+      email: 'john.doe.00@mail.com',
+      id: 'dev_user',
+      photoUrl: 'https://avatars.githubusercontent.com/u/25106571?v=4',
+      token: 7246824910843085630);
 
   @override
   Future<CredentialsModel> signIn(AuthenticationSignInType type) {
-    final CredentialsModel data = CredentialsModel(
-        name: 'john_doe',
-        email: 'john.doe.00@mail.com',
-        id: 'dev_user',
-        photoUrl: 'https://avatars.githubusercontent.com/u/25106571?v=4',
-        token: 7246824910843085630);
+    final CredentialsModel data = _mockCredentials;
     _userId = data.id;
     return Future<CredentialsModel>.delayed(
         const Duration(seconds: 2), () => data);
@@ -151,5 +152,10 @@ class MockApi extends API {
       throw NullThrownError();
     }
     return _userId;
+  }
+
+  @override
+  CredentialsModel isUserAuthenticated() {
+    return null;
   }
 }

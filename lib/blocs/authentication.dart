@@ -5,12 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 
-enum AuthenticationEventType { login, logout }
+enum AuthenticationEventType { authenticationCheck, login, logout }
 
-enum AuthenticationStatus {
-  logged,
-  notLogged,
-}
+enum AuthenticationStatus { logged, notLogged, checking }
 
 class AuthenticationEvent {
   const AuthenticationEvent({@required this.type, this.signInType});
@@ -69,6 +66,26 @@ class AuthenticationBloc
       AuthenticationEvent event) async* {
     logger.fine('new event: $event');
     switch (event.type) {
+      case AuthenticationEventType.authenticationCheck:
+        yield NewAuthenticationState(state,
+            authenticationStatus: AuthenticationStatus.checking,
+            credentials: CredentialsModel());
+        final CredentialsModel credentials =
+            authenticationRepository.isUserAuthenticated();
+        if (credentials != null) {
+          yield NewAuthenticationState(
+            state,
+            credentials: credentials,
+            authenticationStatus: AuthenticationStatus.logged,
+            loading: false,
+            error: false,
+          );
+        } else {
+          yield NewAuthenticationState(state,
+              authenticationStatus: AuthenticationStatus.notLogged,
+              credentials: CredentialsModel());
+        }
+        break;
       case AuthenticationEventType.login:
         {
           yield NewAuthenticationState(
@@ -81,13 +98,20 @@ class AuthenticationBloc
             credentials =
                 await authenticationRepository.signIn(event.signInType);
 
-            yield NewAuthenticationState(
-              state,
-              credentials: credentials,
-              authenticationStatus: AuthenticationStatus.logged,
-              loading: false,
-              error: false,
-            );
+            if (credentials != null) {
+              yield NewAuthenticationState(
+                state,
+                credentials: credentials,
+                authenticationStatus: AuthenticationStatus.logged,
+                loading: false,
+                error: false,
+              );
+            } else {
+              yield NewAuthenticationState(state,
+                  authenticationStatus: AuthenticationStatus.notLogged,
+                  loading: false,
+                  error: false);
+            }
           } on Exception catch (e) {
             logger.severe(e);
             yield NewAuthenticationState(state,
