@@ -27,7 +27,7 @@ abstract class AuthenticationState extends Equatable {
   final CredentialsModel credentials;
 
   @override
-  List<Object> get props => [authenticationStatus, error, loading, credentials];
+  List<Object> get props => [authenticationStatus, error, loading];
 }
 
 class InitialAuthenticationState extends AuthenticationState {
