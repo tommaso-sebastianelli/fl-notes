@@ -1,5 +1,4 @@
 import 'package:fl_notes/blocs/authentication.dart';
-import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/note.dart';
 import 'package:fl_notes/screens/editor/editor.dart';
 import 'package:fl_notes/screens/signin/signin.dart';
