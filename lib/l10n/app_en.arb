@@ -15,7 +15,7 @@
    "@signOut": {
     "description": "Sign out"
   },
-  "signInAppDesc": "A note app written with Flutter",
+  "signInAppDesc": "A simple note application made with Flutter",
    "@signInAppDesc": {
     "description": "Sign in app description"
   },
