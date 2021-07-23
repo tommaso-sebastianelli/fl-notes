@@ -28,7 +28,7 @@ class BoardFAB extends StatelessWidget {
                     ),
                   ),
               child: const FloatingActionButton(
-                  onPressed: null, child: Icon(Icons.add)));
+                  onPressed: null, child: Icon(Icons.edit)));
         });
   }
 }
