@@ -42,7 +42,7 @@ jobs:
           path: '${{ env.ANDROID_BUILD_PATH }}${{ env.ANDROID_APK_NAME }}'
 
     release:
-      name: Creates Github Release
+      name: Creates Github Release and upload artifact to Firebase
       runs-on: ubuntu-latest
       needs: build
       steps:
@@ -74,10 +74,18 @@ jobs:
             token: ${{ secrets.GITHUB_TOKEN }}
             tag: ${{ steps.version.outputs.substring }}
             name: ${{ steps.version.outputs.substring }}
-            prerelease:  true
-            gzip: true
+            prerelease:  false
+            gzip: false
             files: >
               ${{steps.download.outputs.download-path}}/${{ env.ARTIFACT_NAME }}
+
+        - name: upload artifact to Firebase App Distribution
+          uses: wzieba/Firebase-Distribution-Github-Action@v1
+          with:
+            appId: ${{secrets.FIREBASE_APP_ID}}
+            token: ${{secrets.FIREBASE_TOKEN}}
+            groups: developers
+            file: ${{steps.download.outputs.download-path}}/${{ env.ARTIFACT_NAME }}
 
     automerge:
       name: Merges release PR into main
