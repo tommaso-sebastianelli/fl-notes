@@ -9,6 +9,14 @@ class EditorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _delete() {
+      context
+          .read<NotesBloc>()
+          .add(const NotesEvent(type: NotesEventType.delete));
+
+      Navigator.pop(context);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -20,7 +28,8 @@ class EditorHeader extends StatelessWidget {
             return Text(
               AppLocalizations.of(context).editorLastSaved.toString() +
                   DateFormat(' dd/MM/yy, H:m:s').format(
-                      state.editingNote?.edited ?? state.editingNote?.created),
+                      (state.editingNote?.edited as DateTime) ??
+                          (state.editingNote?.created as DateTime)),
               style: const TextStyle(
                   color: Colors.black38, decorationThickness: 5.0),
             );
@@ -32,7 +41,7 @@ class EditorHeader extends StatelessWidget {
             builder: (BuildContext context, NotesState state) {
           if (state.editingNote?.created != null) {
             return TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => _delete(),
                 child: Text(
                     AppLocalizations.of(context).genericDelete.toString()));
           } else {

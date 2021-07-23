@@ -4,23 +4,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_notes/blocs/authentication.dart';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/data/abstract_api.dart';
-import 'package:fl_notes/data/dev_api.dart';
+import 'package:fl_notes/data/firebase_api.dart';
 import 'package:fl_notes/data/mock_api.dart';
-import 'package:fl_notes/data/prod_api.dart';
 import 'package:fl_notes/repositories/authentication.dart';
 import 'package:fl_notes/repositories/notes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
 
 import 'app_container.dart';
 import 'components/message.dart';
 
 API getAPI() {
   switch (FlutterConfig.get('ENV').toString()) {
-    case 'prod':
-      return ProdAPI();
     case 'dev':
       return DevApi();
     case 'mock':
@@ -30,6 +29,35 @@ API getAPI() {
 }
 
 Future<void> main() async {
+  if (!kReleaseMode) {
+    Logger.root.level = Level.ALL; // defaults to Level.INFO
+    Logger.root.onRecord.listen((record) {
+      String prefix;
+      String suffix = '\x1B[0m';
+
+      switch (record.level.name) {
+        case 'SEVERE':
+        case 'SHOUT':
+          prefix = '\x1B[31m';
+          break;
+        case 'WARNING':
+          prefix = '\x1B[33m';
+          break;
+        case 'INFO':
+          prefix = '\x1B[36m';
+          break;
+        default:
+          prefix = '\x1B[37m';
+      }
+
+      print('''
+      $prefix${record.loggerName}$suffix
+      $prefix${record.message}$suffix
+      $prefix${record.time}$suffix
+      $prefix------------------------------------------$suffix''');
+    });
+  }
+
   WidgetsFlutterBinding.ensureInitialized(); // Required by FlutterConfig
   await FlutterConfig.loadEnvVariables(); // Load env file
 
@@ -67,7 +95,7 @@ class MyApp extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          log('Firebase successfully loaded');
+          Logger('main').info('Firebase successfully loaded');
           return AppContainer();
         }
 

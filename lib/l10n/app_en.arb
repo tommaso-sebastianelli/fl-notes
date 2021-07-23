@@ -19,6 +19,10 @@
    "@notesError": {
     "description": "A message displayed on notes updates fetch fail"
   },
+  "notesDelete": "Note has been deleted",
+   "@notesDelete": {
+    "description": "A message displayed on notes delete"
+  },
   "retry": "retry",
    "@retry": {
     "description": "Retry label"
@@ -27,9 +31,17 @@
    "@notesEmpty": {
     "description": "Empty notes list placeholder"
   },
+  "notesNotFound": "No notes found",
+   "@notesNotFound": {
+    "description": "No notes found message"
+  },
   "notesEmptyHint": "Once you write something, notes will be displayed here",
    "@notesEmptyHint": {
     "description": "Empty notes list hint"
+  },
+  "notesNotFoundHint": "Try changing the keywords to try to find something",
+   "@notesNotFoundHint": {
+    "description": "No notes found message hint"
   },
   "genericError": "Something went wrong!",
    "@genericError": {
@@ -41,11 +53,15 @@
   },
   "genericCancel": "Cancel",
    "@genericCancel": {
-    "description": "A message displayed for undo something"
+    "description": "A message displayed for cancelling something"
   },
   "genericDelete": "Delete",
    "@genericDelete": {
     "description": "A message displayed for delete something"
+  },
+  "genericUndo": "Undo",
+   "@genericUndo": {
+    "description": "A message displayed for undoing something"
   },
   "editorTitleHint": "Title",
    "@editorTitleHint": {

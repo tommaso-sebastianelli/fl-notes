@@ -7,7 +7,6 @@ import 'package:fl_notes/screens/board/components/note_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:skeleton_text/skeleton_text.dart';
 import 'board_status.dart';
 
 class BoardNotesList extends StatelessWidget {
@@ -30,12 +29,24 @@ class BoardNotesList extends StatelessWidget {
               const BoardStatusBar(),
               Padding(
                 padding: const EdgeInsets.only(top: 128), // FIXME
-                child: Message(
-                  icon: Icons.notes,
-                  title: AppLocalizations.of(context).notesEmpty.toString(),
-                  subtitle:
-                      AppLocalizations.of(context).notesEmptyHint.toString(),
-                ),
+                child: state.filter?.contains == null
+                    ? Message(
+                        icon: Icons.notes,
+                        title:
+                            AppLocalizations.of(context).notesEmpty.toString(),
+                        subtitle: AppLocalizations.of(context)
+                            .notesEmptyHint
+                            .toString(),
+                      )
+                    : Message(
+                        icon: Icons.search_off_outlined,
+                        title: AppLocalizations.of(context)
+                            .notesNotFound
+                            .toString(),
+                        subtitle: AppLocalizations.of(context)
+                            .notesNotFoundHint
+                            .toString(),
+                      ),
               )
             ],
           );
@@ -43,14 +54,28 @@ class BoardNotesList extends StatelessWidget {
         return Column(
           children: [
             const BoardStatusBar(),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: state.loading ? 4 : state.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return state.loading
-                      ? const NoteSkeleton()
-                      : Note(state.data.elementAt(index));
+            BlocBuilder<NotesBloc, NotesState>(
+                buildWhen: (previous, current) =>
+                    previous.data?.length != current.data?.length,
+                builder: (BuildContext context, NotesState state) {
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.loading ? 4 : state.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return BlocBuilder<NotesBloc, NotesState>(
+                            buildWhen: (previous, current) =>
+                                previous.loading != current.loading ||
+                                previous.data.elementAt(index) !=
+                                    current.data.elementAt(index),
+                            builder: (BuildContext context, NotesState state) {
+                              return state.loading
+                                  ? (const NoteSkeleton())
+                                  : state.data.elementAt(index).deleted == null
+                                      ? Note(state.data.elementAt(index))
+                                      : Container();
+                            });
+                      });
                 })
           ],
         );

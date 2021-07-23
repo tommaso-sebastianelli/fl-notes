@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/screens/board/components/fab.dart';
 import 'package:fl_notes/screens/board/components/notes_list.dart';
@@ -16,10 +18,21 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
+  Timer _debounce;
+  static const int debounceTime = 700;
+
   @override
   void initState() {
     super.initState();
     context.read<NotesBloc>().add(const NotesEvent(type: NotesEventType.list));
+  }
+
+  void _onSearchBarChange(String value) {
+    if (_debounce?.isActive ?? false) _debounce.cancel();
+    _debounce = Timer(const Duration(milliseconds: debounceTime), () {
+      context.read<NotesBloc>().add(
+          NotesEvent(type: NotesEventType.filter, filter: NotesFilter(value)));
+    });
   }
 
   @override
@@ -35,11 +48,14 @@ class _BoardState extends State<Board> {
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: BlocBuilder<NotesBloc, NotesState>(
                         builder: (BuildContext context, NotesState state) {
-                      return FloatingSearchBar(pinned: true, children: <Widget>[
-                        BoardNotesList(
-                          localizedContext: context,
-                        )
-                      ]);
+                      return FloatingSearchBar(
+                          pinned: true,
+                          onChanged: _onSearchBarChange,
+                          children: <Widget>[
+                            BoardNotesList(
+                              localizedContext: context,
+                            )
+                          ]);
                     })),
               )),
         ),
