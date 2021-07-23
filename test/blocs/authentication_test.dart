@@ -12,6 +12,12 @@ void main() {
     final AuthenticationRepository authenticationRepository =
         MockAuthenticationRepository();
     AuthenticationBloc authenticationBloc;
+    final CredentialsModel mockCredentials = CredentialsModel(
+        name: 'john_doe',
+        email: 'john.doe.00@mail.com',
+        id: '0',
+        photoUrl: '',
+        token: 8719346124610418764);
 
     setUp(() {
       authenticationBloc = AuthenticationBloc(authenticationRepository);
@@ -27,13 +33,6 @@ void main() {
 
     test('user logs in', () {
       const InitialAuthenticationState oldState = InitialAuthenticationState();
-
-      final CredentialsModel mockCredentials = CredentialsModel(
-          name: 'john_doe',
-          email: 'john.doe.00@mail.com',
-          id: '0',
-          photoUrl: '',
-          token: 8719346124610418764);
 
       final List<NewAuthenticationState> expected = [
         NewAuthenticationState(
@@ -65,12 +64,22 @@ void main() {
     });
 
     test('user logs out', () {
-      const InitialAuthenticationState oldState = InitialAuthenticationState();
+      const initialState = InitialAuthenticationState();
+      final NewAuthenticationState oldState = NewAuthenticationState(
+          initialState,
+          authenticationStatus: AuthenticationStatus.logged,
+          credentials: mockCredentials);
+
+      final CredentialsModel emptyCredentials = CredentialsModel();
 
       final List<NewAuthenticationState> expected = [
         NewAuthenticationState(oldState,
-            authenticationStatus: AuthenticationStatus.notLogged)
+            authenticationStatus: AuthenticationStatus.notLogged,
+            credentials: emptyCredentials)
       ];
+
+      when(authenticationRepository.signOut())
+          .thenAnswer((_) => Future<void>.value());
 
       expectLater(
         authenticationBloc,
