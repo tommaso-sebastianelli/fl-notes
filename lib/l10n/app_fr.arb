@@ -1,11 +1,13 @@
 {
   "helloWorld": "Bonjour le monde!",
-  "signInWithGoogle": "connectez-vous avec Google",
-  "signInAppDesc": "Une application de notes écrite avec Flutter",
-  "loginError": "authentification échouée",
+  "signInWithGoogle": "Connectez-vous avec Google",
+  "signInAnonymously": "Connectez-vous anonymementy",
+  "signOut": "Déconnecter",
+  "signInAppDesc": "Une application simple de notes écrite avec Flutter",
+  "loginError": "Authentification échouée",
   "notesError": "La mise à jour des notes a échoué",
   "notesDelete": "La note a été supprimée",
-  "retry": "retenter",
+  "retry": "Retenter",
   "notesEmpty": "Pas encore de notes",
   "notesNotFound": "Aucune note trouvée",
   "notesEmptyHint": "Une fois que vous avez écrit quelque chose, les notes seront affichées ici",
@@ -18,5 +20,6 @@
   "editorTitleHint": "Titre",
   "editorBodyHint": "Du texte",
   "editorLastSaved": "Sauvé",
-  "editorSaving": "Saving"
+  "editorSaving": "Saving",
+  "anonymousUser": "Utilisateur anonyme"
 }

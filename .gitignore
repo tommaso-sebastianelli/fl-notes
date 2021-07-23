@@ -42,3 +42,6 @@ app.*.map.json
 fastlane/.env
 fastlane/report.xml
 
+fastlane/report.xml
+node_modules/
+

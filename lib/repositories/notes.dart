@@ -7,7 +7,7 @@ abstract class NotesProvider {
   Future<NoteModel> save(NoteModel note);
   Future<NoteModel> delete(NoteModel note);
   Future<NoteModel> restore(NoteModel note);
-  String getId();
+  String getNoteKey();
 }
 
 class NotesRepository {
@@ -50,8 +50,8 @@ class NotesRepository {
         .whenComplete(() => logger.fine('restore::success'));
   }
 
-  String getId() {
-    final String id = _dataProvider.getId();
+  String getNoteKey() {
+    final String id = _dataProvider.getNoteKey();
     logger.fine('getId: $id');
     return id;
   }

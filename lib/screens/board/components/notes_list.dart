@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/components/message.dart';
 import 'package:fl_notes/screens/board/components/note.dart';
@@ -29,7 +27,7 @@ class BoardNotesList extends StatelessWidget {
               const BoardStatusBar(),
               Padding(
                 padding: const EdgeInsets.only(top: 128), // FIXME
-                child: state.filter?.contains == null
+                child: state.filter.contains.isEmpty
                     ? Message(
                         icon: Icons.notes,
                         title:
