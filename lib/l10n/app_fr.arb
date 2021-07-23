@@ -3,7 +3,7 @@
   "signInWithGoogle": "Connectez-vous avec Google",
   "signInAnonymously": "Connectez-vous anonymementy",
   "signOut": "Déconnecter",
-  "signInAppDesc": "Une application de notes écrite avec Flutter",
+  "signInAppDesc": "Une application simple de notes écrite avec Flutter",
   "loginError": "Authentification échouée",
   "notesError": "La mise à jour des notes a échoué",
   "notesDelete": "La note a été supprimée",

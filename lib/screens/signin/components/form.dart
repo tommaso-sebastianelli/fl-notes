@@ -20,32 +20,12 @@ class SignInForm extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                         bottomLeft: Radius.elliptical(50, 0),
                         bottomRight: Radius.elliptical(300, 250))),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 100),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      const Logo(),
-                      // Icon(Icons.login),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 100, vertical: 22),
-                        child: Text(AppLocalizations.of(context).signInAppDesc,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black54,
-                            )),
-                      )
-                    ],
-                  ),
-                ),
+                child: const Logo(),
               ),
             ),
           ],
@@ -86,7 +66,7 @@ class SignInForm extends StatelessWidget {
                                       AppLocalizations.of(context)
                                           .signInAnonymously
                                           .toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 15, color: Colors.black45),
                                     ))
                               ],

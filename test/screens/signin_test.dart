@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-  FlutterConfig.loadValueForTesting({'ENV': 'dev', 'LABEL': 'test'});
+  FlutterConfig.loadValueForTesting({'ENV': 'dev', 'LABEL': 'Flutter Notes'});
 
   testWidgets('Render SignIn screen', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
