@@ -47,7 +47,7 @@
    "@notesEmptyHint": {
     "description": "Empty notes list hint"
   },
-  "notesNotFoundHint": "Try changing the keywords to try to find something",
+  "notesNotFoundHint": "Try changing the keywords and search again",
    "@notesNotFoundHint": {
     "description": "No notes found message hint"
   },
