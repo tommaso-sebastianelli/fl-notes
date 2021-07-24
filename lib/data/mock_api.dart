@@ -3,23 +3,32 @@ import 'dart:convert';
 import 'package:fl_notes/blocs/notes.dart';
 import 'package:fl_notes/models/credentials.dart';
 import 'package:fl_notes/models/note.dart';
+import 'package:fl_notes/repositories/authentication.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'abstract_api.dart';
 
 class MockApi extends API {
-  MockApi() {
-    logger = Logger('MockAPI');
+  factory MockApi() {
+    return _instance;
   }
 
+  MockApi._privateConstructor() {}
+
+  static final MockApi _instance = MockApi._privateConstructor();
+  Logger logger = Logger('MockAPI');
+  String _userId;
+  CredentialsModel _mockCredentials = CredentialsModel(
+      name: 'john_doe',
+      email: 'john.doe.00@mail.com',
+      id: 'dev_user',
+      photoUrl: 'https://avatars.githubusercontent.com/u/25106571?v=4',
+      token: 7246824910843085630);
+
   @override
-  Future<CredentialsModel> signIn() {
-    final CredentialsModel data = CredentialsModel(
-        name: 'john_doe',
-        email: 'john.doe.00@mail.com',
-        id: '0',
-        photoUrl: '',
-        token: 'efhd7Gs8Hbd7jVnmoL');
+  Future<CredentialsModel> signIn(AuthenticationSignInType type) {
+    final CredentialsModel data = _mockCredentials;
+    _userId = data.id;
     return Future<CredentialsModel>.delayed(
         const Duration(seconds: 2), () => data);
   }
@@ -35,7 +44,7 @@ class MockApi extends API {
       bool includeDeleted = false}) async {
     List<NoteModel> data = [];
     await http.get(Uri.parse('$dbURL$notesPath')).then(
-        (value) => (jsonDecode(value.body)[userId])?.forEach((key, value) {
+        (value) => (jsonDecode(value.body)[getUserId()])?.forEach((key, value) {
               value['id'] = key;
               data.add(NoteModel.fromJson(value as Map<dynamic, dynamic>));
             }));
@@ -117,7 +126,7 @@ class MockApi extends API {
   Future<NoteModel> updateSnapshot(List<NoteModel> data) async {
     final buffer = {for (var e in data) e.id: e.toJson()};
 
-    logger.fine('NEW DB SNAPSHOT---> ${jsonEncode({userId: buffer})}\n');
+    logger.fine('NEW DB SNAPSHOT---> ${jsonEncode({getUserId(): buffer})}\n');
 
     await http
         .post(Uri.parse('$dbURL$notesPath'),
@@ -125,7 +134,7 @@ class MockApi extends API {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: jsonEncode({userId: buffer}))
+            body: jsonEncode({getUserId(): buffer}))
         .then((value) => logger
             .fine('UPDATE SNAPSHOT RESPONSE---> ${jsonDecode(value.body)}\n'))
         // item = NoteModel.fromJson(value as Map<dynamic, dynamic>))
@@ -133,7 +142,20 @@ class MockApi extends API {
   }
 
   @override
-  String getId() {
+  String getNoteKey() {
     return DateTime.now().toString();
+  }
+
+  @override
+  String getUserId() {
+    if (_userId == null) {
+      throw NullThrownError();
+    }
+    return _userId;
+  }
+
+  @override
+  CredentialsModel isUserAuthenticated() {
+    return null;
   }
 }

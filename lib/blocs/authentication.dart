@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
 
-enum AuthenticationEvent { login, logout }
+enum AuthenticationEventType { authenticationCheck, login, logout }
 
-enum AuthenticationStatus {
-  logged,
-  notLogged,
+enum AuthenticationStatus { logged, notLogged, checking }
+
+class AuthenticationEvent {
+  const AuthenticationEvent({@required this.type, this.signInType});
+
+  final AuthenticationSignInType signInType;
+  final AuthenticationEventType type;
 }
 
 @immutable
@@ -23,7 +27,7 @@ abstract class AuthenticationState extends Equatable {
   final CredentialsModel credentials;
 
   @override
-  List<Object> get props => [authenticationStatus, error, loading, credentials];
+  List<Object> get props => [authenticationStatus, error, loading];
 }
 
 class InitialAuthenticationState extends AuthenticationState {
@@ -61,35 +65,73 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     logger.fine('new event: $event');
-    switch (event) {
-      case AuthenticationEvent.login:
+    switch (event.type) {
+      case AuthenticationEventType.authenticationCheck:
+        yield NewAuthenticationState(state,
+            authenticationStatus: AuthenticationStatus.checking,
+            credentials: CredentialsModel());
+        final CredentialsModel credentials =
+            authenticationRepository.isUserAuthenticated();
+        if (credentials != null) {
+          yield NewAuthenticationState(
+            state,
+            credentials: credentials,
+            authenticationStatus: AuthenticationStatus.logged,
+            loading: false,
+            error: false,
+          );
+        } else {
+          yield NewAuthenticationState(state,
+              authenticationStatus: AuthenticationStatus.notLogged,
+              credentials: CredentialsModel());
+        }
+        break;
+      case AuthenticationEventType.login:
         {
           yield NewAuthenticationState(
             state,
             loading: true,
             error: false,
           );
-          final CredentialsModel credentials =
-              await authenticationRepository.signIn();
-          if (credentials != null) {
-            yield NewAuthenticationState(
-              state,
-              credentials: credentials,
-              authenticationStatus: AuthenticationStatus.logged,
-              loading: false,
-              error: false,
-            );
-          } else {
+          CredentialsModel credentials;
+          try {
+            credentials =
+                await authenticationRepository.signIn(event.signInType);
+
+            if (credentials != null) {
+              yield NewAuthenticationState(
+                state,
+                credentials: credentials,
+                authenticationStatus: AuthenticationStatus.logged,
+                loading: false,
+                error: false,
+              );
+            } else {
+              yield NewAuthenticationState(state,
+                  authenticationStatus: AuthenticationStatus.notLogged,
+                  loading: false,
+                  error: false);
+            }
+          } on Exception catch (e) {
+            logger.severe(e);
             yield NewAuthenticationState(state,
                 authenticationStatus: AuthenticationStatus.notLogged,
                 loading: false,
                 error: true);
           }
+
           break;
         }
-      case AuthenticationEvent.logout:
-        yield NewAuthenticationState(state,
-            authenticationStatus: AuthenticationStatus.notLogged);
+      case AuthenticationEventType.logout:
+        try {
+          await authenticationRepository.signOut();
+          yield NewAuthenticationState(state,
+              authenticationStatus: AuthenticationStatus.notLogged,
+              credentials: CredentialsModel());
+        } on Exception catch (e) {
+          logger.severe(e);
+          yield NewAuthenticationState(state, loading: false, error: true);
+        }
         break;
     }
   }

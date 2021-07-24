@@ -6,6 +6,8 @@ import 'package:flutter_config/flutter_config.dart';
 class SignIn extends StatelessWidget {
   const SignIn({Key key}) : super(key: key);
 
+  static const String routeName = '/signin';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
