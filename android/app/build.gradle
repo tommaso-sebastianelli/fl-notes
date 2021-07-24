@@ -53,6 +53,8 @@ android {
         release {
             storeFile file('../release.keystore')
             signingConfig signingConfigs.debug
+            shrinkResources false
+            minifyEnabled false
         }
     }
 
