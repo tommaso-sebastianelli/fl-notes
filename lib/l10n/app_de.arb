@@ -7,7 +7,7 @@
    "loginError": "Authentifizierung fehlgeschlagen",
    "notesError": "Notizen konnten nicht aktualisiert werden",
    "notesDelete": "Die Notiz wurde gelöscht",
-   "versuchen Sie es erneut": "versuchen Sie es erneut",
+   "retry": "versuchen Sie es erneut",
    "notesEmpty": "Noch keine Notizen",
    "notesNotFound": "Keine Notizen gefunden",
    "notesEmptyHint": "Sobald Sie etwas geschrieben haben, werden die Notizen hier angezeigt",

@@ -7,7 +7,7 @@
   "loginError": "Autenticazione fallita",
   "notesError": "Aggiornamento delle note non riuscito",
   "notesDelete": "La nota è stata eliminata",
-  "riprova": "Riprova",
+  "retry": "Riprova",
   "notesEmpty": "Nessuna nota",
   "notesNotFound": "Nessuna nota trovata",
   "notesEmptyHint": "Appena scrivi qualcosa, le note verranno visualizzate qui",
