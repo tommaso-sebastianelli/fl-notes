@@ -1,5 +1,5 @@
 {
-   "hellloWorld": "¡Hola mundo!",
+   "helloWorld": "¡Hola mundo!",
    "signInWithGoogle": "iniciar sesión con Google",
    "signInAnonymously": "Iniciar sesión de forma anónima",
    "signOut": "Desconectar",
@@ -7,7 +7,7 @@
    "loginError": "autenticación fallida",
    "notesError": "No se pudieron actualizar las notas",
    "notesDelete": "La nota ha sido eliminada",
-   "inténtalo de nuevo": "inténtalo de nuevo",
+   "retry": "inténtalo de nuevo",
    "notesEmpty": "Aún no hay notas",
    "notesNotFound": "No se encontraron notas",
    "notesEmptyHint": "Una vez que haya escrito algo, las notas se mostrarán aquí",
