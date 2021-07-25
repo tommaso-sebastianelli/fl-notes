@@ -7,11 +7,7 @@ A simple note app for android
 <img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_01.png" width="256">
 
 <img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_02.png" width="256">
-  
-<img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_03.png" width="256">
-  
+    
 <img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_04.png" width="256">
-  
-<img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_05.png" width="256">
-  
+    
 </p>
