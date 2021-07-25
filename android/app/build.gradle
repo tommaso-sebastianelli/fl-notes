@@ -27,9 +27,14 @@ apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply from: project(':flutter_config').projectDir.getPath() + "/dotenv.gradle"
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystorePropertiesFile;
+def keystoreProperties = new Properties();
+
+if (project.gradle.startParameter.taskNames.any { it.toLowerCase().contains('release') }) {
+    println "loading release keystore since we are building in release mode..."
+    keystorePropertiesFile = rootProject.file("keystore.properties")
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 
 android {
     compileSdkVersion 29
