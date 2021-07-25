@@ -52,12 +52,18 @@ android {
         resValue 'string', 'app_name', "${project.env.get("LABEL")}"
     }
 
-    buildTypes {
+    signingConfigs {
         release {
             storeFile file(rootDir.getCanonicalPath() + '/' + keystoreProperties['releaseKeyStore'])
             keyAlias keystoreProperties['releaseKeyAlias']
             keyPassword keystoreProperties['releaseKeyPassword']
             storePassword keystoreProperties['releaseStorePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
             shrinkResources false
             minifyEnabled false
         }
