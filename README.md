@@ -14,5 +14,4 @@ A simple note app for android
   
 <img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_05.png" width="256">
   
-<img src="https://github.com/tommaso-sebastianelli/fl-notes/blob/main/screenshots/screen_06.png" width="256">
 </p>
