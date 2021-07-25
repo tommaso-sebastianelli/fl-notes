@@ -1,8 +1,18 @@
-# fl-notes
+# Flutter Notes
 
-## Run application
-[yarn|npm] run:[mock|test|prod]
+A simple note app for android
 
-## Build application
-[yarn|npm] build:[mock|test|prod]
+### Screenshots
+<p align="center">
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_01.png" width="256">
 
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_02.png" width="256">
+  
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_03.png" width="256">
+  
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_04.png" width="256">
+  
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_05.png" width="256">
+  
+<img src="https://github.com/tommaso-sebastianelli/react-native-weather/blob/master/screenshots/screen_06.png" width="256">
+</p>
